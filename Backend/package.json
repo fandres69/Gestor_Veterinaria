@@ -1,0 +1,19 @@
+{
+  "name": "gestor_veterinaria_bk",
+  "version": "1.0.0",
+  "description": "Backend proyecto gestor veterinaria",
+  "main": "Api.js",
+  "scripts": {
+    "dev": "nodemon Api.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "express": "^4.17.3",
+    "winston": "^3.6.0"
+  }
+}

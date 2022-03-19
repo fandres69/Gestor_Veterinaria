@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "./Backend"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			
+			"node_modules": true
+		},
+		"cSpell.language": "en,es"
+	}
+}
