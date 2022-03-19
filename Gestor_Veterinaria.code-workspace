@@ -12,6 +12,10 @@
 			
 			"node_modules": true
 		},
-		"cSpell.language": "en,es"
+		"cSpell.language": "en,es",
+		"cSpell.words": [
+			"gveterinaria",
+			"Mapea"
+		]
 	}
 }

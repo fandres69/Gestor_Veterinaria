@@ -1,9 +1,9 @@
-/**Biblioteca encargada de la gestión de los token de la aplicacion */ 
+/**Biblioteca encargada de la gestión de los token de la aplicación */ 
 
 const jwt=require('jsonwebtoken');
 
 /**Función que genera un JWT
- * @argument uid uid del usuario
+ * @argument uid documento del usuario
  * @argument name nombre del usuario
  * @returns Promise con JWT
  */
@@ -17,11 +17,11 @@ const generateJWT=(uid,name)=>{
          * Arg 1: payload
          * Arg 2: secret (llave de cifrado)
          * Arg 3: Opciones de configuración
-         * Arg 4: callback que se dispara despues de finalizar el proceso de creación
+         * Arg 4: callback que se dispara después de finalizar el proceso de creación
          * se pasan como argumentos el error y el token para retornar al usuario
         */
         jwt.sign(payload,secret,{
-            expiresIn:'2h'
+            expiresIn:'14h'
         },(err,token)=>{
             if (err) {
                 console.log(err);

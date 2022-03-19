@@ -1,0 +1,132 @@
+{
+    "cretateUser":{
+       
+        "url":"http://localhost:3301/gveterinaria/login/newUser",
+        "request": {  
+            "documento":8021,
+            "nombre":"Fabio",
+            "tipoDocumento":1,
+            "email":"fa9@gmail.com",
+            "celular":3058,
+            "password":"mypass",
+            "usuarioN":"Fatobon"     
+         },
+         "response": {
+            "response": {
+              "statusCode": 200,
+              "statusDescription": "Usuario creado correctamente",
+              "detail": {
+                "usuario": "Fatobon"
+              },
+              "response": {
+                "nUsuario": {
+                  "tipoDocumento": 1,
+                  "documento": 8021,
+                  "nombre": "Fabio",
+                  "email": "fa9@gmail.com",
+                  "celular": 3058,
+                  "password": "$2b$10$eEeF8TAYjBl9M0o0a1eoKOdb7yttmvxdnktzuxwwF2Wt.mbh4hhVW",
+                  "usuario": "Fatobon",
+                  "activo": 1
+                }
+              }
+            }
+          }
+    },
+
+    "login":{
+      "url":"http://localhost:3301/gveterinaria/login/login",
+        "request":{
+            "password":"mypass#",
+            "usuarioN":"Fatobon"
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Login success",
+            "detail": {
+              "usuario": "Fatobon",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjgwMjEwODg2LCJuYW1lIjoiRmF0b2JvbiIsImlhdCI6MTY0NzcyOTgwNCwiZXhwIjoxNjQ3NzgwMjA0fQ.wvvmIn_G6cImSUVThd1uPp-6Uem2_8UIUT2w0ID8emc"
+            }
+          }
+        }
+    },
+
+    "consultaUsuario":{
+      "url":"http://localhost:3301/gveterinaria/login/find",
+      "request":{
+          "documento":8026
+      },
+    "tokenRequire":true,
+    "response":{
+      "response": {
+        "statusCode": 200,
+        "statusDescription": "Usuario encontrado",
+        "detail": {
+          "resultado": [
+            {
+              "documento": 8022,
+              "nombre": "Fabio",
+              "tipoDocumento": 1,
+              "celular": 30588,
+              "email": "fa9@gmail.com",
+              "password": "$2b$10$eEeF8TAYjBl9M0o0a1eoKOdb7yttmvxdnktzuxwwF2Wt.mbh4hhVW",
+              "usuario": "Fatobon",
+              "activo": 1
+            }
+          ]
+        }
+      }
+    }
+    },
+
+    "deleteUser":{
+      "url":"http://localhost:3301/gveterinaria/login/delete",
+      "request":{
+        "documento":806
+    },
+    "tokenRequire":true,
+    "response":{
+      "response": {
+        "statusCode": 409,
+        "statusDescription": "Usuario no existe",
+        "detail": {}
+      }
+    }
+    },
+
+    "updateUser":{
+      "url":"http://localhost:3301/gveterinaria/login/update",
+      "request":{
+        "documento":8977,
+        "nombre":"Fabio Andres Tobon",
+        "tipoDocumento":1,
+        "email":"f69@gmail.com",
+        "celular":305888,
+        "password":"newpass#",
+        "usuarioN":"Fatobon",
+        "activo":1
+        
+    },
+    "tokenRequire":true,
+    "response":{
+      "response": {
+        "statusCode": 200,
+        "statusDescription": "Usuario actualizado correctamente",
+        "detail": {
+          "userUpdate": {
+            "tipoDocumento": 1,
+            "documento": 8086,
+            "nombre": "Fabio Andres Tobon",
+            "email": "fa69@gmail.com",
+            "celular": 30588,
+            "password": "$2b$10$8JYLkUorBbi0yhNATqrG.elDdHQpNH0MGC5ftNBaW/jMGsYvJh/ce",
+            "usuario": "Fatobon",
+            "activo": 1
+          }
+        }
+      }
+    }
+    }
+
+}
