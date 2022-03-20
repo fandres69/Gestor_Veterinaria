@@ -7,7 +7,7 @@ const router=Router();
 
 
 /**Petición para creación de un usuario */
-router.post('/login/newUser',
+router.post('/newUser',
 [
     check('documento','Campo documento requerido entre 6 y 12 números').not().isEmpty().isNumeric().isLength({min:6,max:12}),
     check('nombre','Campo obligatorio de mas de 3 caracteres').not().isEmpty().isLength({min:3,max:250}),
@@ -21,7 +21,7 @@ router.post('/login/newUser',
 
 
 /**Petición para consulta de un usuario */
-router.post('/login/login',
+router.post('/login',
 [
     check('password','Campo Obligatorio de mas de 6 caracteres, alfanumérica con mínimo una mayúscula y carácter especial').not().isEmpty().isLength({min:8}).isStrongPassword(),
     check('usuarioN','Campo usuarioN requerido').not().isEmpty().isLength({max:12}),
@@ -30,19 +30,22 @@ router.post('/login/login',
 loginUser
 );
 
-router.get('/login/find',[
+/**Petición búsqueda un usuario */
+router.get('/find',[
     check('documento','Campo documento requerido entre 6 y 12 números').not().isEmpty().isNumeric().isLength({min:6,max:12}),
     validationCamps,
     ValidateJWT
 ],qUser);
 
-router.post('/login/delete',[
+/**Petición eliminación usuario */
+router.post('/delete',[
     check('documento','Campo documento requerido entre 6 y 12 números').not().isEmpty().isNumeric().isLength({min:6,max:12}),
     validationCamps,
     ValidateJWT
 ],dUsuario);
 
-router.put('/login/update',
+/**Petición actualización usuario */
+router.put('/update',
 [
     check('nombre','Campo obligatorio de mas de 3 caracteres').not().isEmpty().isLength({min:3,max:250}),
     check('tipoDocumento','Campo requerido').not().isEmpty(),
@@ -54,5 +57,6 @@ router.put('/login/update',
     check('documento','Campo documento requerido entre 6 y 12 números').not().isEmpty().isNumeric().isLength({min:6,max:12}),
     validationCamps,
     ValidateJWT
-],uUser)
+],uUser);
+
 module.exports =router;

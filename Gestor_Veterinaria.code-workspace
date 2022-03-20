@@ -4,8 +4,11 @@
 			"path": "."
 		},
 		{
+			"path": "./json"
+		},
+		{
 			"path": "./Backend"
-		}
+		},
 	],
 	"settings": {
 		"files.exclude": {
@@ -14,8 +17,21 @@
 		},
 		"cSpell.language": "en,es",
 		"cSpell.words": [
+			"APIPORT",
+			"DBDATABASE",
+			"DBHOST",
+			"DBPASSWORD",
+			"DBUSER",
+			"descripcion",
+			"endregion",
 			"gveterinaria",
-			"Mapea"
+			"idproductos",
+			"Mapea",
+			"Maper",
+			"mapers",
+			"middlewares",
+			"pelanas",
+			"presentacion"
 		]
 	}
 }

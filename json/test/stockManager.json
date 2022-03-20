@@ -1,0 +1,222 @@
+{
+    "Productos":{
+        "CreateProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/newProduct",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "producto":"Peluche abeja",
+                "ciudad":11001,
+                "presentacion":"Peluche mediano 1 X paquete",
+                "unEmpaque":1,
+                "descripcion":"Peluche abeja tamaño mediano"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Producto creado correctamente",
+                    "detail": {
+                      "myProduct": {
+                        "producto": "Peluche abeja",
+                        "ciudad": 11001,
+                        "presentacion": "Peluche mediano 1 X paquete",
+                        "unEmpaque": 1,
+                        "descripcion": "Peluche abeja tamaño mediano"
+                      }
+                    }
+                  }
+            }
+        },
+
+        "FindProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/findProduct",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "idProductos":11001
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Consulta exitosa",
+                    "detail": {
+                      "productQ": [
+                        {
+                          "idproductos": 2,
+                          "producto": "Peluche abeja",
+                          "ciudad": 11001,
+                          "presentacion": "Peluche mediano 1 X paquete",
+                          "unEmpaque": 1,
+                          "descripcion": "Peluche abeja tamaño mediano"
+                        }
+                      ]
+                    }
+                  }
+            }
+        },
+
+        "UpdateProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/updateProduct",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "producto":"Peluche abeja",
+                "ciudad":11001,
+                "presentacion":"Peluche mediano",
+                "unEmpaque":2,
+                "descripcion":"Peluche abeja tamaño mediano pelanas",
+                "idProductos":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Producto actualizado correctamente",
+                    "detail": {
+                      "myProduct": {
+                        "idProductos": 1,
+                        "producto": "Peluche abeja",
+                        "ciudad": 11001,
+                        "presentacion": "Peluche mediano",
+                        "unEmpaque": 2,
+                        "descripcion": "Peluche abeja tamaño mediano pelanas"
+                      }
+                    }
+                  }
+            }
+        },
+
+        "DeleteProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/findProduct",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "idProductos":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "El producto fue eliminado",
+                    "detail": {
+                      "idProductos": 1
+                    }
+                  }
+            }
+        }
+    },
+
+    "Stock":{
+        "CreateStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/newStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "producto":2,
+            "stock":10,
+            "stockMin":3,
+            "stockMax":12,
+            "PrecioVenta":5400,
+            "impuesto":0.19,
+            "descuento":0
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario de producto creado correctamente",
+            "detail": {
+              "mStock": {
+                "idInventario": 0,
+                "producto": 2,
+                "stock": 10,
+                "stockMin": 0,
+                "stockMax": 0,
+                "PrecioVenta": 0,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+        },
+
+        "UpdateStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/updateStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "producto":2,
+            "stock":10,
+            "stockMin":3,
+            "stockMax":12,
+            "PrecioVenta":5400,
+            "impuesto":0.19,
+            "descuento":0.2,
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario actualizado correctamente",
+            "detail": {
+              "StockUPdated": {
+                "idInventario": 1,
+                "producto": 2,
+                "stock": 10,
+                "stockMin": 0,
+                "stockMax": 0,
+                "PrecioVenta": 0,
+                "impuesto": 0.19,
+                "descuento": 0.2
+              }
+            }
+          }
+        }
+        },
+
+        "FindStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/findStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario encontrado ",
+            "detail": {
+              "StockExistente": [
+                {
+                  "idInventario": 1,
+                  "producto": 2,
+                  "stock": 10,
+                  "stockMin": 0,
+                  "stockMax": 0,
+                  "PrecioVenta": 0,
+                  "impuesto": 0.19,
+                  "descuento": 0
+                }
+              ]
+            }
+          }
+        }
+        },
+
+        "DeleteStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/deleteStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "El inventario fue eliminado",
+            "detail": {
+              "idInventario": 1
+            }
+          }
+        }
+        }
+    }
+}

@@ -3,27 +3,21 @@ require('dotenv').config();
 /**Servidor web */
 const Api=express();
 
+/**Puerto de escucha de la aplicación */
+const port=process.env.APIPORT||3301;
 
-// Api.get('/gveterinaria',(req,res)=>{
-//     res.status(200).send({
-//         "code":200,
-//         "status":"ok",
-//         "message":"run server"
-//     })
-// })
-
-/**Puerto de escucha de la aplicacion */
-//const port=process.env.APIPORT;
-const port=3301;
-
-/**Se configura middelwere para obtener informacion de body de 
+/**Se configura middleware para obtener información de body de 
  * las peticiones al Api
  */
 Api.use(express.json())
 
-Api.use('/gveterinaria',require('./routes/auth'));
+/**Configuración route modulo Login */
+Api.use('/gveterinaria/login',require('./routes/auth'));
 
+/**Configuración route modulo stockManager */
+Api.use('/gveterinaria/stockManager',require('./routes/stockManager'));
 
+/**Api start */
 Api.listen(port,()=>{
-    console.log(`Api is runin in port: ${port}`);
+    console.log(`Api is running in port: ${port}`);
 })
