@@ -6,7 +6,8 @@ const {Router} =require('express');
 const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
-const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock}=require('../controller/stockManagerController');
+const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock,
+    createServiceV,readServiceV,updateServiceV,deleteServiceV}=require('../controller/stockManagerController');
 const router=Router();
 
 //#region Productos
@@ -95,10 +96,42 @@ router.post('/deleteStock',[
 //#endregion
 
 //#region Servicios
-router.post('/newService');
-router.post('/updateService');
-router.post('/findService');
-router.post('/deleteService');
+/**Ruta creación servicio */
+router.post('/newService',[
+    check('servicio','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
+    check('descripcion','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
+    check('precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('impuesto','Campo requerido').isNumeric(),
+    check('descuento','Campo requerido').isNumeric(),
+    validationCamps,
+    ValidateJWT
+],createServiceV);
+
+/**Ruta actualización servicio */
+router.put('/updateService',[
+    check('servicio','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
+    check('descripcion','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
+    check('precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('impuesto','Campo requerido').isNumeric(),
+    check('descuento','Campo requerido').isNumeric(),
+    check('idServicios','Campo requerido').isNumeric(),
+    validationCamps,
+    ValidateJWT
+],updateServiceV);
+
+/**Ruta consulta servicios */
+router.get('/findService',[
+    check('idServicios','Campo requerido').isNumeric(),
+    validationCamps,
+    ValidateJWT 
+],readServiceV);
+
+/**Ruta borrado servicios */
+router.post('/deleteService',[
+    check('idServicios','Campo requerido').isNumeric(),
+    validationCamps,
+    ValidateJWT
+],deleteServiceV);
 
 //#endregion
 

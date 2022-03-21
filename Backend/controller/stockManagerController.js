@@ -4,16 +4,19 @@
 
 const {response}=require('express');
 const {pool}=require('../database/database');
-const {StatusCodes}= require('http-status-codes')
-const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode')
+const {StatusCodes}= require('http-status-codes');
+const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
 const {getProductForCreate,getProductForUpdate}=require('../mapers/productMaper');
 const {qProduct,cProducto,rProducto,uProducto,dProducto}=require('../models/producto');
-const {getStockForCreate,getStockForUpdate,getStockFromQuery}=require('../mapers/stockMaper')
+const {getStockForCreate,getStockForUpdate,getStockFromQuery}=require('../mapers/stockMaper');
 const {cInventario,rInventario,uInventario,dInventario,qInventario}=require('../models/stock');
+const {getServiceForCreate,getServiceForUpdate,getServiceFromQuery}=require('../mapers/serviciosMaper');
+const { qService, cService, rService, uService, dService } = require('../models/serviceV');
+
 
 /**
  * Crea un producto en el sistema
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */
@@ -126,7 +129,7 @@ const deleteProduct=async(req,res=response)=>{
 
 /**
  * Crea un stock en la base de datos (inventario)
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */
@@ -182,7 +185,7 @@ const readStock=async(req,res=response)=>{
 
 /**
  * Actualiza un inventario
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */
@@ -212,7 +215,7 @@ const updateStock=async(req,res=response)=>{
 
 /**
  * Elimina un inventario de la DB
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */
@@ -237,10 +240,117 @@ const deleteStock=async(req,res=response)=>{
     }
 }
 
-const createServiceV=async(req,res=response)=>{}
-const readServiceV=async(req,res=response)=>{}
-const updateServiceV=async(req,res=response)=>{}
-const deleteServiceV=async(req,res=response)=>{}
+/**
+ * Crea un servicio en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const createServiceV=async(req,res=response)=>{
+    try {
+        let rta;
+        const newService=getServiceForCreate(req);
+        let cmd=`${qService} WHERE servicio = '${newService.servicio}';`;
+        const serviceExited=await pool.query(cmd);
+        if(serviceExited.length>0){
+            rta=getResponseConflict("El servicio a crear ya existe",{serviceExited});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});     
+        }
+        await pool.query(cService,[newService.servicio,newService.descripcion,newService.precio,newService.impuesto,newService.descuento]);
+        rta=getResponseOk("Servicio creado correctamente",{newService});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al crear servicio");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+/**
+ * Consulta un servicio en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const readServiceV=async(req,res=response)=>{
+    try {
+        let rta;
+        const {idServicios}=req.body;
+        const serviceExisted=await pool.query(rService,[idServicios]);
+        if(serviceExisted.length===0){
+            rta=getResponseConflict("El servicio no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        const serviceQuery=getServiceFromQuery(serviceExisted);
+        rta=getResponseOk("Servicio encontrado",{serviceQuery});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al consultar servicio");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+   
+}
+
+/**
+ * Actualiza un servicio en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const updateServiceV=async(req,res=response)=>{
+    try {
+        let rta;
+        const serviceUpdate=getServiceForUpdate(req);
+        const {idServicios}=req.body;
+        const serviceExisted=await pool.query(rService,[idServicios]);
+        if(serviceExisted.length===0){
+            rta=getResponseConflict("El servicio no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(uService,[serviceUpdate.servicio,serviceUpdate.descripcion,serviceUpdate.precio,serviceUpdate.impuesto,serviceUpdate.descuento,serviceUpdate.idServicios]);
+        rta=getResponseOk("Servicio actualizado correctamente",{serviceUpdate});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al actualizar el servicio");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+/**
+ * Elimina un servicio de la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const deleteServiceV=async(req,res=response)=>{
+    try {
+        let rta;
+        const {idServicios}=req.body;
+        const serviceExisted=await pool.query(rService,[idServicios]);
+        if(serviceExisted.length===0){
+            rta=getResponseConflict("El servicio no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(dService,[idServicios]);
+        rta=getResponseOk("Servicio eliminado correctamente",{idServicios});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al eliminar el servicio");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+
+}
 
 module.exports={
     createProduct,
@@ -250,5 +360,9 @@ module.exports={
     createStock,
     readStock,
     updateStock,
-    deleteStock
+    deleteStock,
+    createServiceV,
+    readServiceV,
+    updateServiceV,
+    deleteServiceV
 }

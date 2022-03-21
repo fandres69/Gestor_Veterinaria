@@ -10,7 +10,7 @@ const { generateJWT } = require('../helpers/JWT');
 
 /**
  * Crea un usuario en el sistema
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns Json
  */
@@ -56,7 +56,7 @@ const creareUser=async(req,res=response)=>{
 
 /**
  * Función que realiza login en la DB
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */

@@ -3,7 +3,7 @@
 /**
  * Modelo tabla gveterinaria.servicios
  */
-const servicios={
+const serviciosV={
     idServicios:0,
     servicio:"",
     descripcion:"",
@@ -49,7 +49,7 @@ const dService='DELETE FROM gveterinaria.servicios WHERE idServicios=?;';
 /**
  * Consulta genérica servicio
  */
-const qService='gveterinaria.servicios';
+const qService='SELECT * FROM gveterinaria.servicios';
 
 module.exports={
     cService,
@@ -57,5 +57,5 @@ module.exports={
     uService,
     dService,
     qService,
-    servicios
+    serviciosV
 }

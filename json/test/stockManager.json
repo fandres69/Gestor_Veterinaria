@@ -218,5 +218,111 @@
           }
         }
         }
+    },
+
+    "services":{
+      "createService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/newService",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "servicio":"Baño perro",
+          "descripcion":"Baño perro incluye corte de uñas",
+          "precio":75000,
+          "impuesto":0.19,
+          "descuento":0
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio creado correctamente",
+            "detail": {
+              "newService": {
+                "idServicios": 0,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 75000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "findService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/findService",
+        "method":"get",
+        "requireToken":true,
+        "request":{
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio encontrado",
+            "detail": {
+              "serviceQuery": {
+                "idServicios": 1,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 78000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "updateService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/updateService",
+        "method":"put",
+        "requireToken":true,
+        "request":{
+          "servicio":"Baño perro",
+          "descripcion":"Baño perro incluye corte de uñas",
+          "precio":78000,
+          "impuesto":0.19,
+          "descuento":0,
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio actualizado correctamente",
+            "detail": {
+              "serviceUpdate": {
+                "idServicios": 1,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 78000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "deleteService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/newStock",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio eliminado correctamente",
+            "detail": {
+              "idServicios": 1
+            }
+          }
+        }
+      }
     }
+      
+    
 }

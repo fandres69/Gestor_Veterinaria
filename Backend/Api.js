@@ -17,6 +17,8 @@ Api.use('/gveterinaria/login',require('./routes/auth'));
 /**Configuración route modulo stockManager */
 Api.use('/gveterinaria/stockManager',require('./routes/stockManager'));
 
+Api.use('/gveterinaria/salesManager',require('./routes/salesManager'));
+
 /**Api start */
 Api.listen(port,()=>{
     console.log(`Api is running in port: ${port}`);
