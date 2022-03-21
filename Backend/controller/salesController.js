@@ -1,12 +1,12 @@
 /**
- * Controlado modulo ventas 
+ * Controlador modulo ventas 
  */
  const {response}=require('express');
  const {pool}=require('../database/database');
  const {StatusCodes}= require('http-status-codes')
  const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
- const {cSalesOrder,rSalesOrder,uSalesOrder,dSalesOrder,
-        cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail}=require('../models/sales');
+ const {cSalesOrder,rSalesOrder,uSalesOrder,dSalesOrder}=require('../models/pedidos');
+ const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail}=require('../models/detallePedido');
  const {getSalesOrdForCreate,getSalesOrdForUpdate,getSalesOrdFromQuery,
         getSalesDetailForCreate,getSalesDetailForUpdate,getSalesDetailFromQuery}=require('../mapers/salesMaper');
  

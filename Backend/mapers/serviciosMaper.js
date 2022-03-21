@@ -1,6 +1,6 @@
 /**Mapea las peticiones  de creación y actualización de servicios*/
 
-const {serviciosV}=require('../models/serviceV');
+const {serviciosV}=require('../models/servicios');
 
 /**
  * Retorna un modelo de servicio para creación

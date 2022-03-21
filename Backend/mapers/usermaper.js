@@ -1,6 +1,6 @@
 /**Mapea las peticiones  de creación y actualización de usuario*/
 
-const {usuario}= require('../models/usuario');
+const {usuario}= require('../models/usuarios');
 
 
 /**

@@ -1,7 +1,8 @@
 /**Mapea las peticiones  de creación y actualización de producto*/
 
 
-const {salesOrder,salesDetail}=require('../models/sales');
+const {salesOrder}=require('../models/pedidos');
+const {salesDetail}=require('../models/detallePedido');
 
 
 //#region salesOrder (Pedidos)

@@ -55,6 +55,7 @@
 
 //#region SalesOrderDetail (Detalle pedido)
 
+/**Ruta para creación de detalle de pedidos */
 router.post('/createOrderDetail',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
@@ -71,14 +72,14 @@ router.post('/createOrderDetail',[
     ValidateJWT
 ],createDetailPedido);
 
-
+/**Ruta para la consulta de detalle de pedidos */
 router.get('/findOrderDetail',[
     check('iddetallePedido','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],readDetailPedido);
 
-
+/**Ruta para la actualización de detalle de pedidos */
 router.put('/updateOrderDetail',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
@@ -96,7 +97,7 @@ router.put('/updateOrderDetail',[
     ValidateJWT
 ],updateDetailPedido);
 
-
+/**Ruta para la eliminación de detalle de pedidos */
 router.post('/deleteOrderDetail',[
     check('iddetallePedido','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,

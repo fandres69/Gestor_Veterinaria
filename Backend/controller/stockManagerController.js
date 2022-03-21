@@ -7,11 +7,11 @@ const {pool}=require('../database/database');
 const {StatusCodes}= require('http-status-codes');
 const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
 const {getProductForCreate,getProductForUpdate}=require('../mapers/productMaper');
-const {qProduct,cProducto,rProducto,uProducto,dProducto}=require('../models/producto');
+const {qProduct,cProducto,rProducto,uProducto,dProducto}=require('../models/productos');
 const {getStockForCreate,getStockForUpdate,getStockFromQuery}=require('../mapers/stockMaper');
-const {cInventario,rInventario,uInventario,dInventario,qInventario}=require('../models/stock');
+const {cInventario,rInventario,uInventario,dInventario,qInventario}=require('../models/inventario');
 const {getServiceForCreate,getServiceForUpdate,getServiceFromQuery}=require('../mapers/serviciosMaper');
-const { qService, cService, rService, uService, dService } = require('../models/serviceV');
+const { qService, cService, rService, uService, dService } = require('../models/servicios');
 
 
 /**

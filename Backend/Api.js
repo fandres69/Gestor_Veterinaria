@@ -17,7 +17,11 @@ Api.use('/gveterinaria/login',require('./routes/auth'));
 /**Configuración route modulo stockManager */
 Api.use('/gveterinaria/stockManager',require('./routes/stockManager'));
 
+/**Configuración route modulo Ventas */
 Api.use('/gveterinaria/salesManager',require('./routes/salesManager'));
+
+/**Configuración route modulo datos maestro */
+Api.use('/gveterinaria/dataMaster',require('./routes/dataMasterManager'));
 
 /**Api start */
 Api.listen(port,()=>{

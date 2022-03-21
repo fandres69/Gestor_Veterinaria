@@ -1,6 +1,6 @@
 /**Mapea las peticiones  de creación y actualización de stock (Inventario)*/
 
-const {stockInv}=require('../models/stock');
+const {stockInv}=require('../models/inventario');
 
 /**
  * Retorna el modelo de stock para creación

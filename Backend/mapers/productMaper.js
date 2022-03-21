@@ -1,6 +1,6 @@
 /**Mapea las peticiones  de creación y actualización de producto*/
 
-const {Tproducto}=require('../models/producto');
+const {Tproducto}=require('../models/productos');
 
 /**
  * Retorna el modelo de producto para creación

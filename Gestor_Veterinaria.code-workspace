@@ -19,6 +19,7 @@
 		"cSpell.words": [
 			"anio",
 			"APIPORT",
+			"codigo",
 			"DBDATABASE",
 			"DBHOST",
 			"DBPASSWORD",
@@ -30,14 +31,20 @@
 			"endregion",
 			"gveterinaria",
 			"iddetalle",
+			"iddevoluciones",
+			"idingresos",
+			"idmascotas",
 			"idpedidos",
 			"idproductos",
+			"idtipo",
+			"ingresosinventario",
 			"Mapea",
 			"Maper",
 			"mapers",
 			"middlewares",
 			"pelanas",
-			"presentacion"
+			"presentacion",
+			"tipodocumento"
 		]
 	}
 }
