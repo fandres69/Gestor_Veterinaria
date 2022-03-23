@@ -23,6 +23,8 @@ Api.use('/gveterinaria/salesManager',require('./routes/salesManager'));
 /**Configuración route modulo datos maestro */
 Api.use('/gveterinaria/dataMaster',require('./routes/dataMasterManager'));
 
+Api.use('/gveterinaria/clientManager',require('./routes/clientManager'));
+
 /**Api start */
 Api.listen(port,()=>{
     console.log(`Api is running in port: ${port}`);

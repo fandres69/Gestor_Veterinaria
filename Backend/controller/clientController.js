@@ -4,7 +4,8 @@ const {response}=require('express');
 const {pool}=require('../database/database');
 const {StatusCodes}= require('http-status-codes')
 const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
-const {cClientes,rClientes,uClientes,dClientes,cMascotas,rMascotas,uMascotas,dMascotas}=require('../models/clientes');
+const {cClientes,rClientes,uClientes,dClientes}=require('../models/clientes');
+const {cMascotas,rMascotas,uMascotas,dMascotas}=require('../models/mascotas');
 const {getClienteFromQuery,getClienteFromRequest,getMascotaFromRequest,getMascotaFromQuery}=require('../mapers/clientMaper');
 
 /**
@@ -227,6 +228,7 @@ const deletePet=async(req,res=response)=>{
         });
     }
 }
+
 
 
 module.exports={

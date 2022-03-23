@@ -7,7 +7,8 @@ const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
 const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock,
-    createServiceV,readServiceV,updateServiceV,deleteServiceV}=require('../controller/stockManagerController');
+    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn
+}=require('../controller/stockManagerController');
 const router=Router();
 
 //#region Productos
@@ -132,6 +133,50 @@ router.post('/deleteService',[
     validationCamps,
     ValidateJWT
 ],deleteServiceV);
+
+//#endregion
+
+//#region Ingresos de inventario
+
+/**Ruta para creación de un ingresa de inventario */
+router.post('/createStockIn',[
+    check('producto','Campo requerido').not().isEmpty().isNumeric(),
+    check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
+    check('Precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('dia','Campo requerido').not().isEmpty().isNumeric(),
+    check('mes','Campo requerido').not().isEmpty().isNumeric(),
+    check('anio','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],createStockIn);
+
+/**Ruta para consulta de un ingresa de inventario */
+router.get('/findStockIn',[
+    check('idingresosInventario','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],readStockIn);
+
+/**Ruta para actualización de un ingresa de inventario */
+router.put('/updateStockIn',[
+    check('producto','Campo requerido').not().isEmpty().isNumeric(),
+    check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
+    check('Precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('dia','Campo requerido').not().isEmpty().isNumeric(),
+    check('mes','Campo requerido').not().isEmpty().isNumeric(),
+    check('anio','Campo requerido').not().isEmpty().isNumeric(),
+    check('idingresosInventario','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],updateStockIn);
+
+/**Ruta para eliminación de un ingresa de inventario */
+router.post('/deleteStockIn',[
+    check('idingresosInventario','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],deleteStockIn);
+
 
 //#endregion
 

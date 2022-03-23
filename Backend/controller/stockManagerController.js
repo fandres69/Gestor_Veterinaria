@@ -12,8 +12,10 @@ const {getStockForCreate,getStockForUpdate,getStockFromQuery}=require('../mapers
 const {cInventario,rInventario,uInventario,dInventario,qInventario}=require('../models/inventario');
 const {getServiceForCreate,getServiceForUpdate,getServiceFromQuery}=require('../mapers/serviciosMaper');
 const { qService, cService, rService, uService, dService } = require('../models/servicios');
+const {cIngresosInventario,rIngresosInventario,uIngresosInventario,dIngresosInventario}=require('../models/ingresosinventario');
+const {getStockInFromQuery,getStockInFromRequest}=require('../mapers/stockInMaper');
 
-
+//#region Producto
 /**
  * Crea un producto en el sistema
  * @param {request} req 
@@ -126,7 +128,9 @@ const deleteProduct=async(req,res=response)=>{
     }
 }
 
+//#endregion
 
+//#region Inventario
 /**
  * Crea un stock en la base de datos (inventario)
  * @param {request} req 
@@ -240,6 +244,10 @@ const deleteStock=async(req,res=response)=>{
     }
 }
 
+//#endregion 
+
+//#region Servicios
+
 /**
  * Crea un servicio en la DB
  * @param {request} req 
@@ -352,6 +360,120 @@ const deleteServiceV=async(req,res=response)=>{
 
 }
 
+//#endregion
+
+//#region Ingresos inventario
+
+/**
+ * Crea una entrada de inventario en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const createStockIn=async(req,res=response)=>{
+    try {
+        let rta;
+        const newStockIn=getStockInFromRequest(req);
+        await pool.query(cIngresosInventario,[newStockIn.producto,newStockIn.cantidad,newStockIn.Precio,
+            newStockIn.dia,newStockIn.mes,newStockIn.anio]);
+        rta=getResponseOk("Entrada de inventario creada correctamente",{newStockIn});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al crear entrada de inventario");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+/**
+ * Consulta una entrada de inventario en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const readStockIn=async(req,res=response)=>{
+    try {
+        let rta;
+        const{idingresosInventario} = req.body;
+        const StockInExited=await pool.query(rIngresosInventario,[idingresosInventario]);
+        if (StockInExited.length===0) {
+            rta=getResponseConflict("El ingreso de inventario no existe",{idingresosInventario});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        const StockInFind=getStockInFromQuery(StockInExited);
+        rta=getResponseOk("Ingreso de invetario encontrado",{StockInFind});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al consultar entrada de inventario");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+/**
+ * Actualiza una entrada de inventario en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const updateStockIn=async(req,res=response)=>{
+    try {
+        let rta;
+        const stockInUpdate=getStockInFromRequest(req);
+        const{idingresosInventario} = req.body;
+        const StockInExited=await pool.query(rIngresosInventario,[idingresosInventario]);
+        if (StockInExited.length===0) {
+            rta=getResponseConflict("El ingreso de inventario no existe",{idingresosInventario});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(uIngresosInventario,[stockInUpdate.producto,stockInUpdate.cantidad,stockInUpdate.Precio
+        ,stockInUpdate.dia,stockInUpdate.mes,stockInUpdate.anio,stockInUpdate.idingresosInventario]);
+        rta=getResponseOk("Ingreso de inventario actualizado",{stockInUpdate});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al actualizar entrada de inventario");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+/**
+ * Elimina una entrada de inventario en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const deleteStockIn=async(req,res=response)=>{
+    try {
+        let rta;
+        const stockInUpdate=getStockInFromRequest(req);
+        const{idingresosInventario} = req.body;
+        const StockInExited=await pool.query(rIngresosInventario,[idingresosInventario]);
+        if (StockInExited.length===0) {
+            rta=getResponseConflict("El ingreso de inventario no existe",{idingresosInventario});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(dIngresosInventario,[idingresosInventario]);
+        rta=getResponseOk("Ingreso de inventario eliminado",{idingresosInventario});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al eliminar entrada de inventario");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+
+//#endregion
+
 module.exports={
     createProduct,
     readProduct,
@@ -364,5 +486,9 @@ module.exports={
     createServiceV,
     readServiceV,
     updateServiceV,
-    deleteServiceV
+    deleteServiceV,
+    createStockIn,
+    readStockIn,
+    updateStockIn,
+    deleteStockIn
 }

@@ -3,7 +3,7 @@
 
 const {salesOrder}=require('../models/pedidos');
 const {salesDetail}=require('../models/detallePedido');
-
+const {devoluciones}=require('../models/devoluciones');
 
 //#region salesOrder (Pedidos)
 
@@ -129,11 +129,52 @@ const getSalesDetailForUpdate=(req)=>{
 
 //#endregion
 
+//#region Devoluciones
+
+/**
+ * Retorna modelo de devoluciones a partir de un request
+ * @param {request} req 
+ * @returns Object
+ */
+const getDevolucionesFromRequest=(req)=>{
+    const nDev={...devoluciones};
+    const {iddevoluciones,pedido,producto,cantidad,precio,impuesto,observaciones}=req.body;
+    nDev.iddevoluciones=iddevoluciones;
+    nDev.pedido=pedido;
+    nDev.producto=producto;
+    nDev.cantidad=cantidad;
+    nDev.precio=precio;
+    nDev.impuesto=impuesto;
+    nDev.observaciones=observaciones;
+    return nDev;
+}
+
+/**
+ * Retorna modelo de devoluciones a partir del resultado de una consulta
+ * @param {query} result 
+ * @returns Object
+ */
+ const getDevolucionesFromQuery=(result)=>{
+    const nDev={...devoluciones};
+    nDev.iddevoluciones=result[0].iddevoluciones;
+    nDev.pedido=result[0].pedido;
+    nDev.producto=result[0].producto;
+    nDev.cantidad=result[0].cantidad;
+    nDev.precio=result[0].precio;
+    nDev.impuesto=result[0].impuesto;
+    nDev.observaciones=result[0].observaciones;
+    return nDev;
+}
+
+//#endregion
+
 module.exports={
     getSalesOrdForCreate,
     getSalesOrdForUpdate,
     getSalesOrdFromQuery,
     getSalesDetailForCreate,
     getSalesDetailForUpdate,
-    getSalesDetailFromQuery
+    getSalesDetailFromQuery,
+    getDevolucionesFromRequest,
+    getDevolucionesFromQuery
 }

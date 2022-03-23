@@ -8,7 +8,8 @@
  const { validationCamps } = require('../middlewares/validations-camps');
  const { ValidateJWT } = require('../middlewares/validation-jwt');
  const {createPedido,readPedido,updatePedido,deletePedido,createDetailPedido, readDetailPedido,
-     updateDetailPedido,deleteDetailPedido}=require('../controller/salesController');
+     updateDetailPedido,deleteDetailPedido, createDevolution,
+    updateDevolution,deleteDevolution,readDevolution}=require('../controller/salesController');
  const router=Router();
 
  //#region salesOrder (Pedido)
@@ -105,4 +106,49 @@ router.post('/deleteOrderDetail',[
 ],deleteDetailPedido);
 
 //#endregion
+
+//#region Devoluciones
+
+/**Ruta creación devolucion */
+router.post('/createDevolution',[
+    check('pedido','Campo requerido').not().isEmpty().isNumeric(),
+    check('producto','Campo requerido').not().isEmpty().isNumeric(),
+    check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
+    check('precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('impuesto','Campo requerido').not().isEmpty().isNumeric(),
+    check('observaciones','Campo requerido').not().isEmpty().isLength({min:5,max:600}),
+    validationCamps,
+    ValidateJWT
+],createDevolution);
+
+/**Ruta consulta devolucion */
+router.get('/findDevolution',[
+    check('iddevoluciones','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],readDevolution);
+
+/**Ruta actualización devolucion */
+router.put('/updateDevolution',[
+    check('pedido','Campo requerido').not().isEmpty().isNumeric(),
+    check('producto','Campo requerido').not().isEmpty().isNumeric(),
+    check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
+    check('precio','Campo requerido').not().isEmpty().isNumeric(),
+    check('impuesto','Campo requerido').not().isEmpty().isNumeric(),
+    check('observaciones','Campo requerido').not().isEmpty().isLength({min:5,max:600}),
+    check('iddevoluciones','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],updateDevolution);
+
+/**Ruta eliminación devolucion */
+router.post('/deleteDevolution',[
+    check('iddevoluciones','Campo requerido').not().isEmpty().isNumeric(),
+    validationCamps,
+    ValidateJWT
+],deleteDevolution);
+
+//#endregion
+
+
 module.exports =router;

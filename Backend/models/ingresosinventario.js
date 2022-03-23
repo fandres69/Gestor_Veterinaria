@@ -7,7 +7,10 @@ const ingresosinventario={
     idingresosInventario:0,
     producto:0,
     cantidad:0,
-    Precio:0.0
+    Precio:0.0,
+    dia:0,
+    mes:0,
+    anio:0
 }
 
 /**
@@ -16,7 +19,7 @@ const ingresosinventario={
  * @param cantidad
  * @param Precio
  */
-const cIngresosInventario='INSERT INTO gveterinaria.ingresosinventario (producto,cantidad,Precio) VALUES (?,?,?);';
+const cIngresosInventario='INSERT INTO gveterinaria.ingresosinventario (producto,cantidad,Precio,dia,mes,anio) VALUES (?,?,?,?,?,?);';
 
 /**
  * Consulta un registro ingresosinventario en la DB
@@ -31,7 +34,7 @@ const rIngresosInventario='SELECT * FROM gveterinaria.ingresosinventario WHERE i
  * @param Precio
  * @param idingresosInventario
  */
-const uIngresosInventario='UPDATE gveterinaria.ingresosinventario SET producto=?,cantidad=?,Precio=? WHERE idingresosInventario=?;';
+const uIngresosInventario='UPDATE gveterinaria.ingresosinventario SET producto=?,cantidad=?,Precio=?,dia=?,mes=?,anio=? WHERE idingresosInventario=?;';
 
 /**
  * Elimina un registro ingresosinventario en la DB

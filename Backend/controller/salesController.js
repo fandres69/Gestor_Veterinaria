@@ -9,7 +9,10 @@
  const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail}=require('../models/detallePedido');
  const {getSalesOrdForCreate,getSalesOrdForUpdate,getSalesOrdFromQuery,
         getSalesDetailForCreate,getSalesDetailForUpdate,getSalesDetailFromQuery}=require('../mapers/salesMaper');
- 
+const {cDevoluciones,rDevoluciones,uDevoluciones,dDevoluciones,qDevoluciones}=require('../models/devoluciones');
+const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/salesMaper');
+
+//#region Pedidos
 
  /**
   * Crea un pedido en la DB
@@ -116,6 +119,10 @@
      }
  }
 
+
+ //#endregion
+
+ //#region Detalle pedido
  /**
   * Crea un detalle de pedido en la DB  
   * @param {request} req 
@@ -228,6 +235,129 @@ const deleteDetailPedido=async(req,res=response)=>{
     }
 }
  
+//#endregion
+
+//#region  Devoluciones
+
+/**
+ * Crea una devolución en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const createDevolution=async(req,res=response)=>{
+    try {
+        let rta;
+        const newDevolucion=getDevolucionesFromRequest(req);
+        const {producto,precio}=req.body;
+        let cmd=`${qDevoluciones} WHERE producto=${producto} AND precio=${precio};`;
+        const devolucionExisted=await pool.query(cmd);
+        if (devolucionExisted.length>0) {
+            rta=getResponseConflict("Ya existe una devolucion del mismo producto en el mismo pedido",{producto,precio});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
+            newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones]);
+            rta=getResponseOk("Devolucion creada correctamente",{newDevolucion});
+            return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al crear devolución");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+
+/**
+ * Consulta una devolución en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const readDevolution=async(req,res=response)=>{
+    try {
+        let rta;
+        const {iddevoluciones}=req.body;
+        const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
+        if (devolucionExisted.length===0) {
+            rta=getResponseConflict("La devolucion no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        const DevolucionFind = getDevolucionesFromQuery(devolucionExisted);
+        rta=getResponseOk("Devolucion encontrada",{DevolucionFind});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al consultar devolución");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+
+/**
+ * Actualiza una devolución en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const updateDevolution=async(req,res=response)=>{
+    try {
+        let rta;
+        const DevolucionUpdate=getDevolucionesFromRequest(req);
+        const {iddevoluciones}=req.body;
+        const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
+        if (devolucionExisted.length===0) {
+            rta=getResponseConflict("La devolucion no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
+            DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,DevolucionUpdate.iddevoluciones]);
+        rta=getResponseOk("Devolucion actualizada correctamente",{DevolucionUpdate});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al actualizar devolución");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+
+/**
+ * Elimina una devolución en la DB
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const deleteDevolution=async(req,res=response)=>{
+    try {
+        let rta;
+        const {iddevoluciones}=req.body;
+        const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
+        if (devolucionExisted.length===0) {
+            rta=getResponseConflict("La devolucion no existe",{});
+            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+        }
+        await pool.query(dDevoluciones,[iddevoluciones]);
+        rta=getResponseOk("Devolucion eliminada correctamente",{iddevoluciones});
+        return res.status(StatusCodes.OK).json({"response":rta});
+    } catch (error) {
+        rta=getResponseError("Error al eliminar devolución");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":rta
+        });
+    }
+}
+
+//#endregion
+
+
  module.exports={
      createPedido,
      readPedido,
@@ -236,5 +366,9 @@ const deleteDetailPedido=async(req,res=response)=>{
      createDetailPedido,
      readDetailPedido,
      updateDetailPedido,
-     deleteDetailPedido
+     deleteDetailPedido,
+     createDevolution,
+     readDevolution,
+     updateDevolution,
+     deleteDevolution
  }

@@ -322,7 +322,113 @@
           }
         }
       }
-    }
+    },
       
+    "StockIn":{
+      "cretateStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/createStockIn",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "producto":2,
+          "cantidad":15,
+          "Precio":11800,
+          "dia":22,
+          "mes":3,
+          "anio":2022
+      
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Entrada de inventario creada correctamente",
+            "detail": {
+              "newStockIn": {
+                "producto": 2,
+                "cantidad": 15,
+                "Precio": 11800,
+                "dia": 22,
+                "mes": 3,
+                "anio": 2022
+              }
+            }
+          }
+        }
+      },
+      "findStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/findStockIn",
+        "method":"get",
+        "requireToken":true,
+        "request":{
+          "idingresosInventario":2
+        },
+        "response":{
+                    
+            "response": {
+              "statusCode": 200,
+              "statusDescription": "Ingreso de invetario encontrado",
+              "detail": {
+                "StockInFind": {
+                  "idingresosInventario": 2,
+                  "producto": 2,
+                  "cantidad": 15,
+                  "Precio": 11800,
+                  "dia": 0,
+                  "mes": 0,
+                  "anio": 0
+                }
+              }
+            }
+        }
+      },
+      "updateStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/updateStockIn",
+        "method":"put",
+        "requireToken":true,
+        "request":{
+          "producto":2,
+          "cantidad":15,
+          "Precio":11800,
+          "dia":22,
+          "mes":3,
+          "anio":2022,
+          "idingresosInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Ingreso de inventario actualizado",
+            "detail": {
+              "stockInUpdate": {
+                "idingresosInventario": 1,
+                "producto": 2,
+                "cantidad": 15,
+                "Precio": 11800,
+                "dia": 22,
+                "mes": 3,
+                "anio": 2022
+              }
+            }
+          }
+        }
+      },
+      "deleteStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/deleteStockIn",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "idingresosInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Ingreso de inventario eliminado",
+            "detail": {
+              "idingresosInventario": 1
+            }
+          }
+        }
+      }
+    }
     
 }

@@ -1,15 +1,11 @@
 {
-    "tablas_por_crear":{
-        "devoluciones":false,
-        "ingresosinventario":false
-    },
-
+ 
     "tablesScheme":{
         "ciudad":true,
         "clientes":true,
         "detallepedido":true,
-        "devoluciones":false,
-        "ingresosinventario":false,
+        "devoluciones":true,
+        "ingresosinventario":true,
         "inventario":true,
         "mascotas":true,
         "pedidos":true,
