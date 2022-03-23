@@ -1,0 +1,174 @@
+{
+    "Ciudad":{
+        "createCity":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/newCity",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "codigo":1,
+                "codigoDto":1,
+                "Ciudad":"Polombia",
+                "Departamento":"SOACHINTON"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Ciudad creada correctamente",
+                    "detail": {
+                      "newCity": {
+                        "codigo": 1,
+                        "Ciudad": "Polombia",
+                        "codigoDto": 1,
+                        "Departamento": "SOACHINTON"
+                      
+                    }
+                  }
+                }
+            }
+        },
+        "readCity":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/city",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "codigo":11001
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Ciudad encontrada",
+                    "detail": {
+                      "City": {
+                        "codigo": 11001,
+                        "Ciudad": "Bogota D.C.",
+                        "codigoDto": 11,
+                        "Departamento": "Bogota D.C. "
+                      }
+                    }
+                  }
+            }
+        },
+        "updateCity":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/updateCity",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "codigo":1,
+                "codigoDto":1,
+                "Ciudad":"Polombia",
+                "Departamento":"Soachinton DC"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Ciudad actualizada exitosamente",
+                    "detail": {
+                      "CityUpdate": {
+                        "codigo": 1,
+                        "Ciudad": "Polombia",
+                        "codigoDto": 1,
+                        "Departamento": "Soachinton DC"
+                      }
+                    }
+                  }
+            }
+        },
+        "deleteCity":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/deleteCity",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "codigo":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Ciudad eliminada correctamente",
+                    "detail": {
+                      "codigo": 1
+                    }
+                  }
+            }
+        }
+    },
+    "TipoDocumento":{
+        "createTypeDocument":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/newTypeDoc",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "tipoDocumento":"T.P."
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Tipo de documento creado correctamente",
+                    "detail": {
+                      "newTypeDocument": {
+                        "tipoDocumento": "T.P."
+                      }
+                    }
+                  }
+            }
+        },
+        "readTypeDocument":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/TypeDoc",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "idtipoDocumento":6
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Tipo de documento encontrado",
+                    "detail": {
+                      "TypeDocument": {
+                        "idtipoDocumento": 6,
+                        "tipoDocumento": "T.P."
+                      }
+                    }
+                  }
+            }
+        },
+        "updateTypeDocument":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/updateTypeDoc",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "idtipoDocumento":6,
+                "tipoDocumento":"TP. A"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Tipo de documento actualizado correctamente",
+                    "detail": {
+                      "typeDocumentUpdate": {
+                        "idtipoDocumento": 6,
+                        "tipoDocumento": "TP. A"
+                      }
+                    }
+                  }
+            }
+        },
+        "deleteTypeDocument":{
+            "url":"http://localhost:3301/gveterinaria/dataMaster/deleteCity",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "idtipoDocumento":6
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Tipo documento eliminado Correctamente",
+                    "detail": {
+                      "idtipoDocumento": 6
+                    }
+                  }
+            }
+        }
+    }
+   
+}

@@ -4,8 +4,11 @@
 			"path": "."
 		},
 		{
+			"path": "./json"
+		},
+		{
 			"path": "./Backend"
-		}
+		},
 	],
 	"settings": {
 		"files.exclude": {
@@ -14,8 +17,36 @@
 		},
 		"cSpell.language": "en,es",
 		"cSpell.words": [
+			"anio",
+			"APIPORT",
+			"codigo",
+			"DBDATABASE",
+			"DBHOST",
+			"DBPASSWORD",
+			"DBUSER",
+			"descripcion",
+			"detallepedidio",
+			"detallepedido",
+			"devolucion",
+			"Devolucion",
+			"direccion",
+			"endregion",
 			"gveterinaria",
-			"Mapea"
+			"iddetalle",
+			"iddevoluciones",
+			"idingresos",
+			"idmascotas",
+			"idpedidos",
+			"idproductos",
+			"idtipo",
+			"ingresosinventario",
+			"Mapea",
+			"Maper",
+			"mapers",
+			"middlewares",
+			"pelanas",
+			"presentacion",
+			"tipodocumento"
 		]
 	}
 }

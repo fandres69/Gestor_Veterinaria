@@ -3,14 +3,14 @@ const bcrypt=require('bcrypt');
 const {pool}=require('../database/database');
 const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode')
 const {StatusCodes}= require('http-status-codes')
-const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser, usuario}= require('../models/usuario')
+const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser}= require('../models/usuarios')
 const {activoInactivoEnum}=require('../enums/activoInactivo')
 const {getUserToCreate,getUserLogin,getUserToUpdate} =require('../mapers/usermaper');
 const { generateJWT } = require('../helpers/JWT');
 
 /**
  * Crea un usuario en el sistema
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns Json
  */
@@ -56,7 +56,7 @@ const creareUser=async(req,res=response)=>{
 
 /**
  * Función que realiza login en la DB
- * @param {require} req 
+ * @param {request} req 
  * @param {response} res 
  * @returns json
  */
