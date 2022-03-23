@@ -1,0 +1,434 @@
+{
+    "Productos":{
+        "CreateProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/newProduct",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "producto":"Peluche abeja",
+                "ciudad":11001,
+                "presentacion":"Peluche mediano 1 X paquete",
+                "unEmpaque":1,
+                "descripcion":"Peluche abeja tamaño mediano"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Producto creado correctamente",
+                    "detail": {
+                      "myProduct": {
+                        "producto": "Peluche abeja",
+                        "ciudad": 11001,
+                        "presentacion": "Peluche mediano 1 X paquete",
+                        "unEmpaque": 1,
+                        "descripcion": "Peluche abeja tamaño mediano"
+                      }
+                    }
+                  }
+            }
+        },
+
+        "FindProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/findProduct",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "idProductos":11001
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Consulta exitosa",
+                    "detail": {
+                      "productQ": [
+                        {
+                          "idproductos": 2,
+                          "producto": "Peluche abeja",
+                          "ciudad": 11001,
+                          "presentacion": "Peluche mediano 1 X paquete",
+                          "unEmpaque": 1,
+                          "descripcion": "Peluche abeja tamaño mediano"
+                        }
+                      ]
+                    }
+                  }
+            }
+        },
+
+        "UpdateProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/updateProduct",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "producto":"Peluche abeja",
+                "ciudad":11001,
+                "presentacion":"Peluche mediano",
+                "unEmpaque":2,
+                "descripcion":"Peluche abeja tamaño mediano pelanas",
+                "idProductos":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Producto actualizado correctamente",
+                    "detail": {
+                      "myProduct": {
+                        "idProductos": 1,
+                        "producto": "Peluche abeja",
+                        "ciudad": 11001,
+                        "presentacion": "Peluche mediano",
+                        "unEmpaque": 2,
+                        "descripcion": "Peluche abeja tamaño mediano pelanas"
+                      }
+                    }
+                  }
+            }
+        },
+
+        "DeleteProduct":{
+            "url":"http://localhost:3301/gveterinaria/stockManager/findProduct",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "idProductos":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "El producto fue eliminado",
+                    "detail": {
+                      "idProductos": 1
+                    }
+                  }
+            }
+        }
+    },
+
+    "Stock":{
+        "CreateStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/newStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "producto":2,
+            "stock":10,
+            "stockMin":3,
+            "stockMax":12,
+            "PrecioVenta":5400,
+            "impuesto":0.19,
+            "descuento":0
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario de producto creado correctamente",
+            "detail": {
+              "mStock": {
+                "idInventario": 0,
+                "producto": 2,
+                "stock": 10,
+                "stockMin": 0,
+                "stockMax": 0,
+                "PrecioVenta": 0,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+        },
+
+        "UpdateStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/updateStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "producto":2,
+            "stock":10,
+            "stockMin":3,
+            "stockMax":12,
+            "PrecioVenta":5400,
+            "impuesto":0.19,
+            "descuento":0.2,
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario actualizado correctamente",
+            "detail": {
+              "StockUPdated": {
+                "idInventario": 1,
+                "producto": 2,
+                "stock": 10,
+                "stockMin": 0,
+                "stockMax": 0,
+                "PrecioVenta": 0,
+                "impuesto": 0.19,
+                "descuento": 0.2
+              }
+            }
+          }
+        }
+        },
+
+        "FindStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/findStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Inventario encontrado ",
+            "detail": {
+              "StockExistente": [
+                {
+                  "idInventario": 1,
+                  "producto": 2,
+                  "stock": 10,
+                  "stockMin": 0,
+                  "stockMax": 0,
+                  "PrecioVenta": 0,
+                  "impuesto": 0.19,
+                  "descuento": 0
+                }
+              ]
+            }
+          }
+        }
+        },
+
+        "DeleteStock":{
+          "url":"http://localhost:3301/gveterinaria/stockManager/deleteStock",
+          "method":"post",
+          "requireToken":true,
+          "request":{
+            "idInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "El inventario fue eliminado",
+            "detail": {
+              "idInventario": 1
+            }
+          }
+        }
+        }
+    },
+
+    "services":{
+      "createService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/newService",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "servicio":"Baño perro",
+          "descripcion":"Baño perro incluye corte de uñas",
+          "precio":75000,
+          "impuesto":0.19,
+          "descuento":0
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio creado correctamente",
+            "detail": {
+              "newService": {
+                "idServicios": 0,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 75000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "findService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/findService",
+        "method":"get",
+        "requireToken":true,
+        "request":{
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio encontrado",
+            "detail": {
+              "serviceQuery": {
+                "idServicios": 1,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 78000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "updateService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/updateService",
+        "method":"put",
+        "requireToken":true,
+        "request":{
+          "servicio":"Baño perro",
+          "descripcion":"Baño perro incluye corte de uñas",
+          "precio":78000,
+          "impuesto":0.19,
+          "descuento":0,
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio actualizado correctamente",
+            "detail": {
+              "serviceUpdate": {
+                "idServicios": 1,
+                "servicio": "Baño perro",
+                "descripcion": "Baño perro incluye corte de uñas",
+                "precio": 78000,
+                "impuesto": 0.19,
+                "descuento": 0
+              }
+            }
+          }
+        }
+      },
+
+      "deleteService":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/newStock",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "idServicios":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Servicio eliminado correctamente",
+            "detail": {
+              "idServicios": 1
+            }
+          }
+        }
+      }
+    },
+      
+    "StockIn":{
+      "cretateStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/createStockIn",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "producto":2,
+          "cantidad":15,
+          "Precio":11800,
+          "dia":22,
+          "mes":3,
+          "anio":2022
+      
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Entrada de inventario creada correctamente",
+            "detail": {
+              "newStockIn": {
+                "producto": 2,
+                "cantidad": 15,
+                "Precio": 11800,
+                "dia": 22,
+                "mes": 3,
+                "anio": 2022
+              }
+            }
+          }
+        }
+      },
+      "findStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/findStockIn",
+        "method":"get",
+        "requireToken":true,
+        "request":{
+          "idingresosInventario":2
+        },
+        "response":{
+                    
+            "response": {
+              "statusCode": 200,
+              "statusDescription": "Ingreso de invetario encontrado",
+              "detail": {
+                "StockInFind": {
+                  "idingresosInventario": 2,
+                  "producto": 2,
+                  "cantidad": 15,
+                  "Precio": 11800,
+                  "dia": 0,
+                  "mes": 0,
+                  "anio": 0
+                }
+              }
+            }
+        }
+      },
+      "updateStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/updateStockIn",
+        "method":"put",
+        "requireToken":true,
+        "request":{
+          "producto":2,
+          "cantidad":15,
+          "Precio":11800,
+          "dia":22,
+          "mes":3,
+          "anio":2022,
+          "idingresosInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Ingreso de inventario actualizado",
+            "detail": {
+              "stockInUpdate": {
+                "idingresosInventario": 1,
+                "producto": 2,
+                "cantidad": 15,
+                "Precio": 11800,
+                "dia": 22,
+                "mes": 3,
+                "anio": 2022
+              }
+            }
+          }
+        }
+      },
+      "deleteStockIn":{
+        "url":"http://localhost:3301/gveterinaria/stockManager/deleteStockIn",
+        "method":"post",
+        "requireToken":true,
+        "request":{
+          "idingresosInventario":1
+        },
+        "response":{
+          "response": {
+            "statusCode": 200,
+            "statusDescription": "Ingreso de inventario eliminado",
+            "detail": {
+              "idingresosInventario": 1
+            }
+          }
+        }
+      }
+    }
+    
+}

@@ -1,0 +1,228 @@
+{
+    "Orders":{
+        "createOrder":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/createOrder",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "cliente":80210,
+                "direccionEntrega":"Carrera 10",
+                "ciudad":11001,
+                "observaciones":"Pedido 2 en pruebas"
+            },
+            "response":{
+                
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Pedido creado correctamente",
+                    "detail": {
+                    "salesOrderCreate": {
+                        "idpedidos": 0,
+                        "cliente": 80210,
+                        "direccionEntrega": "Carrera 10",
+                        "ciudad": 11001,
+                        "observaciones": "Pedido 3 en pruebas"
+                    }
+                    }
+                }
+                
+            }
+        },
+        "updateOrder":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/updateOrder",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "cliente":80210,
+                "direccionEntrega":"Carrera 10",
+                "ciudad":11001,
+                "observaciones":"Apo 303",
+                "idpedidos":5
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Pedido actualizado correctamente",
+                    "detail": {
+                      "salesOrderUpdate": {
+                        "idpedidos": 5,
+                        "cliente": 80210,
+                        "direccionEntrega": "Carrera 10",
+                        "ciudad": 11001,
+                        "observaciones": "Apo 303"
+                      }
+                    }
+                  }
+            }
+        },
+        "findOrder":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/findOrder",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "idpedidos":3
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Pedido encontrado",
+                    "detail": {
+                      "salesOrderQuery": {
+                        "idpedidos": 3,
+                        "cliente": 80210,
+                        "direccionEntrega": "Carrera 10",
+                        "ciudad": 11001,
+                        "observaciones": "Apo 303"
+                      }
+                    }
+                  }
+            }
+        },
+        "deleteOrder":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/deleteOrder",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "idpedidos":5
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Pedido eliminado correctamente",
+                    "detail": {}
+                  }
+            }
+        }
+    },
+    "OrdersDetail":{
+        "createOrderDetail":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/createOrderDetail",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "producto":2,
+                "cantidad":1,
+                "precio":3500,
+                "impuesto":0.19,
+                "cliente":80210,
+                "ciudad":11001,
+                "pedido":3,
+                "tipoProducto":"P",
+                "anio":2022,
+                "mes":3,
+                "dia":20
+            },
+            "response":{
+                
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Detalle creado correctamente",
+                    "detail": {
+                      "detailOrder": {
+                        "iddetallePedido": 0,
+                        "producto": 2,
+                        "cantidad": 1,
+                        "precio": 3500,
+                        "impuesto": 0.19,
+                        "cliente": 80210,
+                        "ciudad": 11001,
+                        "pedido": 3,
+                        "tipoProducto": "P",
+                        "anio": 2022,
+                        "mes": 3,
+                        "dia": 20
+                      }
+                    }
+                  }
+            }
+        },
+        "updateOrderDetail":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/updateOrderDetail",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "producto":2,
+                "cantidad":1,
+                "precio":3560,
+                "impuesto":0.19,
+                "cliente":80210,
+                "ciudad":11001,
+                "pedido":3,
+                "tipoProducto":"P",
+                "anio":2022,
+                "mes":3,
+                "dia":20,
+                "iddetallePedido":3
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Detalle actualizado correctamente",
+                    "detail": {
+                      "salesDetailUpdate": {
+                        "iddetallePedido": 3,
+                        "producto": 2,
+                        "cantidad": 1,
+                        "precio": 3560,
+                        "impuesto": 0.19,
+                        "cliente": 80210,
+                        "ciudad": 11001,
+                        "pedido": 3,
+                        "tipoProducto": "P",
+                        "anio": 2022,
+                        "mes": 3,
+                        "dia": 20
+                      }
+                    }
+                  }
+            }
+        },
+        "findOrderDetail":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/findOrderDetail",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "iddetallePedido":3
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Detalle encontrado",
+                    "detail": {
+                      "salesDetailQuery": {
+                        "iddetallePedido": 3,
+                        "producto": 2,
+                        "cantidad": 1,
+                        "precio": 3560,
+                        "impuesto": 0.19,
+                        "cliente": 80210,
+                        "ciudad": 11001,
+                        "pedido": 0,
+                        "tipoProducto": "P",
+                        "anio": 2022,
+                        "mes": 3,
+                        "dia": 20
+                      }
+                    }
+                  }
+            }
+        },
+        "deleteOrder":{
+            "url":"http://localhost:3301/gveterinaria/salesManager/deleteOrderDetail",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "iddetallePedido":4
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Detalle eliminado correctamente",
+                    "detail": {
+                      "iddetallePedido": 4
+                    }
+                  }
+            }
+        }
+    }
+}

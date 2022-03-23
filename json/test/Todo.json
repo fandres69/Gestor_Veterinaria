@@ -1,0 +1,17 @@
+{
+ 
+    "tablesScheme":{
+        "ciudad":true,
+        "clientes":true,
+        "detallepedido":true,
+        "devoluciones":true,
+        "ingresosinventario":true,
+        "inventario":true,
+        "mascotas":true,
+        "pedidos":true,
+        "productos":true,
+        "servicios":true,
+        "tipodocumento":true,
+        "usuarios":true
+    }
+}

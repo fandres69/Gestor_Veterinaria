@@ -1,0 +1,199 @@
+{
+    "Clientes":{
+
+        "createClient":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/createClient",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "documento":802108,
+                "tipodocumento":1,
+                "nombre":"Fabio",
+                "celular":3209,
+                "direccion":"Carrera 10",
+                "ciudad":11001,
+                "email":"fandre9@gma.com"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Cliente creado correctamente",
+                    "detail": {
+                      "NewClient": {
+                        "documento": 802108,
+                        "tipodocumento": 1,
+                        "nombre": "Fabio",
+                        "celular": 3209,
+                        "direccion": "Carrera 10",
+                        "ciudad": 11001,
+                        "email": "fandre9@gma.com"
+                      }
+                    }
+                  }
+            }
+        },
+        "findClient":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/findClient",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "documento":80210
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Cliente encontrado",
+                    "detail": {
+                      "clientFind": {
+                        "documento": 0,
+                        "tipodocumento": 1,
+                        "nombre": "Fabio",
+                        "celular": 3209,
+                        "direccion": "Carrera 10",
+                        "ciudad": 11001,
+                        "email": "fandre69@gma.com"
+                      }
+                    }
+                  }
+            }
+        },
+        "updateClient":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/updateClient",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "documento":80210,
+                "tipodocumento":1,
+                "nombre":"Fabio",
+                "celular":3209,
+                "direccion":"Carrera 10",
+                "ciudad":11001,
+                "email":"fandre69@gma.com"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Cliente actualizado correctamente",
+                    "detail": {
+                      "clientUPdate": {
+                        "documento": 80210,
+                        "tipodocumento": 1,
+                        "nombre": "Fabio",
+                        "celular": 3209,
+                        "direccion": "Carrera 10",
+                        "ciudad": 11001,
+                        "email": "fandre69@gma.com"
+                      }
+                    }
+                  }
+            }
+        },
+        "deleteClient":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/deleteClient",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "documento":802108
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Cliente eliminado correctamente",
+                    "detail": {
+                      "documento": 802108
+                    }
+                  }
+            }
+        }        
+    },
+    "Mascotas":{
+        "createPet":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/createPet",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "propietario":80210,
+                "nombre":"michin",
+                "tipo":"gato"
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Mascota creada correctamente",
+                    "detail": {
+                      "NewPet": {
+                        "propietario": 80210,
+                        "nombre": "michin",
+                        "tipo": "gato"
+                      }
+                    }
+                  }
+            }
+        },
+        "findPet":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/findPet",
+            "method":"get",
+            "requireToken":true,
+            "request":{
+                "idmascotas":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Mascota encontrada",
+                    "detail": {
+                      "PetFind": {
+                        "idmascotas": 1,
+                        "propietario": 80210,
+                        "nombre": "michin",
+                        "tipo": "gato"
+                      }
+                    }
+                  }
+            }
+        },
+        "updatePet":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/updatePet",
+            "method":"put",
+            "requireToken":true,
+            "request":{
+                "propietario":80210,
+                "nombre":"michin boloco",
+                "tipo":"gato",
+                "idmascotas":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Mascota actualizada correctamente",
+                    "detail": {
+                      "PetUpdate": {
+                        "idmascotas": 1,
+                        "propietario": 80210,
+                        "nombre": "michin boloco",
+                        "tipo": "gato"
+                      }
+                    }
+                  }
+            }
+        },
+        "deletePet":{
+            "url":"http://localhost:3301/gveterinaria/clientManager/deletePet",
+            "method":"post",
+            "requireToken":true,
+            "request":{
+                "idmascotas":1
+            },
+            "response":{
+                "response": {
+                    "statusCode": 200,
+                    "statusDescription": "Mascota eliminada correctamente",
+                    "detail": {
+                      "idmascotas": 1
+                    }
+                  }
+            }
+        }
+
+    }
+}
