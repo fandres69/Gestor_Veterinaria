@@ -7,6 +7,7 @@ const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser}= requir
 const {activoInactivoEnum}=require('../enums/activoInactivo')
 const {getUserToCreate,getUserLogin,getUserToUpdate} =require('../mapers/usermaper');
 const { generateJWT } = require('../helpers/JWT');
+const { enumStatus, enumMsgLogin } = require('../response/responseMessages');
 
 /**
  * Crea un usuario en el sistema
@@ -21,7 +22,7 @@ const creareUser=async(req,res=response)=>{
         const exist=await pool.query(qQueryUser,[nUsuario.documento]);
         if (exist.length>0) {
             rE=getResponseConflict("Documento ya existe",{});
-            return res.status(StatusCodes.CONFLICT).json({rE});
+            return res.status(StatusCodes.CONFLICT).json({OK:enumStatus.err,MSG:enumMsgLogin.DOC_EXISTED,document:nUsuario.documento});
         }
         let cmd=`${qQueryGeneric} WHERE email='${nUsuario.email}';`;
         const validEmail=await pool.query(cmd,[]);
@@ -62,31 +63,45 @@ const creareUser=async(req,res=response)=>{
  */
 const loginUser=async(req,res=response)=>{
     try {
-        let rta;
+        let responseApi;
         User=getUserLogin(req);
         const UserDb=await pool.query(qLogin,[User.usuario]);
         if(UserDb.length===0){
-          rta=getResponseConflict("El usuario no existe",{"usuario":User.usuario});
-          res.status(StatusCodes.CONFLICT).json({"response":rta});
+          responseApi=getResponseConflict("El usuario no existe",{"usuario":User.usuario},enumStatus.err);
+          res.status(StatusCodes.CONFLICT).json({responseApi});
           return;
         }
         
         const validPassword=await bcrypt.compare(User.password,UserDb[0].password);
         if(!validPassword){
-            rta=getResponseConflict("Password erróneo",{"usuario":User.usuario});
-            res.status(StatusCodes.CONFLICT).json({"response":rta});
+            responseApi=getResponseConflict("Password erróneo",{"usuario":User.usuario},enumStatus.err);
+
+            res.status(StatusCodes.CONFLICT).json({
+                OK:enumStatus.err,
+                statusCode:StatusCodes.CONFLICT,
+                errors:[
+                { msg:enumMsgLogin.U_ERR_PASSWORD,param:'password'},
+                ],
+                "usuario":UserDb[0].usuario                
+            });
             return;
         }
         /**Se genera token de sesión */
         const token=await generateJWT(UserDb[0].documento,UserDb[0].usuario);
-        rta=getResponseOk("Login success",{"usuario":UserDb[0].usuario,"token":token});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        responseApi={};
+        return res.status(StatusCodes.OK).json({
+            OK:enumStatus.ok,
+            statusCode:StatusCodes.OK,
+            statusDescription:enumMsgLogin.U_LOGIN_SUCCESS,
+            "usuario":UserDb[0].usuario,
+            "token":token
+        });
 
     } catch (error) {
-        rta=getResponseError("Error Login");
+        responseApi=getResponseError("Error Login");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+           responseApi
         });
         
     }
@@ -181,10 +196,29 @@ const uUser=async(req,res=response)=>{
         });
     }
 }
+
+
+const validToken=async(req,res=response)=>{
+    try {
+        let responseApi;
+        return res.status(StatusCodes.OK).json({
+            OK:enumStatus.ok,
+            statusCode:StatusCodes.OK,
+            statusDescription:enumMsgLogin.TOKEN_VALID
+        });
+    } catch (error) {
+        responseApi=getResponseConflict("Error validación token",enumStatus.err,{"token":''});
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            "response":responseApi
+        });
+    }
+}
 module.exports={
     creareUser,
     qUser,
     loginUser,
     dUsuario,
-    uUser
+    uUser,
+    validToken
 }

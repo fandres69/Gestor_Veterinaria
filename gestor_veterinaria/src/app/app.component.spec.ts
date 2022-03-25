@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'gestor_veterinaria'`, () => {
+  it(`should have as title 'Gestor_veterinaria'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('gestor_veterinaria');
+    expect(app.title).toEqual('Gestor_veterinaria');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('gestor_veterinaria app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('Gestor_veterinaria app is running!');
   });
 });

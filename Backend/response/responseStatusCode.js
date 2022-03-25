@@ -3,10 +3,8 @@
 const {StatusCodes}= require('http-status-codes');
 
 /**Respuesta genérica Api */
-const resDetail={
-    statusCode:0,
-    statusDescription:'',
-    detail:{}
+const responseDetail={
+   
 }
 
 /**Función que crea una respuesta a las peticiones del API 
@@ -14,11 +12,12 @@ const resDetail={
  * @param statusDescription mensaje personalizado descripción
  * @param detail objeto a retornar
 */
-const getResponse=(statusCode,statusDescription,detail)=>{
-    resDetail.statusCode=statusCode;
-    resDetail.statusDescription=statusDescription;
-    resDetail.detail=detail;
-    return resDetail;
+const getResponse=(statusCode,statusDescription,detail,boolP)=>{
+    responseDetail.ok=boolP;
+    responseDetail.statusCode=statusCode;
+    responseDetail.statusDescription=statusDescription;
+    responseDetail.detail=detail;
+    return responseDetail;
 }
 
 /**
@@ -26,11 +25,11 @@ const getResponse=(statusCode,statusDescription,detail)=>{
  * @param msg mensaje personalizado descripción
  * @param detail objeto a retornar
  */
-const getResponseConflict=(msg,detail)=>{
-    resDetail.statusCode=StatusCodes.CONFLICT;
-    resDetail.statusDescription=msg;
-    resDetail.detail=detail;
-    return resDetail;
+const getResponseConflict=(msg,boolP,param)=>{
+    responseDetail.OK=boolP;
+    responseDetail.statusCode=StatusCodes.CONFLICT;
+    responseDetail.errors=[msg,param];  
+    return responseDetail;
 }
 
 /**
@@ -40,10 +39,11 @@ const getResponseConflict=(msg,detail)=>{
  * @returns 
  */
 const getResponseError=(msg,detail)=>{
-    resDetail.statusCode=StatusCodes.INTERNAL_SERVER_ERROR;
-    resDetail.statusDescription=msg;
-    resDetail.detail=detail;
-    return resDetail;
+    responseDetail.OK=false;
+    responseDetail.statusCode=StatusCodes.INTERNAL_SERVER_ERROR;
+    responseDetail.statusDescription=msg;
+    responseDetail.detail=detail;
+    return responseDetail;
 }
 
 /**
@@ -52,22 +52,34 @@ const getResponseError=(msg,detail)=>{
  * @param {Object} detail 
  * @returns 
  */
-const getResponseOk=(msg,detail)=>{
-    resDetail.statusCode=StatusCodes.OK;
-    resDetail.statusDescription=msg;
-    resDetail.detail=detail;
-    return resDetail;
+const getResponseOk=(msg,detail,boolP)=>{
+    responseDetail.OK=boolP;
+    responseDetail.statusCode=StatusCodes.OK;
+    responseDetail.statusDescription=msg;   
+    responseDetail.detail=detail;
+    const {usuario,token}=detail;
+    const responseApi={
+        OK:boolP,
+        statusCode:StatusCodes.OK,
+        statusDescription:msg,
+        usuario,token
+    }
+
+
+    return responseApi;
 }
 
 const getResponseNotAuth=(msg,detail)=>{
-    resDetail.statusCode=StatusCodes.UNAUTHORIZED;
-    resDetail.statusDescription=msg;
-    resDetail.detail=detail;
-    return resDetail;
+    responseDetail.OK=false;
+    responseDetail.statusCode=StatusCodes.UNAUTHORIZED;
+    responseDetail.statusDescription=msg;
+    responseDetail.detail=detail;
+    return responseDetail;
 }
 
+
 module.exports={
-    resDetail,
+    responseDetail,
     getResponse,
     getResponseConflict,
     getResponseError,

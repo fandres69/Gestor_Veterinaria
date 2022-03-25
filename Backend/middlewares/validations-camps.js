@@ -11,10 +11,9 @@ const {validationResult} =require('express-validator');
 const validationCamps=(req,res=response,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
-        return res.status(400).json({
-            status:"Error",
-            errors:errors.mapped()
-        });a
+        return res.status(409).json({
+            errors:errors.array()
+        });
     }
     next();
 }

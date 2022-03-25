@@ -2,7 +2,7 @@ const {Router} =require('express');
 const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
-const {creareUser,loginUser, qUser,dUsuario, uUser}= require('../controller/authController');
+const {creareUser,loginUser, qUser,dUsuario, uUser, validToken}= require('../controller/authController');
 const router=Router();
 
 
@@ -31,7 +31,7 @@ loginUser
 );
 
 /**Petición búsqueda un usuario */
-router.get('/find',[
+router.post('/find',[
     check('documento','Campo documento requerido entre 6 y 12 números').not().isEmpty().isNumeric().isLength({min:6,max:12}),
     validationCamps,
     ValidateJWT
@@ -58,5 +58,8 @@ router.put('/update',
     validationCamps,
     ValidateJWT
 ],uUser);
+
+
+router.post('/validToken',[ValidateJWT],validToken)
 
 module.exports =router;

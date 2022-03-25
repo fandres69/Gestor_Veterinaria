@@ -9,6 +9,9 @@
 		{
 			"path": "./Backend"
 		},
+		{
+			"path": "Gestor_Veterinaria"
+		}
 	],
 	"settings": {
 		"files.exclude": {
@@ -31,6 +34,9 @@
 			"Devolucion",
 			"direccion",
 			"endregion",
+			"errorpage",
+			"Errorpage",
+			"Fatobon",
 			"gveterinaria",
 			"iddetalle",
 			"iddevoluciones",
@@ -46,7 +52,29 @@
 			"middlewares",
 			"pelanas",
 			"presentacion",
-			"tipodocumento"
+			"Swal",
+			"tipodocumento",
+			"usermaper"
+		]
+	},
+	"launch": {
+		"configurations": [
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "Launch Program",
+				"skipFiles": [
+					"<node_internals>/**"
+				],
+				"program": "${workspaceFolder}\\Backend\\Api.js"
+			},
+			{
+				"name": "Launch Microsoft Edge and open the Edge DevTools",
+				"request": "launch",
+				"type": "vscode-edge-devtools.debug",
+				"url": ""
+			}
 		]
 	}
+	
 }
