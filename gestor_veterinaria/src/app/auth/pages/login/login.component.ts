@@ -28,20 +28,18 @@ export class LoginComponent implements OnInit {
   });
 
   private _UserL!:AuthResponse;
-  constructor(private authService:AuthService, private fb:FormBuilder) {
+  constructor(private authService:AuthService, private fb:FormBuilder, private router:Router) {
     let prueba='hola';
    }
 
   ngOnInit(): void {
   }
 
-  login(){  
-    console.log(this.miForm.get('usuarioN')?.value);
-      console.log(this.miForm.get('password')?.value);
+  login(){     
     this.authService.login(this.miForm.get('usuarioN')?.value,this.miForm.get('password')?.value).subscribe(resp=>{     
-     console.log(resp); 
+   
      if(resp.status){
-      console.log('Param: '+resp.error.errors[0].param+' msg: '+resp.error.errors[0].msg);
+     
       Swal.fire({
         icon: 'error',
         title: resp.error.errors[0].param,
@@ -49,13 +47,13 @@ export class LoginComponent implements OnInit {
       })
       return;       
      }
-     if(resp){
-       
+     if(resp){       
       this._UserL=this.authService.userRes;
-      console.log(this._UserL.token); 
       localStorage.setItem('x-token',this._UserL.token!) ,
-      Swal.fire({title:MessagesAuth.LOGIN_SUCCESS,text:`Bienvenido ${this._UserL.usuario}`});
-     
+      Swal.fire({title:MessagesAuth.LOGIN_SUCCESS,text:`Bienvenido ${this._UserL.usuario}`}).then(res=>{
+       this.router.navigate(['/']);
+      });
+      
      }     
     
     });

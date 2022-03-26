@@ -57,15 +57,21 @@ export class AuthService {
 
     const url=`${this.baseUrl}${ApiUrl.validToken}`;
     const token=localStorage.getItem('x-token')||'';
-    console.log(token);
     const header=new HttpHeaders().set('content-type', 'application/json;charset=utf-8')
     .set('Accept','*/*')
     .set('Access-Control-Allow-Origin', '*').set('x-token',token);  
    const body={}
-    return this.http.post<TokenValid>(url,body,{headers:header}).pipe(tap(resp=>{console.log(resp);}), map(resp=>{
-      if(resp.OK){return true}
-      else{return false}
-    }),catchError(err=>of(err)));
+    return this.http.post<TokenValid>(url,body,{headers:header}).pipe(
+      map(resp=>{
+      console.log(resp);
+      if(resp.errors){return false}
+      else{return true}
+    }),catchError(err=>
+      {
+        console.log(err);
+        return of(false)
+      }
+     ));
   }
 
 

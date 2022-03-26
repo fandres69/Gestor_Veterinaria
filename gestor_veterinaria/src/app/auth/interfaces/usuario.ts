@@ -25,5 +25,6 @@ export interface detail{
 export interface TokenValid{
     OK?:boolean,
     statusCode:number,
-    statusDescription:string
+    statusDescription:string,
+    errors?:{}
 }

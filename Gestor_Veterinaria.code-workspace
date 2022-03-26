@@ -53,8 +53,10 @@
 			"pelanas",
 			"presentacion",
 			"Swal",
+			"sweetalert",
 			"tipodocumento",
-			"usermaper"
+			"usermaper",
+			"userpass"
 		]
 	},
 	"launch": {

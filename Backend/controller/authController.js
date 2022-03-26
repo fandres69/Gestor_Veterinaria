@@ -207,10 +207,12 @@ const validToken=async(req,res=response)=>{
             statusDescription:enumMsgLogin.TOKEN_VALID
         });
     } catch (error) {
-        responseApi=getResponseConflict("Error validación token",enumStatus.err,{"token":''});
+        
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":responseApi
+          Ok:enumStatus.err,
+          statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         
         });
     }
 }

@@ -3,6 +3,7 @@ const jwt=require('jsonwebtoken');
 const {getResponseConflict,getResponseNotAuth}=require('../response/responseStatusCode')
 const secret=process.env.Secret_JWT;
 const {StatusCodes}= require('http-status-codes');
+const { enumStatus } = require('../response/responseMessages');
 
 /**
  * Middleware encargado de la validación de un JWT de usuario 
@@ -16,7 +17,14 @@ const ValidateJWT=(req,res=response,next)=>{
     let rta;
     if (!token) {
         rta=getResponseConflict("token no enviado",{});
-        return res.status(StatusCodes.CONFLICT).json({"response":rta}); 
+        return res.status(StatusCodes.CONFLICT).json({
+            OK:enumStatus.err,
+            statusCode:StatusCodes.UNAUTHORIZED,
+            errors:{
+                msg:'token no enviado',
+                param:''
+            }
+        }); 
     }
     try {
         //función que verifica el token generado y retorna el payload
@@ -31,7 +39,14 @@ const ValidateJWT=(req,res=response,next)=>{
 
     } catch (err) {
         rta=getResponseNotAuth('token no valido')
-        return res.status(StatusCodes.UNAUTHORIZED).json({rta});
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+            OK:enumStatus.err,
+            statusCode:StatusCodes.UNAUTHORIZED,
+            errors:{
+                msg:'token no valido',
+                param:''
+            }
+        });
     }
     next();
 }
