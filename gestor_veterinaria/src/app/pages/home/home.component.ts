@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +11,16 @@ import Swal from 'sweetalert2';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  miForm:FormGroup=this.fb.group({
+    butOne:[''],
+    butTwo:['']
+  })
+
+  constructor(private router:Router, private fb:FormBuilder) { }
+
 
   ngOnInit(): void {
+    this.router.navigate(['/home']);
   }
 
   logout(){
@@ -29,5 +37,7 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/auth']);
     });
   }
+
+
 
 }

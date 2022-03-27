@@ -51,7 +51,6 @@ router.post('/deleteProduct',[
 
 //#endregion
 
-
 //#region Inventarios
 /**Ruta creación inventario */
 router.post('/newStock',[

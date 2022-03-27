@@ -28,9 +28,7 @@ export class LoginComponent implements OnInit {
   });
 
   private _UserL!:AuthResponse;
-  constructor(private authService:AuthService, private fb:FormBuilder, private router:Router) {
-    let prueba='hola';
-   }
+  constructor(private authService:AuthService, private fb:FormBuilder, private router:Router) {}
 
   ngOnInit(): void {
   }

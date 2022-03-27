@@ -15,6 +15,7 @@ const routes: Routes = [
    canActivate:[ValidarTokenGuard],
    canLoad:[ValidarTokenGuard]
   },
+  
   {
     path:'error',
     component:ErrorComponent

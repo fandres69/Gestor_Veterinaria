@@ -4,14 +4,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ChangePassComponent } from './control-panel/change-pass.component';
-import { PanelClientsComponent } from './client-manager/pages/panel-clients/panel-clients.component';
 import { ValidarTokenGuard } from '../auth/guards/validar-token.guard';
+import { HomePageComponent } from './home/home-page.component';
 
 const routes:Routes=[
 {
   path:'',
-  component:HomeComponent,
+  component:HomeComponent,  
   children:[
+    {
+      path:'home',
+      component:HomePageComponent, 
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]   
+    },
     {
       path:'panel',
       component:ControlPanelComponent, 
@@ -26,13 +32,32 @@ const routes:Routes=[
     },
     {
       path:'clientManager',
-      component:PanelClientsComponent,
+      loadChildren:()=>import('../pages/client-manager/client-manager.module').then(m=>m.ClientManagerModule),
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]
+    },
+    {
+      path:'stockManager',
+      loadChildren:()=>import('../pages/stock-manager/stock-manager.module').then(m=>m.StockManagerModule),
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]
+    },
+    {
+      path:'salesManager',
+      loadChildren:()=>import('../pages/sales-manager/sales-manager.module').then(m=>m.SalesManagerModule),
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]
+    },
+    {
+      path:'dataMaster',
+      loadChildren:()=>import('../pages/data-master-manager/data-master-manager.module').then(m=>m.DataMasterManagerModule),
       canActivate:[ValidarTokenGuard],
       canLoad:[ValidarTokenGuard]
     }
   ]
   
-}
+},
+
 ]
 
 @NgModule({
