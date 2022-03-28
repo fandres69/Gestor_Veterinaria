@@ -5,9 +5,10 @@ const {getResponseError,getResponseConflict,getResponseOk}= require('../response
 const {StatusCodes}= require('http-status-codes')
 const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser}= require('../models/usuarios')
 const {activoInactivoEnum}=require('../enums/activoInactivo')
-const {getUserToCreate,getUserLogin,getUserToUpdate} =require('../mapers/usermaper');
+const {getUserToCreate,getUserLogin,getUserToUpdate, getUserFromQuery} =require('../mapers/usermaper');
 const { generateJWT } = require('../helpers/JWT');
 const { enumStatus, enumMsgLogin } = require('../response/responseMessages');
+const { qTipoDocumento } = require('../models/tipodocumento');
 
 /**
  * Crea un usuario en el sistema
@@ -94,7 +95,8 @@ const loginUser=async(req,res=response)=>{
             statusCode:StatusCodes.OK,
             statusDescription:enumMsgLogin.U_LOGIN_SUCCESS,
             "usuario":UserDb[0].usuario,
-            "token":token
+            "token":token,
+            "id":UserDb[0].documento
         });
 
     } catch (error) {
@@ -121,8 +123,20 @@ const qUser=async(req,res=response)=>{
         rta=getResponseConflict("Usuario no existe",{});
         return res.status(StatusCodes.CONFLICT).json({"response":rta}); 
      }
-     rta=getResponseOk("Usuario encontrado",{resultado});
-     return res.status(StatusCodes.OK).json({"response":rta});
+     const qUser=getUserFromQuery(resultado);
+     return res.status(StatusCodes.OK).json({
+         OK:true,
+         statusCode:StatusCodes.OK,
+         statusDescription:'Usuario encontrado',       
+        documento:qUser.documento,
+        nombre:qUser.nombre,
+        tipoDocumento:qUser.tipoDocumento,
+        celular:qUser.celular,
+        email:qUser.email,   
+        password:'',       
+        usuario:qUser.usuario
+         
+     });
   } catch (error) {
     rta=getResponseError("Error en consultar usuario");
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -216,11 +230,37 @@ const validToken=async(req,res=response)=>{
         });
     }
 }
+
+
+const allTypeDoc=async(req,res=response)=>{
+    try {
+       const result= await pool.query(qTipoDocumento);
+       if(result.length===0){
+        return res.status(StatusCodes.CONFLICT)
+        .json({
+           OK:false           
+        });
+       }
+       return res.status(StatusCodes.OK).json({
+           result
+       })
+        
+    } catch (error) {
+        
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+           OK:false,
+           
+        });
+    }
+}
+
 module.exports={
     creareUser,
     qUser,
     loginUser,
     dUsuario,
     uUser,
-    validToken
+    validToken,
+    allTypeDoc
 }

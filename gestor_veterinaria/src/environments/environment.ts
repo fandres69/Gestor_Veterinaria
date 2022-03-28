@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  ApiUrl:'http://localhost:3301/api/gveterinaria'
+  ApiUrl:'http://localhost:3301/api/gveterinaria',
+  secretKey:'VeterinariaApplication2110#'
 };
 
 /*

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,17 +12,17 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
-  miForm:FormGroup=this.fb.group({
-    butOne:[''],
-    butTwo:['']
-  })
-
-  constructor(private router:Router, private fb:FormBuilder) { }
+  private userId:string='';
+  constructor(private router:Router, private fb:FormBuilder, private auth:AuthService) { }
 
 
   ngOnInit(): void {
     this.router.navigate(['/home']);
+    this.userId!=this.auth.userRes.id;
+    console.log(this.userId);
   }
+
+
 
   logout(){
     localStorage.clear();

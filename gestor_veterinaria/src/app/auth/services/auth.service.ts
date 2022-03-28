@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from '../../../environments/environment';
 import { ApiUrl } from '../enums/api-url';
-import { AuthResponse, TokenValid, Usuario } from '../interfaces/usuario';
+import { AuthResponse, TokenValid, userSessionFind, Usuario } from '../interfaces/usuario';
 import { catchError, map, of, tap, Observable } from 'rxjs';
 
 @Injectable({
@@ -14,15 +14,16 @@ export class AuthService {
   private _login=ApiUrl.Login;
   private _find=ApiUrl.FindUser;
 
-  private _token!:string;
-
   private _autResponse!:AuthResponse;
 
   get userRes(){
     return {...this._autResponse};
   }
-  get tokenR(){
-    return {'token':this._token};
+
+  private _userSession!:userSessionFind;
+
+  get userSession(){
+    return {...this._userSession};
   }
   constructor(private http: HttpClient) { }
 
@@ -43,14 +44,24 @@ export class AuthService {
     );
   }
 
-  findUser(documento:number,token:string){
+  /**Busca la información del usuario logeado en l aplicación */
+  findUserSession(documento:number){
     const url=`${this.baseUrl}${this._find}`;
     const body={documento};
     const header=new HttpHeaders().set('content-type', 'application/json;charset=utf-8')
     .set('Accept','*/*')
     .set('Access-Control-Allow-Origin', '*').set('x-token',localStorage.getItem('x-token')||'');    
     console.log(url);
-    return this.http.post(url,body,{headers:header});
+    return this.http.post<userSessionFind>(url,body,{headers:header})
+    .pipe(
+      tap(resp=>{
+        console.log(resp);      
+        this._userSession=resp;        
+        
+      }),
+      map(resp=>resp.OK),
+      catchError(err=>of(err))
+    );
   }
 
   validToken():Observable<boolean>{

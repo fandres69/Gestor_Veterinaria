@@ -3,19 +3,25 @@ export interface AuthResponse {
     statusCode:number,
     statusDescription:string,
     usuario?:string,
-    token?:string
+    token?:string,
+    id?:string
 }
 
-export interface responseApi{
-    OK:boolean,
-    statusCode:number,
-    statusDescription:string,
-    detail?:detail
-}
+// export interface responseApi{
+//     OK:boolean,
+//     statusCode:number,
+//     statusDescription:string,
+//     detail?:detail
+// }
 
 export interface Usuario{
-    usuario?: string;
-    token?:   string;
+    documento?:number;
+    nombre?:string;
+    tipoDocumento?:number;
+    celular?:number;
+    email?:string;
+    password?:string;
+    usuario?:string;
 }
 export interface detail{
     usuario?:string,
@@ -27,4 +33,18 @@ export interface TokenValid{
     statusCode:number,
     statusDescription:string,
     errors?:{}
+}
+
+/**Modelo respuesta consulta usuario se session */
+export interface userSessionFind{
+    OK?:boolean;
+    statusCode?:number,
+    statusDescription?:string,
+    documento?: number;
+    nombre?:   string;
+    tipoDocumento?:number;
+    celular?:number;
+    email?:string;
+    password?:string;
+    usuario?:string;
 }

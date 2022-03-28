@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators ,ReactiveFormsModule, FormControl} f
 import  Swal  from "sweetalert2";
 import { MessagesAuth } from '../../enums/messages-auth';
 import { map } from 'rxjs';
+import { CryptoAppService } from 'src/app/pages/services/crypto-app.service';
 
 @Component({
   selector: 'app-login',
@@ -18,17 +19,14 @@ export class LoginComponent implements OnInit {
   private usuarioN:string='';
   private password:string='';
 
-  // myForm= new FormGroup({
-  //   usuarioN:new FormControl('',[Validators.required,Validators.minLength(3)]),
-  //   password: new FormControl('',[Validators.required,Validators.minLength(3)])
-  // });
   miForm:FormGroup=this.fb.group({
     usuarioN:['',[Validators.required,Validators.minLength(3)]],
     password:['',Validators.required,Validators.minLength(6)]
   });
 
   private _UserL!:AuthResponse;
-  constructor(private authService:AuthService, private fb:FormBuilder, private router:Router) {}
+  constructor(private authService:AuthService, private fb:FormBuilder, private router:Router
+    ,private cry:CryptoAppService) {}
 
   ngOnInit(): void {
   }
@@ -47,7 +45,9 @@ export class LoginComponent implements OnInit {
      }
      if(resp){       
       this._UserL=this.authService.userRes;
-      localStorage.setItem('x-token',this._UserL.token!) ,
+      localStorage.setItem('x-token',this._UserL.token!);
+      let id= this.cry.encrypt(this._UserL.id!.toString());
+      localStorage.setItem('x-vetspa',id);
       Swal.fire({title:MessagesAuth.LOGIN_SUCCESS,text:`Bienvenido ${this._UserL.usuario}`}).then(res=>{
        this.router.navigate(['/']);
       });

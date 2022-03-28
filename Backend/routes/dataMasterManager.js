@@ -7,6 +7,7 @@
  const { validationCamps } = require('../middlewares/validations-camps');
  const { ValidateJWT } = require('../middlewares/validation-jwt');
  const {createCity,readCity,updateCity,deleteCity,createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument}=require('../controller/dataMasterController');
+const { allTypeDoc } = require('../controller/authController');
  const router=Router();
 //#region ciudades
 
@@ -76,6 +77,10 @@
     validationCamps,
     ValidateJWT
  ],deleteTypeDocument);
+
+ router.post('/allTypeDoc',[
+   ValidateJWT
+ ],allTypeDoc)
 
  //#endregion
  module.exports=router;

@@ -53,6 +53,12 @@ const routes:Routes=[
       loadChildren:()=>import('../pages/data-master-manager/data-master-manager.module').then(m=>m.DataMasterManagerModule),
       canActivate:[ValidarTokenGuard],
       canLoad:[ValidarTokenGuard]
+    },
+    {
+      path:'dashboard',
+      loadChildren:()=>import('../pages/informes/informes.module').then(m=>m.InformesModule),
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]
     }
   ]
   

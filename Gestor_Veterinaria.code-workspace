@@ -46,6 +46,7 @@
 			"idproductos",
 			"idtipo",
 			"ingresosinventario",
+			"logeado",
 			"Mapea",
 			"Maper",
 			"mapers",
@@ -54,9 +55,11 @@
 			"presentacion",
 			"Swal",
 			"sweetalert",
+			"tipodoc",
 			"tipodocumento",
 			"usermaper",
-			"userpass"
+			"userpass",
+			"vetspa"
 		]
 	},
 	"launch": {

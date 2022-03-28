@@ -3,7 +3,7 @@
         <div class="row ">
             <div class="col"></div>
             <div class="col text-center justify-content-md-center">
-                <form action="" class="form-floating">
+                <form action="" class="form-floating" [formGroup]="miForm">
                     <div class="card" style="width: 25rem;">
                         <div class="m-1">
                             <img src="../../../assets/UserPic1.jpg"  class="card-img-top w-100 rounded " alt="user file">
@@ -16,47 +16,54 @@
                         </div>
                         <div class="card-body">
                             <div class="form-floating m-2">
-                               <input type="text" class="form-control" id="nombre" placeholder="Nombres y apellidos">
+                               <input type="text" class="form-control" id="nombre" placeholder="Nombres y apellidos" formControlName="nombre" value="{{aUserSession.nombre}}"  [readonly]="!ediState">
                                <label for="nombre">Nombre y apellidos</label>
                             </div>
                             <div class="form-floating m-2">
-                               <input type="text" class="form-control" id="documento" placeholder="Numeró de documento">
+                               <input type="text" class="form-control" id="documento" placeholder="Numeró de documento" formControlName="documento" value="{{aUserSession.documento}}" [readonly]="!ediState">
                                <label for="documento">Numeró de documento</label>
                             </div>
                             <div class="form-floating m-2">
-                                <select class="form-select" id="tipoDocumento" >                                  
-                                    <option value="1">C.C.</option>                                   
+                                <select class="form-select" id="tipoDocumento" formControlName="tipodoc" value="{{aUserSession.tipoDocumento}}" *ngIf="ediState" > 
+                                                                     
+                                    <option *ngFor="let item of tDoc" value="{{item.idtipoDocumento}}" >{{item.tipoDocumento}}</option>                                  
                                   </select>
                                <label for="tipoDocumento">Tipo de documento</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="tel" class="form-control" id="celular" placeholder="Celular">
+                                <input type="tel" class="form-control" id="celular" placeholder="Celular" value="{{aUserSession.celular}}" [readonly]="!ediState">
                                 <label for="celular">Celular</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="email" class="form-control " id="email" placeholder="email">
+                                <input type="email" class="form-control " id="email" placeholder="email" value="{{aUserSession.email}}" [readonly]="!ediState" >
                                 <label for="email">Email</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="text" class="form-control" id="usuario" placeholder="usuario">
+                                <input type="text" class="form-control" id="usuario" placeholder="usuario" value="{{aUserSession.usuario}}" [readonly]="!ediState">
                                 <label for="usuario">Usuario</label>
                             </div>
                             <div class="form-floating m-2 float-end">
-                              <button type="button" class="btn btn-outline-primary">
+                              <button type="button" class="btn btn-outline-primary"
+                              (click)="editar()"
+                              >
                                 <i class="bi bi-pencil-square"></i> Editar
                               </button>
                             </div>
-                            <div class="form-floating m-2 float-end">
-                              <button type="button" class="btn btn-outline-success">
+                            <div class="form-floating m-2 float-end"*ngIf="ediState">
+                              <button type="button" class="btn btn-outline-success"
+                              (click)="guardar()"
+                              >
                                 <i class="bi bi-pencil-square"></i> Guardar
                               </button>
                             </div>
                         </div>
                       </div>
-    
+                     
                 </form>
             </div>
-            <div class="col"></div>
+            <div class="col">
+             
+            </div>
         </div>
     </div>
 </div>

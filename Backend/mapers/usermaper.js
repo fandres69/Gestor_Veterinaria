@@ -48,8 +48,20 @@ const getUserLogin=(req)=>{
     return nUser;
 }
 
+const getUserFromQuery=(result)=>{
+    const qUser={...usuario};
+    qUser.documento=result[0].documento;
+    qUser.nombre=result[0].nombre;
+    qUser.tipoDocumento=result[0].tipoDocumento;
+    qUser.celular=result[0].celular;
+    qUser.email=result[0].email;
+    qUser.password=result[0].password;
+    qUser.usuario=result[0].usuario;
+    return qUser;
+}
 module.exports={
     getUserToCreate,
     getUserLogin,
-    getUserToUpdate
+    getUserToUpdate,
+    getUserFromQuery
 }
