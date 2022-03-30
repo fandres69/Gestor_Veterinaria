@@ -6,7 +6,7 @@
  const {check} = require('express-validator');
  const { validationCamps } = require('../middlewares/validations-camps');
  const { ValidateJWT } = require('../middlewares/validation-jwt');
- const {createCity,readCity,updateCity,deleteCity,createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument}=require('../controller/dataMasterController');
+ const {createCity,readCity,updateCity,deleteCity,createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument, searchC}=require('../controller/dataMasterController');
 const { allTypeDoc } = require('../controller/authController');
  const router=Router();
 //#region ciudades
@@ -29,7 +29,7 @@ const { allTypeDoc } = require('../controller/authController');
  ],readCity);
 
  /**Ruta actualización ciudades */
- router.put('/updateCity',[
+ router.post('/updateCity',[
     check('codigo','Campo requerido').not().isEmpty().isNumeric(),
     check('codigoDto','Campo requerido').not().isEmpty().isNumeric(),
     check('Ciudad','Campo requerido').not().isEmpty().isLength({min:3,max:200}),
@@ -44,6 +44,8 @@ const { allTypeDoc } = require('../controller/authController');
     validationCamps,
     ValidateJWT
  ],deleteCity);
+
+router.get('/cities/:criterio',[ValidateJWT],searchC);
 
  //#endregion
 

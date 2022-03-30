@@ -1,1 +1,49 @@
-<p>ciudades works!</p>
+<div class="container">
+    <h1>Creación de ciudades</h1>
+    <hr>
+    <div class="container form-control form-floating">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Código de ciudad"
+                formControlName="codigo"
+                >
+                <label for="floatingInput">Código de ciudad</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Ciudad"
+                formControlName="Ciudad"
+                >
+                <label for="floatingInput">Ciudad</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Código de departamento"
+                formControlName="codigoDto"
+                >
+                <label for="floatingInput">Código de departamento</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="name@example.com"
+                formControlName="Departamento"
+                >
+                <label for="floatingInput">Departamento</label>
+            </div>
+            <div class="form-floating m-5 p-1">
+                <div class="float-md-end">
+                    <button class="btn btn-outline-primary "
+                    (click)="crearCiudad()"
+                    >Guardar</button>
+                </div>
+                
+            </div>
+            
+
+        </form>
+
+    </div>
+
+</div>

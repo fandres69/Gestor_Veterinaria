@@ -10,6 +10,8 @@ import { FindTipDocumentoComponent } from './tipo-documentos/find-tip-documento.
 import { UpdTipDocumentoComponent } from './tipo-documentos/upd-tip-documento.component';
 import { DelTipDocumentoComponent } from './tipo-documentos/del-tip-documento.component';
 import { DataMasterRoutingModule } from './data-master-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -27,7 +29,10 @@ import { DataMasterRoutingModule } from './data-master-routing.module';
   ],
   imports: [
     CommonModule,
-    DataMasterRoutingModule
+    DataMasterRoutingModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    FormsModule
   ]
 })
 export class DataMasterManagerModule { }

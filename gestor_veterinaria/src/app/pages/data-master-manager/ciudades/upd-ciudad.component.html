@@ -1,1 +1,81 @@
-<p>upd-ciudad works!</p>
+<div class="container">
+    <h1>Actualización de ciudades</h1>
+    <hr>
+    <form class="example-form form-floating p-2 m-2">
+        <mat-form-field class="" >
+          <mat-label>Buscar Ciudad</mat-label>
+          <input type="text"
+                 placeholder=""
+                 aria-label="Buscar Ciudad"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                [(ngModel)]="criterio" 
+                (focus)="limpiarInfo()"
+                 >
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.Ciudad" (click)="selectForUpdate(option)">
+              {{option.Ciudad}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>
+      </form>
+
+    <div class="m-3 w-100"  *ngIf="forLoad">     
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-6">
+                <form action="" [formGroup]="miForm">
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Código de ciudad"
+                       
+                        formControlName="codigo"
+                        >
+                        <label for="floatingInput">Código de ciudad</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Ciudad"
+                        
+                        formControlName="Ciudad"
+                        >
+                        <label for="floatingInput">Ciudad</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Código de departamento"
+                        
+                        formControlName="codigoDto"
+                        >
+                        <label for="floatingInput">Código de departamento</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="name@example.com"
+                      
+                        formControlName="Departamento"
+                        >
+                        <label for="floatingInput">Departamento</label>
+                    </div>
+                    <div class="form-floating m-5 p-1">
+                        <div class="float-md-end">
+                            <button class="btn btn-outline-success "
+                            (click)="updateCiudad()"
+                            >Actualizar</button>
+                        </div>
+                        
+                    </div>
+                    
+        
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+       
+
+    </div>
+
+</div>
+

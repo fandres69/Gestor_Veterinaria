@@ -24,16 +24,48 @@ const createCity=async(req,res=response)=>{
         const cityExisted=await pool.query(rCiudad,[codigo]);
         if(cityExisted.length>0){
             rta=getResponseConflict("La ciudad ya existe",{cityExisted});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'La ciudad ya existe',
+                ciudades:[],                
+                errors:[
+                    {
+                        msg:"La ciudad ya existe",
+                        param:codigo
+                    }
+                ]
+                
+
+            });
         }
         await pool.query(cCiudad,[newCity.codigo,newCity.Ciudad,newCity.codigoDto,newCity.Departamento]);
         rta=getResponseOk("Ciudad creada correctamente",{newCity});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Ciudad creada correctamente',
+            ciudades:[
+                {ciudad:newCity}
+            ]        
+            
+        });
     } catch (error) {
         rta=getResponseError("Error al crear la ciudad");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al crear la ciudad',
+            ciudades:[],
+            errors:[
+                {
+                    msg:"Error al crear la ciudad",
+                    param:codigo
+                }
+            ]
+        
+
         });
     }
 }
@@ -80,16 +112,47 @@ const updateCity=async(req,res=response)=>{
         const cityExisted=await pool.query(rCiudad,[codigo]);
         if(cityExisted.length===0){
             rta=getResponseConflict("La ciudad no existe",{codigo});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'La ciudad no existe',
+                ciudades:[],
+                errors:[
+                    {
+                        msg:"La ciudad no existe",
+                        param:''
+                    }
+                ]           
+            });
         }
         await pool.query(uCiudad,[CityUpdate.Ciudad,CityUpdate.codigoDto,CityUpdate.Departamento,CityUpdate.codigo]);
         rta=getResponseOk("Ciudad actualizada exitosamente",{CityUpdate});
-        return res.status(StatusCodes.OK).json({"response":rta});   
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Ciudad actualizada exitosamente',
+            ciudades:[CityUpdate],
+            errors:[
+                {
+                    msg:"Ciudad actualizada exitosamente",
+                    param:''
+                }
+            ]            
+        });   
     } catch (error) {
         rta=getResponseError("Error al actualizar ciudad");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al actualizar ciudad',
+            ciudades:[],
+            errors:[
+                {
+                    msg:"Error al actualizar ciudad",
+                    param:codigo
+                }
+            ]
         });
     }
 }
@@ -108,16 +171,96 @@ const deleteCity=async(req,res=response)=>{
         const cityExisted=await pool.query(rCiudad,[codigo]);
         if(cityExisted.length===0){
             rta=getResponseConflict("La ciudad no existe",{codigo});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({
+                OK:false,
+                statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+                statusDescription:'La ciudad no existe',
+                ciudades:[],
+                errors:[
+                    {
+                        msg:"La ciudad no existe",
+                        param:codigo
+                    }
+                ]
+        
+            });
         }
         await pool.query(dCiudad,[codigo]);
         rta=getResponseOk("Ciudad eliminada correctamente",{codigo});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Ciudad eliminada correctamente',
+            ciudades:[
+               
+            ]      
+        });
     } catch (error) {
         rta=getResponseError("Error al eliminar ciudad");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al eliminar ciudad',
+            ciudades:[],
+            errors:[
+                {
+                    msg:"Error al eliminar ciudad",
+                    param:codigo
+                }
+            ]
+        });
+    }
+}
+
+
+const searchC=async(req,res=response)=>{
+    try {
+        const criterio=req.params.criterio||'';
+        if(criterio==='' || !criterio){
+            return res.status(StatusCodes.CONFLICT)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay criterio de búsqueda',
+                ciudades:[],
+                errors:[
+                    {
+                        msg:"No hay criterio de búsqueda",
+                        param:''
+                    }
+                ]            
+            });
+        }
+        const cmd=`${qCiudad} WHERE Ciudad LIKE ('%${criterio}%');`;
+        const ciudades=await pool.query(cmd);
+        return res.status(StatusCodes.OK)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.OK,
+                statusDescription:'Ciudades encontradas',
+                ciudades:ciudades,
+                errors:[
+                    {
+                        msg:"Ciudades encontradas",
+                        param:''
+                    }
+                ]            
+            });
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error en la búsqueda',
+            ciudades:[],
+            errors:[
+                {
+                    msg:"Error en la búsqueda",
+                    param:''
+                }
+            ]
+        
         });
     }
 }
@@ -241,6 +384,6 @@ const deleteTypeDocument=async(req,res=response)=>{
 //#endregion
 
 module.exports={
-    createCity,readCity,updateCity,deleteCity,
+    createCity,readCity,updateCity,deleteCity,searchC,
     createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument
 }

@@ -31,14 +31,12 @@ export class AuthService {
   login(usuarioN:string, password:string){
     const url=`${this.baseUrl}${this._login}`;
     const body={usuarioN,password};
-    console.log(usuarioN, password);
     const header=new HttpHeaders().set('content-type', 'application/json;charset=utf-8')
     .set('Accept','*/*').set('x-token','')
     .set('Access-Control-Allow-Origin', '*');
         return this.http.post<AuthResponse>(url,body,{headers:header})
     .pipe(
       tap(resp=>{
-        console.log(resp);
         this._autResponse=resp;      
       }),
       map(resp=>resp.OK),
@@ -53,11 +51,9 @@ export class AuthService {
     const header=new HttpHeaders().set('content-type', 'application/json;charset=utf-8')
     .set('Accept','*/*')
     .set('Access-Control-Allow-Origin', '*').set('x-token',localStorage.getItem('x-token')||'');    
-    console.log(url);
     return this.http.post<userSessionFind>(url,body,{headers:header})
     .pipe(
       tap(resp=>{
-        console.log(resp);      
         this._userSession=resp;        
         
       }),
@@ -76,12 +72,10 @@ export class AuthService {
    const body={}
     return this.http.post<TokenValid>(url,body,{headers:header}).pipe(
       map(resp=>{
-      console.log(resp);
       if(resp.errors){return false}
       else{return true}
     }),catchError(err=>
       {
-        console.log(err);
         return of(false)
       }
      ));
