@@ -5,8 +5,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <a  class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none dropdown-toggle" 
               id="dropdownMenuButton1" data-bs-toggle="dropdown">
-                <img src="../../../assets/UserPic1.jpg" alt="home" width="35" height="35" class="rounded-circle">
-              
+                <img [src]="img|imagenPipe" alt="home" width="35" height="35" class="rounded-circle">
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" routerLink="./panel">Cuenta</a></li>

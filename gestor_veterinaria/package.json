@@ -19,7 +19,6 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "bootstrap-icons": "^1.8.1",
-    "crypto-js": "^4.1.1",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.4.7",
     "tslib": "^2.3.0",

@@ -3,11 +3,11 @@
         <div class="row ">
             <div class="col"></div>
             <div class="col text-center justify-content-md-center">
-                <form action="" class="form-floating" [formGroup]="miForm">
+                <form action="" class="form-floating" [formGroup]="miForm" enctype="multipart/form-data">
                     <div class="card" style="width: 25rem;">
                         <div class="m-1">
-                            <img src="../../../assets/UserPic1.jpg"  class="card-img-top w-100 rounded " alt="user file">
-                            <a class="float-end text-black" type="button">
+                            <img [src]="img|imagenPipe"  class="card-img-top w-100 rounded " alt="user file">
+                            <a class="float-end text-black" type="button" data-bs-toggle="modal" data-bs-target="#loadImagePerfil">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square float-end m-2" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -16,30 +16,30 @@
                         </div>
                         <div class="card-body">
                             <div class="form-floating m-2">
-                               <input type="text" class="form-control" id="nombre" placeholder="Nombres y apellidos" formControlName="nombre" value="{{aUserSession.nombre}}"  [readonly]="!ediState">
+                               <input type="text" class="form-control" id="nombre" placeholder="Nombres y apellidos" formControlName="nombre"  [readonly]="!ediState">
                                <label for="nombre">Nombre y apellidos</label>
                             </div>
                             <div class="form-floating m-2">
-                               <input type="text" class="form-control" id="documento" placeholder="Numeró de documento" formControlName="documento" value="{{aUserSession.documento}}" [readonly]="!ediState">
+                               <input type="text" class="form-control" id="documento" placeholder="Numeró de documento" formControlName="documento" [readonly]="true">
                                <label for="documento">Numeró de documento</label>
                             </div>
                             <div class="form-floating m-2">
-                                <select class="form-select" id="tipoDocumento" formControlName="tipodoc" value="{{aUserSession.tipoDocumento}}" *ngIf="ediState" > 
+                                <select class="form-select" id="tipoDocumento" formControlName="tipodoc" *ngIf="ediState" > 
                                                                      
                                     <option *ngFor="let item of tDoc" value="{{item.idtipoDocumento}}" >{{item.tipoDocumento}}</option>                                  
                                   </select>
                                <label for="tipoDocumento">Tipo de documento</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="tel" class="form-control" id="celular" placeholder="Celular" value="{{aUserSession.celular}}" [readonly]="!ediState">
+                                <input type="tel" class="form-control" id="celular" placeholder="Celular" formControlName="celular" [readonly]="!ediState">
                                 <label for="celular">Celular</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="email" class="form-control " id="email" placeholder="email" value="{{aUserSession.email}}" [readonly]="!ediState" >
+                                <input type="email" class="form-control " id="email" placeholder="email"  formControlName="email"  [readonly]="!ediState" >
                                 <label for="email">Email</label>
                             </div>
                             <div class="form-floating m-2">
-                                <input type="text" class="form-control" id="usuario" placeholder="usuario" value="{{aUserSession.usuario}}" [readonly]="!ediState">
+                                <input type="text" class="form-control" id="usuario" placeholder="usuario"   formControlName="usuario" [readonly]="!ediState">
                                 <label for="usuario">Usuario</label>
                             </div>
                             <div class="form-floating m-2 float-end">
@@ -56,9 +56,44 @@
                                 <i class="bi bi-pencil-square"></i> Guardar
                               </button>
                             </div>
+                            <div class="form-floating m-2 float-end"*ngIf="ediState">
+                                <button type="button" class="btn btn-outline-secondary"
+                                (click)="cancelar()"
+                                >
+                                  <i class="bi bi-pencil-square"></i> Cancelar
+                                </button>
+                              </div>
                         </div>
-                      </div>
-                     
+                      </div>                                   
+                </form>
+
+                <form action="" enctype="multipart/form-data">
+                     <!-- Modal -->
+                     <div class="modal fade" id="loadImagePerfil" tabindex="-1" aria-labelledby="loadImagePerfilLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cargar imagen de perfil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Seleccionar imagen</label>
+                                    <input class="form-control" accept=".png,.jpg,.jpeg" (change)="loadPerfilImage($event)" type="file" id="formFile" name="formFile">
+                                </div>
+
+                                <div *ngIf="imgLoad">
+                                    
+                                    <img src="{{imgLoad}}" style="width: 100px; height: 100px;" alt="imgForLoad">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" (click)="savePerfilImage()">Cambiar imagen</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrarModal">Cancelar</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>                              
                 </form>
             </div>
             <div class="col">

@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.miForm.get('usuarioN')?.value,this.miForm.get('password')?.value).subscribe(resp=>{     
    
      if(resp.status){
-     
+     console.log(resp);
       Swal.fire({
         icon: 'error',
         title: resp.error.errors[0].param,
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
      if(resp){       
       this._UserL=this.authService.userRes;
       localStorage.setItem('x-token',this._UserL.token!);
-      let id= this.cry.encrypt(this._UserL.id!.toString());
+      let id= this._UserL.id!.toString();
       localStorage.setItem('x-vetspa',id);
       Swal.fire({title:MessagesAuth.LOGIN_SUCCESS,text:`Bienvenido ${this._UserL.usuario}`}).then(res=>{
        this.router.navigate(['/']);

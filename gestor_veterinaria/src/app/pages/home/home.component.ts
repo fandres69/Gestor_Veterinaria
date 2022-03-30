@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { DataMasterService } from '../control-panel/services/data-master.service';
 
 @Component({
   selector: 'app-home',
@@ -13,13 +14,13 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class HomeComponent implements OnInit {
 
   private userId:string='';
-  constructor(private router:Router, private fb:FormBuilder, private auth:AuthService) { }
-
+  constructor(private router:Router, private fb:FormBuilder, private auth:AuthService, private dataM:DataMasterService) { }
+  public img!:string;
 
   ngOnInit(): void {
+    this.loadImgPerfil();
     this.router.navigate(['/home']);
     this.userId!=this.auth.userRes.id;
-    console.log(this.userId);
   }
 
 
@@ -36,6 +37,13 @@ export class HomeComponent implements OnInit {
     })
     .then(res=>{
       this.router.navigate(['/auth']);
+    });
+  }
+
+  loadImgPerfil(){
+    const documento=localStorage.getItem('x-vetspa')||'0';
+    this.dataM.getUserImage(documento).subscribe(resp=>{
+      this.img=resp;
     });
   }
 

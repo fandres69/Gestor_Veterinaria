@@ -3,7 +3,7 @@ const bcrypt=require('bcrypt');
 const {pool}=require('../database/database');
 const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode')
 const {StatusCodes}= require('http-status-codes')
-const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser}= require('../models/usuarios')
+const {qCreate,qLogin,qQueryGeneric,qQueryUser,qDeleteUser, qUpdateUser, qUpdPasswordUser}= require('../models/usuarios')
 const {activoInactivoEnum}=require('../enums/activoInactivo')
 const {getUserToCreate,getUserLogin,getUserToUpdate, getUserFromQuery} =require('../mapers/usermaper');
 const { generateJWT } = require('../helpers/JWT');
@@ -69,7 +69,15 @@ const loginUser=async(req,res=response)=>{
         const UserDb=await pool.query(qLogin,[User.usuario]);
         if(UserDb.length===0){
           responseApi=getResponseConflict("El usuario no existe",{"usuario":User.usuario},enumStatus.err);
-          res.status(StatusCodes.CONFLICT).json({responseApi});
+          res.status(StatusCodes.CONFLICT).json({
+              
+                errors:[
+                   { param:User.usuario,
+                    msg:'El usuario no existe'
+                }
+                ]
+              
+          });
           return;
         }
         
@@ -194,19 +202,34 @@ const uUser=async(req,res=response)=>{
         const resultado= await pool.query(qQueryUser,[documento]);
        if (resultado.length===0) {
         rta=getResponseConflict("Usuario no existe",{});
-        return res.status(StatusCodes.CONFLICT).json({"response":rta}); 
-       }
-       const salt= await bcrypt.genSalt();
-       userUpdate.password=bcrypt.hashSync(userUpdate.password,salt);
+        return res.status(StatusCodes.CONFLICT).json({
+            OK:false,
+            statusCode:StatusCodes.CONFLICT,
+            statusDescription:'Usuario no existe'
+        }); 
+       }      
        await pool.query(qUpdateUser,[userUpdate.nombre,userUpdate.tipoDocumento,userUpdate.celular,userUpdate.email
-        ,userUpdate.password,userUpdate.usuario,userUpdate.activo,userUpdate.documento]);
+        ,userUpdate.usuario,userUpdate.activo,userUpdate.documento]);
         rta=getResponseOk("Usuario actualizado correctamente",{userUpdate});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Usuario actualizado correctamente',
+            nombre:userUpdate.nombre,
+            tipoDocumento:userUpdate.tipoDocumento,
+            celular:userUpdate.celular,
+            email:userUpdate.email,
+            usuario:userUpdate.usuario,
+            documento:userUpdate.documento
+        });
     } catch (error) {
         rta=getResponseError("Error al actualizar usuario");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al actualizar usuario'
+
         });
     }
 }
@@ -255,6 +278,71 @@ const allTypeDoc=async(req,res=response)=>{
     }
 }
 
+/**
+ * Actualiza el password de un usuario
+ * @param {require} req 
+ * @param {response} res 
+ * @returns json
+ */
+const updPassword=async(req,res=response)=>{
+    try {
+        const {documento,password,passwordActual}=req.body
+        const userUpdate= await pool.query(qQueryUser,[documento]);
+        if(userUpdate.length===0){
+            return res.status(StatusCodes.CONFLICT)
+        .json({
+           OK:false,
+           error:true,
+           errors:[{
+            msg:'El usuario no existe',
+            param:''
+        }],
+           statusCode:StatusCodes.CONFLICT,
+           statusDescription:'El usuario no existe'
+        });
+        }
+        const validPassword=await bcrypt.compare(passwordActual,userUpdate[0].password);
+        if(!validPassword){
+            return res.status(StatusCodes.CONFLICT)
+            .json({
+               OK:false,
+               error:true,
+               errors:[{
+                   msg:'Password actual incorrecto',
+                   param:'passwordActual'
+               }],
+               statusCode:StatusCodes.CONFLICT,
+               statusDescription:'Password actual incorrecto'
+            });
+        }
+
+        const salt= await bcrypt.genSalt();
+        let hashPassword=bcrypt.hashSync(password,salt);
+        await pool.query(qUpdPasswordUser,[hashPassword,documento]);
+        return res.status(StatusCodes.OK)
+        .json({
+           OK:true,
+           statusCode:StatusCodes.OK,
+           statusDescription:'Password actualizado'
+        });
+
+    } catch (error) {
+        
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+           OK:false,
+           error:true,
+           errors:[{
+            msg:'Error al actualizar Password',
+            param:''
+        }],
+           statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+           statusDescription:'Error al actualizar Password'
+        });
+    }
+}
+
+
 module.exports={
     creareUser,
     qUser,
@@ -262,5 +350,6 @@ module.exports={
     dUsuario,
     uUser,
     validToken,
-    allTypeDoc
+    allTypeDoc,
+    updPassword
 }

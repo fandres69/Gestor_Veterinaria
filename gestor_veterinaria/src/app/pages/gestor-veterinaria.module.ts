@@ -7,6 +7,7 @@ import { ClientManagerModule } from './client-manager/client-manager.module';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { HomePageComponent } from './home/home-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ImagenPipePipe } from './pipes/imagen-pipe.pipe';
 
 
 
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     ChangePassComponent,
     ControlPanelComponent,
-    HomePageComponent
+    HomePageComponent,
+    ImagenPipePipe
   ],
   imports: [
     CommonModule,

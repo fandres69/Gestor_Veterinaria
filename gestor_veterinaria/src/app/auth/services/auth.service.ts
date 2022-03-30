@@ -31,12 +31,14 @@ export class AuthService {
   login(usuarioN:string, password:string){
     const url=`${this.baseUrl}${this._login}`;
     const body={usuarioN,password};
+    console.log(usuarioN, password);
     const header=new HttpHeaders().set('content-type', 'application/json;charset=utf-8')
     .set('Accept','*/*').set('x-token','')
     .set('Access-Control-Allow-Origin', '*');
         return this.http.post<AuthResponse>(url,body,{headers:header})
     .pipe(
       tap(resp=>{
+        console.log(resp);
         this._autResponse=resp;      
       }),
       map(resp=>resp.OK),
