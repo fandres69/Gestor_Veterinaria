@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MasterDataService } from '../services/master-data.service';
 import { ciudadModel } from '../interfaces/data-master-interface';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, distinctUntilChanged, Observable, OperatorFunction, map, of,startWith } from 'rxjs';
 import Swal from 'sweetalert2';
 

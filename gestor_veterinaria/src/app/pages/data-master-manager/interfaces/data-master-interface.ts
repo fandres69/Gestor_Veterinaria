@@ -17,3 +17,16 @@ export interface ciudadModel{
     codigoDto:string;
     Departamento:string;
 }
+
+export interface tipoDocumentoResponse{
+    OK?:boolean;
+    error?:{};
+    statusCode?:number;
+    statusDescription?:string,
+    tipoDocumento?:tipoDocumentoModel[];
+}
+
+export interface tipoDocumentoModel{
+    idtipoDocumento:number,
+    tipoDocumento:string
+}

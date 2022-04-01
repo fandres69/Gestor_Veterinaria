@@ -284,16 +284,41 @@ const createTypeDocument=async(req,res=response)=>{
         const typeDocumentExisted= await pool.query(cmd);
         if (typeDocumentExisted.length>0) {
             rta=getResponseConflict("El tipo de documento ya existe",{typeDocumentExisted});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});     
+            return res.status(StatusCodes.CONFLICT).json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El tipo de documento ya existe',
+                tipoDocumento:[],
+                errors:[
+                    {
+                        msg:"El tipo de documento ya existe",
+                        param:tipoDocumento
+                    }
+                ] 
+            });     
         }
         await pool.query(cTipoDocumento,[newTypeDocument.tipoDocumento]) ;
         rta=getResponseOk("Tipo de documento creado correctamente",{newTypeDocument});
-        return res.status(StatusCodes.OK).json({"response":rta});  
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Tipo de documento creado correctamente',
+            tipoDocumento:[{newTypeDocument}]            
+        });  
     } catch (error) {
         rta=getResponseError("Error al crear tipo documento");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al crear tipo documento',
+            tipoDocumento:[],
+            errors:[
+                {
+                    msg:"Error al crear tipo documento",
+                    param:''
+                }
+            ] 
         });
     }
 }
@@ -339,16 +364,41 @@ const updateTypeDocument=async(req,res=response)=>{
         const typeDocumentExisted= await pool.query(rTipoDocumento,[idtipoDocumento]); 
         if (typeDocumentExisted.length===0) {
             rta=getResponseConflict("El tipo de documento no existe",{idtipoDocumento});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El tipo de documento no existe',
+                tipoDocumento:[],
+                errors:[
+                    {
+                        msg:"El tipo de documento no existe",
+                        param:''
+                    }
+                ]            
+            });
         }
         await pool.query(uTipoDocumento,[typeDocumentUpdate.tipoDocumento,typeDocumentUpdate.idtipoDocumento]);
         rta=getResponseOk("Tipo de documento actualizado correctamente",{typeDocumentUpdate});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Tipo de documento actualizado correctamente',
+            tipoDocumento:[typeDocumentUpdate]
+        });
     } catch (error) {
         rta=getResponseError("Error al actualizar tipo documento");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al actualizar tipo documento',
+            tipoDocumento:[],
+            errors:[
+                {
+                    msg:"Error al actualizar tipo documento",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -366,16 +416,93 @@ const deleteTypeDocument=async(req,res=response)=>{
         const typeDocumentExisted= await pool.query(rTipoDocumento,[idtipoDocumento]); 
         if (typeDocumentExisted.length===0) {
             rta=getResponseConflict("El tipo de documento no existe",{idtipoDocumento});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El tipo de documento no existe',
+                tipoDocumento:[],
+                errors:[
+                    {
+                        msg:"El tipo de documento no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(dTipoDocumento,[idtipoDocumento]);
         rta=getResponseOk("Tipo documento eliminado Correctamente",{idtipoDocumento});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Tipo de documento eliminado correctamente',
+            tipoDocumento:[typeDocumentExisted]
+        });
     } catch (error) {
         rta=getResponseError("Error al eliminar tipo de documento");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al eliminar tipo documento',
+            tipoDocumento:[],
+            errors:[
+                {
+                    msg:"Error al eliminar tipo documento",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
+
+
+const searchTD=async(req,res=response)=>{
+    try {
+        const criterio=req.params.criterio||'';
+        if(criterio==='' || !criterio){
+            return res.status(StatusCodes.CONFLICT)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay criterio de búsqueda',
+                tipoDocumento:[],
+                errors:[
+                    {
+                        msg:"No hay criterio de búsqueda",
+                        param:''
+                    }
+                ]            
+            });
+        }
+        const cmd=`${qTipoDocumento} WHERE tipoDocumento LIKE ('%${criterio}%');`;
+        const tiposDocumentos=await pool.query(cmd);
+        return res.status(StatusCodes.OK)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.OK,
+                statusDescription:'Tipos de documentos encontrados',
+                tipoDocumento:tiposDocumentos,
+                errors:[
+                    {
+                        msg:"Tipos de documentos encontrados",
+                        param:''
+                    }
+                ]            
+            });
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error en la búsqueda',
+            tipoDocumento:[],
+            errors:[
+                {
+                    msg:"Error en la búsqueda",
+                    param:''
+                }
+            ]
+        
         });
     }
 }
@@ -384,6 +511,6 @@ const deleteTypeDocument=async(req,res=response)=>{
 //#endregion
 
 module.exports={
-    createCity,readCity,updateCity,deleteCity,searchC,
+    createCity,readCity,updateCity,deleteCity,searchC,searchTD,
     createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument
 }

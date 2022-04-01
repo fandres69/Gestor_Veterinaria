@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MasterDataEnum } from '../enums/master-data-enum';
 import { environment } from '../../../../environments/environment.prod';
-import { CiudadResponse } from '../interfaces/data-master-interface';
+import { CiudadResponse, tipoDocumentoResponse } from '../interfaces/data-master-interface';
 import { map, catchError, of } from 'rxjs';
 
 @Injectable({
@@ -65,6 +65,11 @@ export class MasterDataService {
   }
 
 
+  /**
+   * Actualiza los datos de una ciudad  
+   * @param body 
+   * @returns json
+   */
   updCiudad(body:{}){
     const url=`${this.baseUrl}${MasterDataEnum.UpdCiudad}`;
     return this.http.post<CiudadResponse>(url,body,{headers:this.header}).pipe(
@@ -72,4 +77,59 @@ export class MasterDataService {
       catchError(err=>of(err))
     )
   }
+
+  /**
+   * Crea un tipo de documento en la DB
+   * @param body Tipo de documento
+   * @returns json
+   */
+  createTipoDocumento(body:{}){
+    const url=`${this.baseUrl}${MasterDataEnum.createTypeDocument}`;
+    return this.http.post<tipoDocumentoResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    );
+  }
+
+  /**
+   * Busca un tipo de documento
+   * @param criterio 
+   * @returns json
+   */
+  searchTipoDocumento(criterio:string){
+    const url=`${this.baseUrl}${MasterDataEnum.searchTypeDocument}/${criterio}`;
+    return this.http.get<tipoDocumentoResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    );
+  }
+
+  /**
+   * Actualiza un tipo de documento
+   * @param body 
+   * @returns json
+   */
+  updTypeDocument(body:{}){
+    const url=`${this.baseUrl}${MasterDataEnum.updTypeDocument}`;
+    return this.http.post<tipoDocumentoResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+  /**
+   * Elimina un tipo de documento
+   * @param body 
+   * @returns json
+   */
+  delTypeDocument(body:{}){
+    const url=`${this.baseUrl}${MasterDataEnum.delTypeDocument}`;
+    return this.http.post<tipoDocumentoResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+
+
 }
