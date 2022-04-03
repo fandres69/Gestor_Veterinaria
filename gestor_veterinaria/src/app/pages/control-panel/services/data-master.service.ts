@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { tap, map, catchError ,of} from 'rxjs';
 import { passwordChanged, typeDocumentsRes, userImgResponse } from '../interfaces/datamaster';
 import { userSessionFind } from 'src/app/auth/interfaces/usuario';
+import { CiudadResponse } from '../../data-master-manager/interfaces/data-master-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,13 @@ export class DataMasterService {
   
  }
 
+ getAllCities(){
+   const url=`${this.baseUrl}${ApiUrl.AllCities}`;
+   return this.http.get<CiudadResponse>(url,{headers:this.header}).pipe(
+     map(resp=>resp),
+     catchError(err=>of(err))
+   )
+ }
 
 
 

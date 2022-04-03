@@ -14,25 +14,6 @@ const port=process.env.APIPORT||3301;
  */
 Api.use(express.json());
 Api.use(cors());
-
-const multer  = require('multer');
-const { LoadUserFile } = require('./controller/uploadsController');
-const { json } = require('express');
-const dirUploads=process.env.dirUploads;
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, dirUploads)
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
-    }
-  });
-
-const upload = multer({storage:this.storage});
-
-
-
-
 //Api.use('/uploads',express.static(path.resolve('uploads')));
 /**Configuración route modulo Login */
 Api.use('/api/gveterinaria/login',require('./routes/auth'));

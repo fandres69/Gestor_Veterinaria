@@ -1,1 +1,101 @@
-<p>find-client works!</p>
+<div class="container">
+    <h1>Búsqueda de clientes</h1>
+    <hr>
+    <form class="example-form form-floating p-2 m-2">
+        <mat-form-field class="m-3">
+            <mat-label>Buscar por:</mat-label>
+            <mat-select [(value)]="tipo">
+              <mat-option value="N">Nombre</mat-option>
+              <mat-option value="D">Documento</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <mat-form-field class="m-3" >
+          <mat-label>Cliente a buscar</mat-label>
+          <input type="text"
+                 placeholder=""
+                 aria-label="Cliente a buscar"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                [(ngModel)]="criterio" 
+                (focus)="limpiarInfo()"
+                 >
+          <mat-autocomplete #auto="matAutocomplete">
+            <div *ngIf="tipo==='N'">
+              <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.nombre" (click)="selectForQuery(option)">
+                {{option.nombre}}
+              </mat-option>
+            </div>
+            <div *ngIf="tipo!='N'">
+              <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                {{option.documento}}
+              </mat-option>
+            </div>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>
+      </form>
+
+    <div class="m-3 w-100"  *ngIf="forLoad">     
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-6">
+                <form action="">
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Documento"
+                        [value]="selectedItem.documento" [readonly]="true"
+                        >
+                        <label for="floatingInput">Documento</label>
+                    </div>
+                    <div class="form-floating m-3">
+                      <select class="form-select" id="tipodocumento" [value]="selectedItem.tipodocumento" disabled>                                                            
+                          <option *ngFor="let item of tiposDocL" value="{{item.idtipoDocumento}}" >{{item.tipoDocumento}}</option>                                  
+                        </select>
+                     <label for="tipodocumento">Tipo de documento</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Nombre"
+                        [value]="selectedItem.nombre"  [readonly]="true"
+                        >
+                        <label for="floatingInput">Nombre</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Celular"
+                        [value]="selectedItem.celular"  [readonly]="true"
+                        >
+                        <label for="floatingInput">Celular</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Dirección"
+                        [value]="selectedItem.direccion"  [readonly]="true"
+                        >
+                        <label for="floatingInput">Dirección</label>
+                    </div>  
+                    <div class="form-floating m-3">
+                      <select class="form-select" id="ciudad" [value]="selectedItem.ciudad" disabled>                                                            
+                          <option *ngFor="let item of ciudadesL" value="{{item.codigo}}" >{{item.Ciudad}}</option>                                  
+                        </select>
+                     <label for="ciudad">Ciudad</label>
+                    </div>  
+                    <div class="form-floating m-3">
+                      <input type="email" class="form-control" id="floatingInput" 
+                      placeholder="Email"
+                      [value]="selectedItem.email"  [readonly]="true"
+                      >
+                      <label for="floatingInput">Email</label>
+                  </div>               
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+       
+
+    </div>
+
+</div>
+
+

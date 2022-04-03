@@ -6,6 +6,7 @@ export enum ApiUrl {
     UpdUserSession='/login/update',
     UserFileImg='/uploads/getUserFile/',
     UpdateUserImg='/uploads/userFile/',
-    updPassword='/login/updPass'
+    updPassword='/login/updPass',
+    AllCities='/dataMaster/allCities',
 }
 

@@ -94,7 +94,7 @@ export class ControlPanelComponent implements OnInit {
       activo:1
     };
     this.dataM.updateUserSession(updUser).subscribe(resp=>{
-      if(resp.OK){
+      if(resp){
         Swal.fire({
           icon: 'success',
           title: resp.statusDescription,

@@ -265,6 +265,48 @@ const searchC=async(req,res=response)=>{
     }
 }
 
+const getAllCities=async(req,res=response)=>{
+    try {
+        const ciudades=await pool.query(qCiudad);
+        if(ciudades.length===0){
+            return res.status(StatusCodes.CONFLICT)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No se encontraron ciudades',
+                errors:[
+                    {
+                        msg:'No se encontraron ciudades',
+                        param:''
+                    }
+                ]             
+                
+            });
+        }
+        return res.status(StatusCodes.OK)
+        .json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Ciudades encontradas',
+            ciudades:[ciudades]       
+            
+        });
+
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+                statusDescription:'Error al consultar listado de ciudades',
+                errors:[
+                    {
+                        msg:'Error al consultar listado de ciudades',
+                        param:''
+                    }
+                ] 
+            });
+    }
+}
 //#endregion
 
 //#region Tipo documento
@@ -511,6 +553,6 @@ const searchTD=async(req,res=response)=>{
 //#endregion
 
 module.exports={
-    createCity,readCity,updateCity,deleteCity,searchC,searchTD,
+    createCity,readCity,updateCity,deleteCity,searchC,searchTD,getAllCities,
     createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument
 }

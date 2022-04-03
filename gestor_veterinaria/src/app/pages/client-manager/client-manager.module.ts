@@ -10,6 +10,8 @@ import { UpdClientComponent } from './pages/clients/upd-client.component';
 import { FindPetComponent } from './pages/pets/find-pet.component';
 import { UpdPetComponent } from './pages/pets/upd-pet.component';
 import { DelPetComponent } from './pages/pets/del-pet.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -27,7 +29,11 @@ import { DelPetComponent } from './pages/pets/del-pet.component';
   ],
   imports: [
     CommonModule,
-    ClientsRoutesModule
+    ClientsRoutesModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule
+
   ]
 })
 export class ClientManagerModule { }
