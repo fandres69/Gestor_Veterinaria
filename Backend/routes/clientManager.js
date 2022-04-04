@@ -2,7 +2,7 @@ const {Router} =require('express');
 const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
-const {createClient,findCliente,updateCliente,deleteClient,createPets,findPet,deletePet,updatePet}=require('../controller/clientController');
+const {createClient,findCliente,updateCliente,deleteClient,createPets,findPet,deletePet,updatePet, getClients, getMascotas}=require('../controller/clientController');
 const router=Router();
 
 //#region Cliente
@@ -21,7 +21,7 @@ router.post('/createClient',[
 ],createClient);
 
 /**Ruta consulta cliente */
-router.get('/findClient',[
+router.post('/findClient',[
     check('documento','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
@@ -29,7 +29,7 @@ router.get('/findClient',[
 
 
 /**Ruta actualización cliente */
-router.put('/updateClient',[
+router.post('/updateClient',[
     check('documento','Campo requerido').not().isEmpty().isNumeric(),
     check('tipodocumento','Campo requerido').not().isEmpty().isNumeric(),
     check('nombre','Campo requerido').not().isEmpty().isLength({min:3,max:450}),
@@ -47,12 +47,15 @@ router.post('/deleteClient',[
     check('documento','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
-],deleteClient)
+],deleteClient);
+
+router.get('/Client/:criterio/:tipo',[ValidateJWT],getClients);
+
 
 //#endregion
 
 //#region mascotas
-
+/**Ruta creación de mascotas */
 router.post('/createPet',[
     check('propietario','Campo requerido').not().isEmpty().isNumeric(),
     check('nombre','Campo requerido').not().isEmpty().isLength({min:3,max:300}),
@@ -60,12 +63,16 @@ router.post('/createPet',[
     validationCamps,
     ValidateJWT
 ],createPets);
+
+/**Ruta búsqueda de mascotas */
 router.get('/findPet',[
     check('idmascotas','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],findPet);
-router.put('/updatePet',[
+
+/**Ruta Actualización de mascotas */
+router.post('/updatePet',[
     check('propietario','Campo requerido').not().isEmpty().isNumeric(),
     check('nombre','Campo requerido').not().isEmpty().isLength({min:3,max:300}),
     check('tipo','Campo requerido').not().isEmpty().isLength({min:3,max:300}),
@@ -73,12 +80,16 @@ router.put('/updatePet',[
     validationCamps,
     ValidateJWT
 ],updatePet);
+
+/**Ruta Eliminación de mascotas */
 router.post('/deletePet',[
     check('idmascotas','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],deletePet);
 
+/**Ruta búsqueda de mascotas con criterio*/
+router.get('/Mascotas/:criterio/:tipo',[ValidateJWT],getMascotas);
 //#endregion
 
 module.exports=router;

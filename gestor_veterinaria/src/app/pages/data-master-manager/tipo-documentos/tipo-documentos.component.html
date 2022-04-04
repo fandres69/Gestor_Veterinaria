@@ -1,0 +1,28 @@
+<div class="container">
+    <h1>Creación de ciudades</h1>
+    <hr>
+    <div class="container form-control form-floating">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Tipo documento"
+                formControlName="tipoDocumento"
+                >
+                <label for="floatingInput">Tipo documento</label>
+            </div>
+            
+            <div class="form-floating m-5 p-1">
+                <div class="float-md-end">
+                    <button class="btn btn-outline-primary "
+                    (click)="crearTipoDocumento()"
+                    >Guardar</button>
+                </div>                
+            </div>
+            
+
+        </form>
+
+    </div>
+
+</div>

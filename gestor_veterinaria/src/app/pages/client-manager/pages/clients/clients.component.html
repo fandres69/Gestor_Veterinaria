@@ -1,0 +1,92 @@
+<div class="container">
+    <h1>Creación de clientes</h1>
+    <hr>
+    <div class="container form-control form-floating">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Documento"
+                formControlName="documento"
+                >
+                <label for="floatingInput">Documento</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('documento')"           
+                >Este campo es obligatorio, numeró de documento valido</span>
+              
+            </div>
+            <div class="form-floating m-3">
+                <select class="form-select" id="tipodocumento" formControlName="tipodocumento"  > 
+                                                     
+                    <option *ngFor="let item of tiposDocL" value="{{item.idtipoDocumento}}" >{{item.tipoDocumento}}</option>                                  
+                  </select>
+               <label for="tipodocumento">Tipo de documento</label>
+            </div>
+
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Nombre"
+                formControlName="nombre"
+                >
+                <label for="floatingInput">Nombre</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('nombre')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+               
+            </div>
+            <div class="form-floating m-3">
+                <input type="tel" class="form-control" id="floatingInput" 
+                placeholder="Celular"
+                formControlName="celular"
+                >
+                <label for="floatingInput">Celular</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('celular')"           
+                >Este campo es obligatorio, numeró de teléfono valido</span>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Direccion"
+                formControlName="direccion"
+                >
+                <label for="floatingInput">Direccion</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('direccion')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+            </div>
+            <div class="form-floating m-3">
+                <select class="form-select" id="ciudad" formControlName="ciudad"  >                                                      
+                    <option *ngFor="let item of ciudadesL" value="{{item.codigo}}" >{{item.Ciudad}}</option>                                  
+                  </select>
+               <label for="ciudad">Ciudad</label>
+               <span class="form-text text-danger"
+                *ngIf="ValidaCampo('nombre')"           
+                >Este campo es obligatorio</span>               
+            </div>
+
+            <div class="form-floating m-3">
+                <input type="email" class="form-control" id="floatingInput" 
+                placeholder="Email"
+                formControlName="email"
+                >
+                <label for="floatingInput">Email</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('email')"           
+                >Este campo es obligatorio, tipo email valido</span>
+            </div>
+
+            <div class="form-floating m-5 p-1">
+                <div class="float-md-end">
+                    <button class="btn btn-outline-primary "
+                    (click)="crearCliente()"
+                    >Guardar</button>
+                </div>
+                
+            </div>
+            
+
+        </form>
+
+    </div>
+
+</div>

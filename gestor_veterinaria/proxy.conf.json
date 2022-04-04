@@ -1,0 +1,6 @@
+{
+    "/api":{
+        "target":"http://localhost:3301/api/gveterinaria",
+        "secure":false
+    }
+}

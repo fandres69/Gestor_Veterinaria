@@ -4,9 +4,9 @@
  * Modelo tabla gveterinaria.ciudad
  */
 const ciudad={
-    codigo:0,
+    codigo:'',
     Ciudad:"",
-    codigoDto:0,
+    codigoDto:'',
     Departamento:""
 }
 

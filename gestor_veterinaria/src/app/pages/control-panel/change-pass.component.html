@@ -1,0 +1,33 @@
+<div class="container text-center p-4">
+    <div class="row">
+        <div class="col-8">
+            <img src="../../../assets/cambioPass.jpeg" class="img-fluid " alt="Imagen">
+        </div>
+        <div class="col-4 ">
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+            <form action="" class="form-floating align-items-center p-2" [formGroup]="miForm">
+                <div class="form-floating m-2">
+                    <input type="password" class="form-control" id="password" placeholder="password" formControlName="password">
+                    <label for="password">Contraseña actual</label>
+                </div>
+                <div class="form-floating m-2">
+                    <input type="password" class="form-control" id="passwordN" placeholder="nuevo password" formControlName="nPassword">
+                    <label for="passwordN">Nueva contraseña</label>
+                </div>
+                <div class="form-floating m-2">
+                    <input type="password" class="form-control" id="passwordC" placeholder="confirmación nuevo password" formControlName="cPassword">
+                    <label for="passwordC">confirma tu nueva contraseña</label>
+                </div>
+                <div class="form-floating m-2">
+                  <button class="btn btn-success" (click)="updatePassword()">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+   
+</div>

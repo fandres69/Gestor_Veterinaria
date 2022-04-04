@@ -1,0 +1,27 @@
+<div class="container overflow-hidden" >
+  
+    <div class="row justify-content-md-center">
+        <img src="../../../../assets/emp.jpeg" class="rounded " alt="...">
+    </div>
+    <div class="row  p-2">
+      <div class="col"></div>
+        <div class="col">
+            <form  class="form-control-sm" (ngSubmit)="login()" [formGroup]="miForm">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" formControlName="usuarioN" placeholder="tu nombre de usuario">
+                    <label for="floatingInput">Usuario</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                  </div>
+                  <div  class="form-floating m-3 text-center w-10">
+                    <button type="submit" class="btn btn-outline-primary start-50 " style="width: 30%;"
+                    
+                    >Login</button>
+                  </div>                  
+            </form>           
+        </div>
+        <div class="col"></div>
+    </div>
+  </div>

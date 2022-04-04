@@ -1,0 +1,233 @@
+<div class="container">
+    <h1 class="text-center">Administración  productos y servicios</h1>  
+
+<hr>
+<div class="row">
+    <div class="col-2">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-producto-tab" data-bs-toggle="tab" data-bs-target="#nav-producto" type="button" role="tab" aria-controls="nav-producto" aria-selected="true"> <span class="material-icons bi md-48">inventory</span></button>
+              <button class="nav-link" id="nav-inventario-tab" data-bs-toggle="tab" data-bs-target="#nav-inventario" type="button" role="tab" aria-controls="nav-inventario" aria-selected="false"> <span class="material-icons bi md-48">view_in_ar</span></button>
+              <button class="nav-link" id="nav-ingresos-tab" data-bs-toggle="tab" data-bs-target="#nav-ingresos" type="button" role="tab" aria-controls="nav-ingresos" aria-selected="false"> <span class="material-icons bi md-48">auto_stories</span></button>
+              <button class="nav-link" id="nav-servicios-tab" data-bs-toggle="tab" data-bs-target="#nav-servicios" type="button" role="tab" aria-controls="nav-servicios" aria-selected="false"> <span class="material-icons bi md-48">supervised_user_circle</span></button>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-producto" role="tabpanel" aria-labelledby="nav-producto-tab">
+                <div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./createProducto">                  
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>producto</span>
+                                </div>
+                            </div> 
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./findProducto">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>producto</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./updateProducto">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>producto</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./deleteProducto">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>producto</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>   
+            </div>
+            <div class="tab-pane fade" id="nav-inventario" role="tabpanel" aria-labelledby="nav-inventario-tab">
+                <div class="">
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./createInventario">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>inventario</span>
+                                </div>
+                            </div>              
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./findInventario">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>inventario</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./updateInventario">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>inventario</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./deleteInventario">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>inventario</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>    
+            </div>
+            <div class="tab-pane fade" id="nav-ingresos" role="tabpanel" aria-labelledby="nav-ingresos-tab">
+                <div class="">
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./createStock">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar ingreso inventario</span>
+                                </div>
+                            </div>              
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./findStock">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar ingreso inventario</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./updateStock">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar ingreso inventario</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./deleteStock">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar ingreso inventario</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>    
+            </div>
+            <div class="tab-pane fade" id="nav-servicios" role="tabpanel" aria-labelledby="nav-servicios-tab">
+                <div class="">
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./createServicio">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>servicio</span>
+                                </div>
+                            </div>              
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./findServicio">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>servicio</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./updateServicio">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>servicio</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./deleteServicio">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>servicio</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>    
+            </div>
+          </div>        
+    </div>
+    <div class="col">
+        <router-outlet></router-outlet>
+        
+    </div>
+</div>
+
+
+

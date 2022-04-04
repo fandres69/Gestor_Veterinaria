@@ -6,7 +6,8 @@
  const {check} = require('express-validator');
  const { validationCamps } = require('../middlewares/validations-camps');
  const { ValidateJWT } = require('../middlewares/validation-jwt');
- const {createCity,readCity,updateCity,deleteCity,createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument}=require('../controller/dataMasterController');
+ const {createCity,readCity,updateCity,deleteCity,createTypeDocument,readTypeDocument,updateTypeDocument,deleteTypeDocument, searchC, searchTD, getAllCities}=require('../controller/dataMasterController');
+const { allTypeDoc, validToken } = require('../controller/authController');
  const router=Router();
 //#region ciudades
 
@@ -28,7 +29,7 @@
  ],readCity);
 
  /**Ruta actualización ciudades */
- router.put('/updateCity',[
+ router.post('/updateCity',[
     check('codigo','Campo requerido').not().isEmpty().isNumeric(),
     check('codigoDto','Campo requerido').not().isEmpty().isNumeric(),
     check('Ciudad','Campo requerido').not().isEmpty().isLength({min:3,max:200}),
@@ -43,6 +44,12 @@
     validationCamps,
     ValidateJWT
  ],deleteCity);
+
+/**Ruta para petición de todas las ciudades */
+ router.get('/allCities',[ValidateJWT],getAllCities);
+
+ /**Ruta para búsqueda de ciudades con criterio */
+router.get('/cities/:criterio',[ValidateJWT],searchC);
 
  //#endregion
 
@@ -63,7 +70,7 @@
  ],readTypeDocument);
 
  /**Ruta actualización tipo documento  */
- router.put('/updateTypeDoc',[
+ router.post('/updateTypeDoc',[
     check('tipoDocumento','Campo requerido').not().isEmpty().isLength({min:3,max:200}),
     check('idtipoDocumento','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
@@ -77,5 +84,11 @@
     ValidateJWT
  ],deleteTypeDocument);
 
+ router.post('/allTypeDoc',[
+   ValidateJWT
+ ],allTypeDoc)
+
+
+ router.get('/searchTypeDoc/:criterio',[ValidateJWT],searchTD);
  //#endregion
  module.exports=router;

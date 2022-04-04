@@ -1,0 +1,84 @@
+<div class="container">
+    <h1>Eliminación de mascotas</h1>
+    <hr>
+    <form class="example-form form-floating p-2 m-2">
+        <mat-form-field class="m-3">
+            <mat-label>Buscar por:</mat-label>
+            <mat-select [(value)]="tipo">
+              <mat-option value="N">Mascota Nombre</mat-option>
+              <mat-option value="D">Cliente Documento</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <mat-form-field class="m-3 example-full-width" >
+          <mat-label>Criterio de búsqueda</mat-label>
+          <input type="text" class="example-full-width"
+                 placeholder=""
+                 aria-label="Criterio de búsqueda"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                 [(ngModel)]="criterio" 
+                (focus)="limpiarInfo()"
+                 >
+          <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+            <div *ngIf="tipo==='N'">
+              <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.nombre" (click)="selectForQuery(option)">
+                {{option.propietario}} - {{option.nombre}}
+              </mat-option>
+            </div>
+            <div *ngIf="tipo!='N'">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.nombre" (click)="selectForQuery(option)">
+                  {{option.propietario}} - {{option.nombre}}
+                </mat-option>
+              </div>                
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>        
+        <button mat-stroked-button color="warn" class="m-2" (click)="editable()" *ngIf="forLoad" >Eliminar</button>        
+    </form>
+
+    <form action="" [formGroup]="miForm">
+        <div class="m-3 w-100"  *ngIf="forLoad">     
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-6">
+                    <form action="" [formGroup]="miForm">
+                        <div class="form-floating m-3">
+                            <input type="text" class="form-control" id="floatingInput" 
+                            placeholder="Propietario"
+                            formControlName="propietario" readonly="true"
+                            >
+                            <label for="floatingInput">Propietario</label>                        
+                        </div>
+                        <div class="form-floating m-3">
+                            <input type="text" class="form-control" id="floatingInput" 
+                            placeholder="Nombre"
+                            formControlName="nombre" 
+                            >
+                            <label for="floatingInput">Nombre mascota</label>
+                            <span class="form-text text-danger"
+                            *ngIf="ValidaCampo('nombre')"           
+                            >Este campo es obligatorio, mas de 3 caracteres</span>
+                        </div>
+                        <div class="form-floating m-3">
+                            <input type="text" class="form-control" id="floatingInput" 
+                            placeholder="Tipo, ej. Gato, Perro"
+                            formControlName="tipo" 
+                            >
+                            <label for="floatingInput">Tipo de mascota</label>
+                            <span class="form-text text-danger"
+                            *ngIf="ValidaCampo('tipo')"           
+                            >Este campo es obligatorio,mas de 3 caracteres</span>
+                        </div> 
+                        <div class="form-floating m-3">
+                            <button class="btn btn-outline-secondary m-3" (click)="cancelar()" *ngIf="editar">Cancelar</button>
+                            <button class="btn btn-outline-danger m-3" (click)="deleteMascota()" *ngIf="editar">Eliminar</button>
+                        </div>     
+                    </form>
+                </div>
+                <div class="col-2"></div>
+            </div>       
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,179 @@
+<div class="container">
+    <h1 class="text-center">Administración Ventas</h1>  
+
+<hr>
+<div class="row">
+    <div class="col-2">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-pedido-tab" data-bs-toggle="tab" data-bs-target="#nav-pedido" type="button" role="tab" aria-controls="nav-pedido" aria-selected="true"> <span class="material-icons bi md-48">receipt_long</span></button>
+              <button class="nav-link" id="nav-detalle-tab" data-bs-toggle="tab" data-bs-target="#nav-detalle" type="button" role="tab" aria-controls="nav-detalle" aria-selected="false"> <span class="material-icons bi md-48">fact_check</span></button>
+              <button class="nav-link" id="nav-devoluciones-tab" data-bs-toggle="tab" data-bs-target="#nav-devoluciones" type="button" role="tab" aria-controls="nav-devoluciones" aria-selected="false"> <span class="material-icons bi md-48">settings_backup_restore</span></button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-pedido" role="tabpanel" aria-labelledby="nav-pedido-tab">
+                <div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./cPedidos">                  
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>Pedido</span>
+                                </div>
+                            </div> 
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./fPedidos">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>Pedido</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./uPedidos">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>Pedido</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark"  routerLink="./dPedidos">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>Pedido</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>   
+            </div>
+            <div class="tab-pane fade" id="nav-detalle" role="tabpanel" aria-labelledby="nav-detalle-tab">
+                <div class="">
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./cDetalles">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>Detalle</span>
+                                </div>
+                            </div>              
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./fDetalles">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>Detalle</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./uDetalles">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>Detalle</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./dDetalles">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>Detalle</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>    
+            </div>
+            <div class="tab-pane fade" id="nav-devoluciones" role="tabpanel" aria-labelledby="nav-devoluciones-tab">
+                <div class="">
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./cDevoluciones">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">add</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Agregar<br>Devolución</span>
+                                </div>
+                            </div>              
+                        </button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./fDevoluciones">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">search</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Buscar<br>Devolución</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./uDevoluciones">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">update</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Actualizar<br>Devolución</span>
+                                </div>
+                            </div>              
+                        </button>         
+                    </div>
+                    <div class="row m-1">
+                        <button class="btn btn-outline-dark" routerLink="./dDevoluciones">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="material-icons bi">remove</span>
+                                </div>
+                                <div class="col text-center">
+                                    <span class="float-md-start">Eliminar<br>Devolución</span>
+                                </div>
+                            </div>              
+                        </button>                 
+                    </div>
+                </div>    
+            </div>
+        </div>    
+    </div>
+    <div class="col">
+        <router-outlet></router-outlet>        
+    </div>
+</div>
+
+
+

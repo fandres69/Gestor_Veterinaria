@@ -1,0 +1,124 @@
+<div class="container">
+    <h1>Eliminación de clientes</h1>
+    <hr>
+    <form class="example-form form-floating p-2 m-2">
+        <mat-form-field class="m-3">
+            <mat-label>Buscar por:</mat-label>
+            <mat-select [(value)]="tipo">
+              <mat-option value="N">Nombre</mat-option>
+              <mat-option value="D">Documento</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <mat-form-field class="m-3" >
+          <mat-label>Cliente a buscar</mat-label>
+          <input type="text"
+                 placeholder=""
+                 aria-label="Cliente a buscar"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                [(ngModel)]="criterio" 
+                (focus)="limpiarInfo()"
+                 >
+          <mat-autocomplete #auto="matAutocomplete">
+            <div *ngIf="tipo==='N'">
+              <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.nombre" (click)="selectForQuery(option)">
+                {{option.nombre}}
+              </mat-option>
+            </div>
+            <div *ngIf="tipo!='N'">
+              <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                {{option.documento}}
+              </mat-option>
+            </div>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>
+        <button mat-stroked-button color="warn" class="m-2" (click)="editable()" *ngIf="forLoad">Eliminar</button>
+      </form>
+
+    <div class="m-3 w-100"  *ngIf="forLoad">     
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-6">
+                <form action="" [formGroup]="miForm">
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Documento"
+                        formControlName="documento" readonly="true"
+                        >
+                        <label for="floatingInput">Documento</label>
+                        <span class="form-text text-danger"
+                        *ngIf="ValidaCampo('documento')"           
+                        >Este campo es obligatorio, numeró de documento valido</span>
+                    </div>
+                    <div class="form-floating m-3">
+                      <select class="form-select" id="tipodocumento" formControlName="tipodocumento" >                                                            
+                          <option *ngFor="let item of tiposDocL" value="{{item.idtipoDocumento}}" >{{item.tipoDocumento}}</option>                                  
+                        </select>
+                     <label for="tipodocumento">Tipo de documento</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Nombre"
+                        formControlName="nombre" 
+                        >
+                        <label for="floatingInput">Nombre</label>
+                        <span class="form-text text-danger"
+                        *ngIf="ValidaCampo('nombre')"           
+                        >Este campo es obligatorio, mas de 3 caracteres</span>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Celular"
+                        formControlName="celular" 
+                        >
+                        <label for="floatingInput">Celular</label>
+                        <span class="form-text text-danger"
+                        *ngIf="ValidaCampo('celular')"           
+                        >Este campo es obligatorio, numeró de teléfono valido</span>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Dirección"
+                        formControlName="direccion" 
+                        >
+                        <label for="floatingInput">Dirección</label>
+                        <span class="form-text text-danger"
+                        *ngIf="ValidaCampo('direccion')"           
+                        >Este campo es obligatorio, mas de 3 caracteres</span>
+                    </div>  
+                    <div class="form-floating m-3">
+                      <select class="form-select" id="ciudad" formControlName="ciudad">                                                            
+                          <option *ngFor="let item of ciudadesL" value="{{item.codigo}}" >{{item.Ciudad}}</option>                                  
+                        </select>
+                     <label for="ciudad">Ciudad</label>
+                     <span class="form-text text-danger"
+                     *ngIf="ValidaCampo('nombre')"           
+                     >Este campo es obligatorio</span>     
+                    </div>  
+                    <div class="form-floating m-3">
+                      <input type="email" class="form-control" id="floatingInput" 
+                      placeholder="Email"
+                      formControlName="email" 
+                      >
+                      <label for="floatingInput">Email</label>
+                      <span class="form-text text-danger"
+                      *ngIf="ValidaCampo('email')"           
+                      >Este campo es obligatorio, tipo email valido</span>
+                    </div>        
+                    <div class="form-floating m-3">
+                        <button class="btn btn-outline-secondary m-3" (click)="cancelar()" *ngIf="editar">Cancelar</button>
+                        <button class="btn btn-outline-danger m-3" (click)="deleteCliente()" *ngIf="editar">Eliminar</button>
+                    </div>       
+                    
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+       
+
+    </div>
+
+</div>
+

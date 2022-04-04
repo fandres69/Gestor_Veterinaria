@@ -48,12 +48,18 @@ const qDeleteUser=` DELETE FROM gveterinaria.usuarios where documento=?`
  *@param tipoDocumento
  *@param celular
  *@param email
- *@param password
  *@param usuario
  *@param activo
  *@param documento
  */
-const qUpdateUser=`UPDATE gveterinaria.usuarios SET nombre=?, tipoDocumento=?,celular=?,email=?,password=?,usuario=?,activo=? WHERE documento=?`
+const qUpdateUser=`UPDATE gveterinaria.usuarios SET nombre=?, tipoDocumento=?,celular=?,email=?,usuario=?,activo=? WHERE documento=?`
+
+/**
+ * Actualiza el password del usuario
+ * @param password
+ * @param documento
+ */
+const qUpdPasswordUser=`UPDATE gveterinaria.usuarios SET password=? WHERE documento=?;`;
 
 /**
  * Consulta genérica para tabla gveterinaria.usuarios
@@ -67,5 +73,6 @@ module.exports={
     qDeleteUser,
     qUpdateUser,
     qQueryGeneric,
-    qLogin
+    qLogin,
+    qUpdPasswordUser
 }

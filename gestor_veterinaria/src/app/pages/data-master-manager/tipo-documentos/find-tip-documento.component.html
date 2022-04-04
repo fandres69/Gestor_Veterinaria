@@ -1,0 +1,55 @@
+<div class="container">
+    <h1>Búsqueda de tipo de documento</h1>
+    <hr>
+    <form class="example-form form-floating p-2 m-2">
+        <mat-form-field class="" >
+          <mat-label>Buscar tipo de documento</mat-label>
+          <input type="text"
+                 placeholder=""
+                 aria-label="Buscar tipo de documento"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                [(ngModel)]="criterio" 
+                (focus)="limpiarInfo()"
+                 >
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.tipoDocumento" (click)="selectForQuery(option)">
+              {{option.tipoDocumento}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>
+      </form>
+
+    <div class="m-3 w-100"  *ngIf="forLoad">     
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-6">
+                <form action="">
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="Código tipo documento"
+                        [value]="selTipoDocumento.idtipoDocumento" [readonly]="true"
+                        >
+                        <label for="floatingInput">Código tipo documento</label>
+                    </div>
+                    <div class="form-floating m-3">
+                        <input type="text" class="form-control" id="floatingInput" 
+                        placeholder="tipo documento"
+                        [value]="selTipoDocumento.tipoDocumento"  [readonly]="true"
+                        >
+                        <label for="floatingInput">Tipo documento</label>
+                    </div>
+                  
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+       
+
+    </div>
+
+</div>
+
+

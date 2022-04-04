@@ -9,6 +9,9 @@
 		{
 			"path": "./Backend"
 		},
+		{
+			"path": "Gestor_Veterinaria"
+		}
 	],
 	"settings": {
 		"files.exclude": {
@@ -20,6 +23,7 @@
 			"anio",
 			"APIPORT",
 			"codigo",
+			"datamaster",
 			"DBDATABASE",
 			"DBHOST",
 			"DBPASSWORD",
@@ -31,6 +35,9 @@
 			"Devolucion",
 			"direccion",
 			"endregion",
+			"errorpage",
+			"Errorpage",
+			"Fatobon",
 			"gveterinaria",
 			"iddetalle",
 			"iddevoluciones",
@@ -39,14 +46,28 @@
 			"idpedidos",
 			"idproductos",
 			"idtipo",
+			"imagesperfil",
 			"ingresosinventario",
+			"LOADFOLDER",
+			"logeado",
 			"Mapea",
 			"Maper",
 			"mapers",
 			"middlewares",
+			"originalname",
 			"pelanas",
 			"presentacion",
-			"tipodocumento"
+			"Serv",
+			"Swal",
+			"sweetalert",
+			"tipodoc",
+			"tipodocumento",
+			"Upsss",
+			"usermaper",
+			"userpass",
+			"vetspa"
 		]
 	}
+	
+	
 }
