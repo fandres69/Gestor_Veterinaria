@@ -6,7 +6,7 @@
 const producto={
     idProductos :0,
     producto:"",
-    ciudad:0,
+    ciudad:"",
     presentacion:"",
     unEmpaque:0,
     descripcion:""

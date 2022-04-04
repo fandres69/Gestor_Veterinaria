@@ -18,6 +18,8 @@ import { DelServicioComponent } from './pages/servicios/del-servicio.component';
 import { FindProductoComponent } from './pages/productos/find-producto.component';
 import { UpdProductoComponent } from './pages/productos/upd-producto.component';
 import { DelProductoComponent } from './pages/productos/del-producto.component';
+import { MaterialModule } from '../material/material.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 
@@ -43,7 +45,10 @@ import { DelProductoComponent } from './pages/productos/del-producto.component';
   ],
   imports: [
     CommonModule,
-    StockManagerRoutingModule
+    StockManagerRoutingModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class StockManagerModule { }

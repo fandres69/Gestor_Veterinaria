@@ -1,1 +1,85 @@
-<p>find-producto works!</p>
+<div class="container">
+    <h1>Búsqueda de productos</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Criterio de búsqueda</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Criterio de búsqueda"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.producto" (click)="selectForQuery(option)">
+                   {{option.producto}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>       
+                  
+        </form>
+    </div>
+
+    <div class="container">        
+        <form action="" [formGroup]="miForm" *ngIf="forLoad">
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Productos"
+                formControlName="producto"
+                >
+                <label for="floatingInput">Producto</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('producto')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+              
+            </div>
+            <div class="form-floating m-3">
+                <select class="form-select" id="ciudad" formControlName="ciudad"  >                                                      
+                    <option *ngFor="let item of ciudadesL" value="{{item.codigo}}" >{{item.Ciudad}}</option>                                  
+                  </select>
+               <label for="tipodocumento">Ciudad</label>
+            </div>
+
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Presentacion"
+                formControlName="presentacion"
+                >
+                <label for="floatingInput">Presentación</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('presentacion')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+               
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Unidades X empaque"
+                formControlName="unEmpaque"
+                >
+                <label for="floatingInput">Unidades X empaque</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('unEmpaque')"           
+                >Este campo es obligatorio, mínimo 1</span>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Descripción"
+                formControlName="descripcion"
+                >
+                <label for="floatingInput">Descripción</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('descripcion')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+            </div>          
+          
+
+        </form>
+    </div>
+    
+</div>

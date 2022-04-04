@@ -7,8 +7,9 @@ const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
 const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock,
-    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn
+    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn, getProducts, getStocks, getServicios, getStocksIn
 }=require('../controller/stockManagerController');
+const { route } = require('./auth');
 const router=Router();
 
 //#region Productos
@@ -24,7 +25,7 @@ router.post('/newProduct',[
 ],createProduct);
 
 /**Ruta actualización de productos */
-router.put('/updateProduct',[
+router.post('/updateProduct',[
     check('producto','Campo requerido').not().isEmpty().isLength({min:3,max:300}),
     check('idProductos','Campo requerido').not().isEmpty().isNumeric(),
     check('ciudad','Campo requerido').not().isEmpty().isNumeric(),
@@ -36,7 +37,7 @@ router.put('/updateProduct',[
 ],updateProduct);
 
 /**Ruta consulta productos */
-router.get('/findProduct',[
+router.post('/findProduct',[
     check('idProductos','Campo requerido').not().isEmpty(),
     validationCamps,
     ValidateJWT
@@ -48,6 +49,9 @@ router.post('/deleteProduct',[
     validationCamps,
     ValidateJWT
 ],deleteProduct);
+
+/**Ruta que consulta productos a partir de un criterio de búsqueda */
+router.get('/getProducts/:criterio',[ValidateJWT],getProducts);
 
 //#endregion
 
@@ -66,7 +70,7 @@ router.post('/newStock',[
 ],createStock);
 
 /**Ruta actualización inventario */
-router.put('/updateStock',[
+router.post('/updateStock',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('stock','Campo requerido').not().isEmpty().isNumeric(),
     check('stockMin','Campo requerido').isNumeric(),
@@ -80,7 +84,7 @@ router.put('/updateStock',[
 ],updateStock);
 
 /**Ruta consulta inventario */
-router.get('/findStock',[
+router.post('/findStock',[
     check('idInventario','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
@@ -92,6 +96,8 @@ router.post('/deleteStock',[
     validationCamps,
     ValidateJWT
 ],deleteStock);
+
+router.get('/getStocks/:criterio',[ValidateJWT],getStocks);
 
 //#endregion
 
@@ -108,7 +114,7 @@ router.post('/newService',[
 ],createServiceV);
 
 /**Ruta actualización servicio */
-router.put('/updateService',[
+router.post('/updateService',[
     check('servicio','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
     check('descripcion','Campo requerido').not().isEmpty().isLength({min:3, max:300}),
     check('precio','Campo requerido').not().isEmpty().isNumeric(),
@@ -120,7 +126,7 @@ router.put('/updateService',[
 ],updateServiceV);
 
 /**Ruta consulta servicios */
-router.get('/findService',[
+router.post('/findService',[
     check('idServicios','Campo requerido').isNumeric(),
     validationCamps,
     ValidateJWT 
@@ -133,11 +139,14 @@ router.post('/deleteService',[
     ValidateJWT
 ],deleteServiceV);
 
+/**Ruta que consulta servicios a partir de un criterio de búsqueda */
+router.get('/getServicios/:criterio',[ValidateJWT],getServicios);
+
 //#endregion
 
 //#region Ingresos de inventario
 
-/**Ruta para creación de un ingresa de inventario */
+/**Ruta para creación de un ingreso de inventario */
 router.post('/createStockIn',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
@@ -149,15 +158,15 @@ router.post('/createStockIn',[
     ValidateJWT
 ],createStockIn);
 
-/**Ruta para consulta de un ingresa de inventario */
-router.get('/findStockIn',[
+/**Ruta para consulta de un ingreso de inventario */
+router.post('/findStockIn',[
     check('idingresosInventario','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],readStockIn);
 
-/**Ruta para actualización de un ingresa de inventario */
-router.put('/updateStockIn',[
+/**Ruta para actualización de un ingreso de inventario */
+router.post('/updateStockIn',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
     check('Precio','Campo requerido').not().isEmpty().isNumeric(),
@@ -169,13 +178,15 @@ router.put('/updateStockIn',[
     ValidateJWT
 ],updateStockIn);
 
-/**Ruta para eliminación de un ingresa de inventario */
+/**Ruta para eliminación de un ingreso de inventario */
 router.post('/deleteStockIn',[
     check('idingresosInventario','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],deleteStockIn);
 
+/**Ruta que consulta ingresos de inventario a partir de un criterio de búsqueda */
+router.get('/getStocksIn/:criterio',[ValidateJWT],getStocksIn);
 
 //#endregion
 
