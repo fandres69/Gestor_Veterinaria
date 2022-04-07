@@ -12,9 +12,9 @@ const getStockForCreate=(req)=>{
     const{producto,stock,stockMin,stockMax,PrecioVenta,impuesto,descuento}=req.body;
     nStock.producto=producto;
     nStock.stock=stock;
-    nStock.stockMin,stockMin;
-    nStock.stockMax,stockMax;
-    nStock.PrecioVenta,PrecioVenta;
+    nStock.stockMin=stockMin;
+    nStock.stockMax=stockMax;
+    nStock.PrecioVenta=PrecioVenta;
     nStock.impuesto=impuesto;
     nStock.descuento=descuento;
     return nStock;
@@ -30,9 +30,9 @@ const getStockForCreate=(req)=>{
     const{producto,stock,stockMin,stockMax,PrecioVenta,impuesto,descuento,idInventario}=req.body;
     nStock.producto=producto;
     nStock.stock=stock;
-    nStock.stockMin,stockMin;
-    nStock.stockMax,stockMax;
-    nStock.PrecioVenta,PrecioVenta;
+    nStock.stockMin=stockMin;
+    nStock.stockMax=stockMax;
+    nStock.PrecioVenta=PrecioVenta;
     nStock.impuesto=impuesto;
     nStock.descuento=descuento;
     nStock.idInventario=idInventario;

@@ -9,8 +9,8 @@ const devoluciones={
     pedido:0,
     producto:0,
     cantidad:0,
-    precio:0.0,
-    impuesto:0.0,
+    precio:0,
+    impuesto:0,
     observaciones:""
 }
 /**

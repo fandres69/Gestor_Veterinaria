@@ -43,6 +43,15 @@ export class LoginComponent implements OnInit {
       })
       return;       
      }
+     if(resp.error){
+      console.log(resp);
+       Swal.fire({
+         icon: 'error',
+         title:'Ha ocurrido un erro',
+         text: resp.name
+       })
+       return;       
+      }    
      if(resp){       
       this._UserL=this.authService.userRes;
       localStorage.setItem('x-token',this._UserL.token!);
@@ -52,7 +61,8 @@ export class LoginComponent implements OnInit {
        this.router.navigate(['/']);
       });
       
-     }     
+     } 
+     
     
     });
   }

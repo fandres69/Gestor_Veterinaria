@@ -1,1 +1,114 @@
-<p>upd-inventarios works!</p>
+<div class="container">
+    <h1>Actualización de inventarios</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Producto a buscar</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Producto a buscar"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.producto" (click)="selectForQuery(option)">
+                   {{option.producto}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>        
+            <button mat-stroked-button color="warn" class="m-2" (click)="editable()" *ngIf="forLoad" >Editar</button>        
+        </form>
+    </div>
+
+    <div class="container form-control form-floating" *ngIf="forLoad">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <select class="form-select" id="producto" formControlName="producto" >                                                      
+                    <option *ngFor="let item of productosL" value="{{item.idProductos}}" >{{item.producto}}</option>                                  
+                  </select>
+               <label for="producto">Producto</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Stock"
+                formControlName="stock"
+                >
+                <label for="floatingInput">Stock</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('stock')"           
+                >Este campo es obligatorio, mayor o igual a 0</span>              
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Stock Mínimo"
+                formControlName="stockMin"
+                >
+                <label for="floatingInput">Stock Mínimo</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('stockMin')"           
+                >Este campo es obligatorio, mayor o igual a 0</span>              
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Stock Máximo"
+                formControlName="stockMax"
+                >
+                <label for="floatingInput">Stock Máximo</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('stockMax')"           
+                >Este campo es obligatorio, mayor o igual a 0</span>              
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Precio de venta"
+                formControlName="PrecioVenta"
+                >
+                <label for="floatingInput">Precio de venta</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('PrecioVenta')"           
+                >Este campo es obligatorio, mayor a 0</span>              
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="% Impuesto"
+                formControlName="impuesto"
+                >
+                <label for="floatingInput">% Impuesto</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('impuesto')"           
+                >Este campo es obligatorio, mayor a 0</span>              
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="% Descuento"
+                formControlName="descuento"
+                >
+                <label for="floatingInput">% Descuento</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('descuento')"           
+                >Este campo es obligatorio, mayor a 0</span>              
+            </div> 
+            <div class="form-floating m-5 p-1" *ngIf="editar">
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-success "
+                    (click)="updateInventario()"
+                    >Guardar</button>
+                </div> 
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-secondary "
+                    (click)="cancelar()"
+                    >Cancelar</button>
+                </div>   
+            </div>                 
+
+        </form>
+
+    </div>
+</div>

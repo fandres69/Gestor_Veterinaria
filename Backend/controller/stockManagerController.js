@@ -284,6 +284,47 @@ const getProducts=async(req,res=response)=>{
         });
     } 
 }
+
+const getAllProducts=async(req,res=response)=>{
+    try {
+        const products=await pool.query(qProduct);
+        if(products.length===0){
+            return res.status(StatusCodes.CONFLICT).
+           json({
+            OK:false,
+            statusCode:StatusCodes.CONFLICT,
+            statusDescription:'No hay resultados encontrados',
+            errors:[
+                {
+                    msg:'No hay resultados encontrados',
+                    params:''
+                }
+            ]          
+           });
+        }
+        return res.status(StatusCodes.OK).
+        json({
+         OK:true,
+         statusCode:StatusCodes.OK,
+         statusDescription:'Resultados encontrados',
+         productos:[products]                 
+        });
+
+    } catch (error) {
+        return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
+        json({
+         OK:false,
+         statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         statusDescription:'Error al consultar los productos',
+         errors:[
+             {
+                msg:'Error al consultar los productos',
+                params:''
+             }
+         ]          
+        });
+    }
+}
 //#endregion
 
 //#region Inventario
@@ -559,6 +600,108 @@ const getStocks=async(req,res=response)=>{
     }
 }
 
+/**
+ * Retorna un stock de un producto
+ * @param {require} req 
+ * @param {response} res 
+ * @returns json
+ */
+const getStockId=async(req,res=response)=>{
+    try {
+        const producto=req.params.producto;
+        if (producto && producto==='') {
+            return res.status(StatusCodes.CONFLICT).
+            json({
+             OK:false,
+             statusCode:StatusCodes.CONFLICT,
+             statusDescription:'No hay producto a buscar',
+             errors:[
+                 {
+                     msg:'No hay producto a buscar',
+                     params:''
+                 }
+             ]          
+            });
+        }
+        let cmd=`${qInventario} WHERE producto =?;`
+        const sStock=await pool.query(cmd,[producto]);
+        if(sStock.length===0){
+            return res.status(StatusCodes.CONFLICT).
+            json({
+             OK:false,
+             statusCode:StatusCodes.CONFLICT,
+             statusDescription:'No hay inventario encontrado',
+             errors:[
+                 {
+                     msg:'No hay inventario encontrado',
+                     params:''
+                 }
+             ]          
+            });
+        }
+        return res.status(StatusCodes.OK).
+            json({
+             OK:true,
+             statusCode:StatusCodes.OK,
+             statusDescription:'Inventario encontrado',
+             stocks:[sStock]      
+            });
+
+    } catch (error) {
+        return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
+        json({
+         OK:false,
+         statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         statusDescription:'Error al consultar el inventarios',
+         errors:[
+             {
+                msg:'Error al consultar el inventarios',
+                params:''
+             }
+         ]          
+        });
+    }
+}
+
+const getCompleteStock=async(req,res=response)=>{
+    try {
+        const inventariosQ=await pool.query(qInventario);
+        if(inventariosQ.length===0){
+            return res.status(StatusCodes.CONFLICT).
+            json({
+             OK:false,
+             statusCode:StatusCodes.CONFLICT,
+             statusDescription:'No hay inventarios encontrados',
+             errors:[
+                 {
+                     msg:'No hay inventarios encontrados',
+                     params:''
+                 }
+             ]          
+            });
+        }
+        return res.status(StatusCodes.OK).
+        json({
+         OK:true,
+         statusCode:StatusCodes.OK,
+         statusDescription:'Inventario encontrado',
+         stocks:[inventariosQ]      
+        });
+    } catch (error) {
+        return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
+        json({
+         OK:false,
+         statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         statusDescription:'Error al consultar el inventarios',
+         errors:[
+             {
+                msg:'Error al consultar el inventarios',
+                params:''
+             }
+         ]          
+        });
+    }
+}
 //#endregion 
 
 //#region Servicios
@@ -878,17 +1021,17 @@ const createStockIn=async(req,res=response)=>{
              ]          
             }); 
         }    
-        const nStock=parseInt(inventarioQ.stock) + newStockIn.cantidad;        
+        const nStock=parseInt(inventarioQ[0].stock) + newStockIn.cantidad;        
         await pool.query(cIngresosInventario,[newStockIn.producto,newStockIn.cantidad,newStockIn.Precio,
             newStockIn.dia,newStockIn.mes,newStockIn.anio]);
-        await pool.query(updStockInventario,[nStock,inventarioQ.idInventario]);
+        await pool.query(updStockInventario,[nStock,inventarioQ[0].idInventario]);
        
         return res.status(StatusCodes.OK).
         json({
          OK:true,
          statusCode:StatusCodes.OK,
          statusDescription:'Entrada de inventario creada correctamente',
-         entradas:[newStockIn]                 
+         entradas:[cIngresosInventario]                 
         });
     } catch (error) {
         return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
@@ -982,7 +1125,7 @@ const updateStockIn=async(req,res=response)=>{
              ]          
             }); 
         }
-        const productoQ=await pool.query(rProducto,[StockInExited.producto]);
+        const productoQ=await pool.query(rProducto,[StockInExited[0].producto]);
         if (productoQ.length===0) {
             return res.status(StatusCodes.CONFLICT).
             json({
@@ -997,7 +1140,7 @@ const updateStockIn=async(req,res=response)=>{
              ]          
             }); 
         }
-        let cmd =`${qInventario} WHERE producto=${StockInExited.producto};`;
+        let cmd =`${qInventario} WHERE producto=${StockInExited[0].producto};`;
         const inventarioQ=await pool.query(cmd);
         if (inventarioQ.length===0) {
             return res.status(StatusCodes.CONFLICT).
@@ -1013,13 +1156,13 @@ const updateStockIn=async(req,res=response)=>{
              ]          
             }); 
         } 
-        const nStock=parseInt(inventarioQ.stock) + stockInUpdate.cantidad - parseInt(StockInExited.stock);      
+        const nStock=parseInt(inventarioQ[0].stock) + stockInUpdate.cantidad - parseInt(StockInExited[0].cantidad);      
        
         await pool.query(uIngresosInventario,[stockInUpdate.producto,stockInUpdate.cantidad,stockInUpdate.Precio
         ,stockInUpdate.dia,stockInUpdate.mes,stockInUpdate.anio,stockInUpdate.idingresosInventario]);
         rta=getResponseOk("Ingreso de inventario actualizado",{stockInUpdate});
 
-        await pool.query(updStockInventario,[nStock,inventarioQ.idInventario]);
+        await pool.query(updStockInventario,[nStock,inventarioQ[0].idInventario]);
 
         return res.status(StatusCodes.OK).
         json({
@@ -1073,7 +1216,7 @@ const deleteStockIn=async(req,res=response)=>{
             }); 
         }
 
-        const productoQ=await pool.query(rProducto,[StockInExited.producto]);
+        const productoQ=await pool.query(rProducto,[StockInExited[0].producto]);
         if (productoQ.length===0) {
             return res.status(StatusCodes.CONFLICT).
             json({
@@ -1088,7 +1231,7 @@ const deleteStockIn=async(req,res=response)=>{
              ]          
             }); 
         }
-        let cmd =`${qInventario} WHERE producto=${StockInExited.producto};`;
+        let cmd =`${qInventario} WHERE producto=${StockInExited[0].producto};`;
         const inventarioQ=await pool.query(cmd);
         if (inventarioQ.length===0) {
             return res.status(StatusCodes.CONFLICT).
@@ -1105,8 +1248,8 @@ const deleteStockIn=async(req,res=response)=>{
             }); 
         } 
 
-        const nStock=parseInt(inventarioQ.stock) - parseInt(StockInExited.stock);
-        await pool.query(updStockInventario,[nStock,inventarioQ.idInventario]);
+        const nStock=parseInt(inventarioQ[0].stock) - parseInt(StockInExited[0].cantidad);
+        await pool.query(updStockInventario,[nStock,inventarioQ[0].idInventario]);
         await pool.query(dIngresosInventario,[idingresosInventario]);
 
        return res.status(StatusCodes.OK).
@@ -1190,6 +1333,49 @@ const getStocksIn=async(req,res=response)=>{
         });
     }
 }
+
+const getAllStockIn=async(req,res=response)=>{
+    try {
+      
+        const ingresosQ= await pool.query(qIngresosInventario);
+        if(ingresosQ.length===0){
+            return res.status(StatusCodes.CONFLICT).
+            json({
+             OK:false,
+             statusCode:StatusCodes.CONFLICT,
+             statusDescription:'No se encuentran registros de entradas de inventario',
+             errors:[
+                 {
+                     msg:'No se encuentran registros de entradas de inventario',
+                     params:''
+                 }
+             ]          
+            }); 
+        }
+        return res.status(StatusCodes.OK).
+        json({
+         OK:true,
+         statusCode:StatusCodes.OK,
+         statusDescription:'Entrada de inventario encontradas',
+         entradas:[ingresosQ]                 
+        });
+
+        
+    } catch (error) {
+        return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
+        json({
+         OK:false,
+         statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         statusDescription:'Error al consultar entradas de inventario',
+         errors:[
+             {
+                msg:'Error al consultar entradas de inventario',
+                params:''
+             }
+         ]          
+        });
+    } 
+}
 //#endregion
 
 module.exports={
@@ -1213,4 +1399,8 @@ module.exports={
     getStocks,
     getServicios,
     getStocksIn,
+    getAllProducts,
+    getStockId,
+    getCompleteStock,
+    getAllStockIn,
 }

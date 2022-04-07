@@ -66,7 +66,12 @@
 			"usermaper",
 			"userpass",
 			"vetspa"
-		]
+		],
+		"gitlab.repositories": {
+			"d:\\fandr\\Projects\\Gestor_Veterinaria": {
+				"preferredRemoteName": "lab"
+			}
+		}
 	}
 	
 	

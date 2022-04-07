@@ -91,6 +91,28 @@ export class StManagerService {
     )
   }
 
+  /**
+   * Obtiene el listado de productos
+   * @returns json
+   */
+  getAllProducts(){
+    const url=`${this.baseUrl}${SmEnum.getAllProducts}`;
+    return this.http.get<ProductosResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err)
+      )
+    )
+  }
+
+
+  getCompleteStock(){
+    const url=`${this.baseUrl}${SmEnum.getCompleteStock}`;
+    return this.http.get<ProductosResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err)
+      )
+    )
+  }
   //#endregion
 
   //#region Inventarios
@@ -138,8 +160,8 @@ export class StManagerService {
   }
 
   /**
- * Actualiza un inventario en la DB
- * @param body inventario a actualizar
+ * Elimina un inventario en la DB
+ * @param body inventario a Eliminar
  * @returns json
  */
     delInventario(body:{}){
@@ -152,12 +174,21 @@ export class StManagerService {
   }
 
   /**
- * Actualiza un inventario en la DB
- * @param body inventario a actualizar
+ * Obtiene listado de inventarios en la DB
+ * @param criterio
  * @returns json
  */
     getInventario(criterio:string){
     const url=`${this.baseUrl}${SmEnum.getStock}${criterio}`;
+    return this.http.get<StocksResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err)
+      )
+    )
+  }
+  
+  getInventarioId(producto:string){
+    const url=`${this.baseUrl}${SmEnum.getStockId}${producto}`;
     return this.http.get<StocksResponse>(url,{headers:this.header}).pipe(
       map(resp=>resp),
       catchError(err=>of(err)
@@ -315,6 +346,14 @@ export class StManagerService {
   }
 
 
+  getAllIngresosInv(){
+    const url=`${this.baseUrl}${SmEnum.getAllIngresosInv}`;
+    return this.http.get<IngresosInvResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err)
+      )
+    )
+  }
 
   //#endregion
 

@@ -7,7 +7,7 @@ const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
 const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock,
-    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn, getProducts, getStocks, getServicios, getStocksIn
+    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn, getProducts, getStocks, getServicios, getStocksIn, getAllProducts, getStockId, getCompleteStock, getAllStockIn
 }=require('../controller/stockManagerController');
 const { route } = require('./auth');
 const router=Router();
@@ -53,6 +53,12 @@ router.post('/deleteProduct',[
 /**Ruta que consulta productos a partir de un criterio de búsqueda */
 router.get('/getProducts/:criterio',[ValidateJWT],getProducts);
 
+/**Ruta que consulta un inventario por Id */
+router.get('/getAllProducts',[ValidateJWT],getAllProducts);
+
+/**Ruta que obtiene el listado de inventarios */
+router.get('/getCompleteStock',[ValidateJWT],getCompleteStock);
+
 //#endregion
 
 //#region Inventarios
@@ -97,7 +103,11 @@ router.post('/deleteStock',[
     ValidateJWT
 ],deleteStock);
 
+/**Ruta búsqueda inventario por criterio */
 router.get('/getStocks/:criterio',[ValidateJWT],getStocks);
+
+/**Ruta búsqueda stock por id */
+router.get('/getStockId/:producto',[ValidateJWT],getStockId);
 
 //#endregion
 
@@ -187,6 +197,8 @@ router.post('/deleteStockIn',[
 
 /**Ruta que consulta ingresos de inventario a partir de un criterio de búsqueda */
 router.get('/getStocksIn/:criterio',[ValidateJWT],getStocksIn);
+
+router.get('/getAllStocksIn',[ValidateJWT],getAllStockIn);
 
 //#endregion
 

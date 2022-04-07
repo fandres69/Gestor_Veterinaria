@@ -1,1 +1,103 @@
-<p>upd-servicio works!</p>
+<div class="container">
+    <h1>Búsqueda de servicios</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Criterio de búsqueda</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Criterio de búsqueda"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.servicio" (click)="selectForQuery(option)">
+                   {{option.servicio}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>       
+            <button mat-stroked-button color="warn" class="m-2" (click)="editable()" *ngIf="forLoad" >Editar</button>      
+        </form>
+    </div>
+
+    <div class="container form-control form-floating" *ngIf="forLoad">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Nombre servicio"
+                formControlName="servicio"
+                >
+                <label for="floatingInput">Nombre servicio</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('servicio')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+              
+            </div>           
+
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Descripción"
+                formControlName="descripcion"
+                >
+                <label for="floatingInput">Descripción</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('descripcion')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>
+               
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="Precio"
+                formControlName="precio"
+                >
+                <label for="floatingInput">Precio</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('precio')"           
+                >Este campo es obligatorio, mínimo 1</span>
+            </div>
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="% Impuesto"
+                formControlName="impuesto"
+                >
+                <label for="floatingInput">% Impuesto</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('impuesto')"           
+                >Este campo es obligatorio, mayor o igual a 0</span>
+            </div>      
+            <div class="form-floating m-3">
+                <input type="number" class="form-control" id="floatingInput" 
+                placeholder="% Descuento"
+                formControlName="descuento"
+                >
+                <label for="floatingInput">% Descuento</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('descuento')"           
+                >Este campo es obligatorio, mayor o igual a 0</span>
+            </div>          
+            <div class="form-floating m-5 p-1" *ngIf="editar">
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-success "
+                    (click)="updateServicio()"
+                    >Guardar</button>
+                </div> 
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-secondary "
+                    (click)="cancelar()"
+                    >Cancelar</button>
+                </div>   
+            </div>    
+          
+
+        </form>
+
+    </div>
+
+</div>

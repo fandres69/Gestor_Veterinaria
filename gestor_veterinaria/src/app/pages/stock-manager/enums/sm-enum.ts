@@ -9,6 +9,8 @@ export enum SmEnum {
     dProduct='/stockManager/deleteProduct',
     /**búsqueda productos con criterio*/
     getProduct='/stockManager/getProducts/',
+    /**Obtiene el listado de productos */
+    getAllProducts='/stockManager/getAllProducts',
 
     /**Creación inventario */
     cStock='/stockManager/newStock',
@@ -20,6 +22,10 @@ export enum SmEnum {
     dStock='/stockManager/deleteStock',
     /**búsqueda inventario con criterio*/
     getStock='/stockManager/getStocks/',
+    /**búsqueda inventario por Id*/
+    getStockId='/stockManager/getStockId/',
+    /**Obtiene el inventario total */
+    getCompleteStock='/stockManager/getCompleteStock',
 
     /**Creación servicio */
     cServicio='/stockManager/newService',
@@ -42,6 +48,8 @@ export enum SmEnum {
     dIngresosInv='/stockManager/deleteStockIn',
     /**búsqueda entradas de inventario con criterio*/
     getIngresosInv='/stockManager/getStocksIn/',
+
+    getAllIngresosInv='/stockManager/getAllStocksIn',
 
      
 }

@@ -7,9 +7,9 @@ const serviciosV={
     idServicios:0,
     servicio:"",
     descripcion:"",
-    precio:0.0,
-    impuesto:0.0,
-    descuento:0.0
+    precio:0,
+    impuesto:0,
+    descuento:0
 }
 
 
