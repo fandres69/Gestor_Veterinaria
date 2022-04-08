@@ -10,7 +10,10 @@ const salesOrder={
     cliente:0,
     direccionEntrega:"",
     ciudad:0,
-    observaciones:""
+    observaciones:"",
+    dia:0,
+    mes:0,
+    anio:0,
 }
 
 /**
@@ -19,8 +22,11 @@ const salesOrder={
  * @param direccionEntrega
  * @param ciudad
  * @param observaciones
+ * @param dia
+ * @param mes
+ * @param anio
  */
-const cSalesOrder='INSERT INTO gveterinaria.pedidos (cliente,direccionEntrega,ciudad,observaciones) VALUES (?,?,?,?);';
+const cSalesOrder='INSERT INTO gveterinaria.pedidos (cliente,direccionEntrega,ciudad,observaciones,dia,mes,anio) VALUES (?,?,?,?,?,?,?);';
 
 /**
  * Consulta un pedido en la base de datos
@@ -33,10 +39,13 @@ const rSalesOrder='SELECT * FROM gveterinaria.pedidos WHERE idpedidos=?;';
  * @param cliente
  * @param direccionEntrega
  * @param ciudad
- * @param observaciones
+ * @param observaciones 
+ * @param dia
+ * @param mes
+ * @param anio
  * @param idpedidos
  */
-const uSalesOrder='UPDATE gveterinaria.pedidos SET cliente=?,direccionEntrega=?,ciudad=?,observaciones=? WHERE idpedidos=?;';
+const uSalesOrder='UPDATE gveterinaria.pedidos SET cliente=?,direccionEntrega=?,ciudad=?,observaciones=?, dia=?,mes=?,anio=? WHERE idpedidos=?;';
 
 /**
  * Elimina un pedido en la base de datos

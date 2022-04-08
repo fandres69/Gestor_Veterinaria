@@ -4,6 +4,7 @@ export enum ClientsEnum {
    updClient='/clientManager/updateClient' ,
    delClient='/clientManager/deleteClient' ,
    getClient='/clientManager/Client/',
+   getAllClients='/clientManager/getAllClients',
    cPet='/clientManager/createPet',
    fPet='/clientManager/findPet',
    updPet='/clientManager/updatePet',

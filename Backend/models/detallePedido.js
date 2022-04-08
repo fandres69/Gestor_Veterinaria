@@ -18,7 +18,9 @@
     tipoProducto:"",
     anio:0,
     mes:0,
-    dia:0
+    dia:0,
+    unidades:0,
+    descuento:0
 }
 
 /**
@@ -34,8 +36,10 @@
  * @param anio
  * @param mes
  * @param dia
+ * @param unidades
+ * @param descuento
  */
-const cSalesDetail='INSERT INTO gveterinaria.detallepedido (producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia) VALUES (?,?,?,?,?,?,?,?,?,?,?);';
+const cSalesDetail='INSERT INTO gveterinaria.detallepedido (producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia,unidades,descuento) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);';
 
 /**
  * Consulta un registro de detalle pedido (Vetas)
@@ -56,9 +60,11 @@ const rSalesDetail='SELECT * FROM gveterinaria.detallepedido WHERE iddetallePedi
  * @param anio
  * @param mes
  * @param dia
+ * @param unidades
+ * @param descuento
  * @param iddetallePedido
  */
-const uSalesDetail='UPDATE gveterinaria.detallepedido SET producto=?,cantidad=?,precio=?,impuesto=?,cliente=?,ciudad=?,pedido=?,tipoProducto=?,anio=?,mes=?,dia=? WHERE iddetallePedido=?;';
+const uSalesDetail='UPDATE gveterinaria.detallepedido SET producto=?,cantidad=?,precio=?,impuesto=?,cliente=?,ciudad=?,pedido=?,tipoProducto=?,anio=?,mes=?,dia=?,unidades=?,descuento=? WHERE iddetallePedido=?;';
 
 /**
  * Consulta un registro de detalle pedido (Vetas)

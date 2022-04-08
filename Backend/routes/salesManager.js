@@ -9,7 +9,7 @@
  const { ValidateJWT } = require('../middlewares/validation-jwt');
  const {createPedido,readPedido,updatePedido,deletePedido,createDetailPedido, readDetailPedido,
      updateDetailPedido,deleteDetailPedido, createDevolution,
-    updateDevolution,deleteDevolution,readDevolution}=require('../controller/salesController');
+    updateDevolution,deleteDevolution,readDevolution, getPedidos, getDetailByOrder, getAllDevoluciones, getAllDevolucionesByOrder}=require('../controller/salesController');
  const router=Router();
 
  //#region salesOrder (Pedido)
@@ -27,14 +27,14 @@
  ],createPedido);
 
 /**Ruta consulta pedidos */
- router.get('/findOrder',[
+ router.post('/findOrder',[
     check('idpedidos','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
  ],readPedido);
 
 /**Ruta actualización de pedidos */
- router.put('/updateOrder',[
+ router.post('/updateOrder',[
     check('cliente','Campo requerido').not().isEmpty().isNumeric(),
     check('direccionEntrega','Campo requerido').not().isEmpty().isLength({min:10,max:450}),
     check('ciudad','Campo requerido').not().isEmpty().isNumeric(),
@@ -51,6 +51,8 @@
     ValidateJWT
 ],deletePedido);
 
+/**obtiene el listado de pedidos */
+router.get('/getPedidos',[ValidateJWT],getPedidos);
 
 //#endregion
 
@@ -74,14 +76,14 @@ router.post('/createOrderDetail',[
 ],createDetailPedido);
 
 /**Ruta para la consulta de detalle de pedidos */
-router.get('/findOrderDetail',[
+router.post('/findOrderDetail',[
     check('iddetallePedido','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],readDetailPedido);
 
 /**Ruta para la actualización de detalle de pedidos */
-router.put('/updateOrderDetail',[
+router.post('/updateOrderDetail',[
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
     check('precio','Campo requerido').not().isEmpty().isNumeric(),
@@ -105,6 +107,9 @@ router.post('/deleteOrderDetail',[
     ValidateJWT
 ],deleteDetailPedido);
 
+/**Ruta para obtener los detalles de un pedido */
+router.get('/getDetailByOrder/:pedido',[ValidateJWT],getDetailByOrder)
+
 //#endregion
 
 //#region Devoluciones
@@ -122,14 +127,14 @@ router.post('/createDevolution',[
 ],createDevolution);
 
 /**Ruta consulta devolucion */
-router.get('/findDevolution',[
+router.post('/findDevolution',[
     check('iddevoluciones','Campo requerido').not().isEmpty().isNumeric(),
     validationCamps,
     ValidateJWT
 ],readDevolution);
 
 /**Ruta actualización devolucion */
-router.put('/updateDevolution',[
+router.post('/updateDevolution',[
     check('pedido','Campo requerido').not().isEmpty().isNumeric(),
     check('producto','Campo requerido').not().isEmpty().isNumeric(),
     check('cantidad','Campo requerido').not().isEmpty().isNumeric(),
@@ -147,6 +152,12 @@ router.post('/deleteDevolution',[
     validationCamps,
     ValidateJWT
 ],deleteDevolution);
+
+/**Ruta para consultar todas las devoluciones */
+router.get('getAllDevoluciones',[ValidateJWT],getAllDevoluciones);
+
+/**Ruta que consulta las devoluciones de un pedido */
+router.get('getAllDevolucionesByOrder/:pedido',[ValidateJWT],getAllDevolucionesByOrder);
 
 //#endregion
 

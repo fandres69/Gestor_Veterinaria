@@ -5,8 +5,8 @@
  const {pool}=require('../database/database');
  const {StatusCodes}= require('http-status-codes')
  const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
- const {cSalesOrder,rSalesOrder,uSalesOrder,dSalesOrder}=require('../models/pedidos');
- const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail}=require('../models/detallePedido');
+ const {cSalesOrder,rSalesOrder,uSalesOrder,dSalesOrder, qSalesOrder}=require('../models/pedidos');
+ const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail, qSalesDetail}=require('../models/detallePedido');
  const {getSalesOrdForCreate,getSalesOrdForUpdate,getSalesOrdFromQuery,
         getSalesDetailForCreate,getSalesDetailForUpdate,getSalesDetailFromQuery}=require('../mapers/salesMaper');
 const {cDevoluciones,rDevoluciones,uDevoluciones,dDevoluciones,qDevoluciones}=require('../models/devoluciones');
@@ -24,15 +24,29 @@ const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/s
      try {
          let rta;
          const salesOrderCreate=getSalesOrdForCreate(req);
-        await pool.query(cSalesOrder,[salesOrderCreate.cliente,salesOrderCreate.direccionEntrega,salesOrderCreate.ciudad,salesOrderCreate.observaciones]);
+        await pool.query(cSalesOrder,[salesOrderCreate.cliente,salesOrderCreate.direccionEntrega,
+            salesOrderCreate.ciudad,salesOrderCreate.observaciones,salesOrderCreate.dia,salesOrderCreate.mes,salesOrderCreate.anio]);
         rta=getResponseOk("Pedido creado correctamente",{salesOrderCreate});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Pedido creado correctamente',
+            salesOrders:[salesOrderCreate]
+         });
      } catch (error) {
          rta=getResponseError("Error al crear pedido");
          return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-         .json({
-             "response":rta
-         });
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al crear pedido',
+            errors:[
+                {
+                    msg:"Error al crear pedido",
+                    param:''
+                }
+            ]      
+        });
      }
  }
 
@@ -49,18 +63,39 @@ const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/s
          const salesOrderExisted=await pool.query(rSalesOrder,[idpedidos]);
          if(salesOrderExisted.length===0){
             rta=getResponseConflict("El pedido no existe",{idpedidos});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no existe',
+                errors:[
+                    {
+                        msg:"El pedido no existe",
+                        param:''
+                    }
+                ]});
          }
          const salesOrderQuery=getSalesOrdFromQuery(salesOrderExisted);
          rta=getResponseOk("Pedido encontrado",{salesOrderQuery});
-         return res.status(StatusCodes.OK).json({"response":rta});
+         return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Pedido encontrado',
+            salesOrders:[salesOrderExisted]
+         });
 
      } catch (error) {
-         rta=getResponseError("Error al consultar el pedido");
-         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-         .json({
-             "response":rta
-         });
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al consultar pedido',
+            errors:[
+                {
+                    msg:"Error al consultar pedido",
+                    param:''
+                }
+            ]      
+        });
      }
  } 
 
@@ -78,16 +113,40 @@ const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/s
          const salesOrderExisted= await pool.query(rSalesOrder,[idpedidos]);
          if (salesOrderExisted.length===0) {
              rta=getResponseConflict("El pedido no existe",{idpedidos});
-             return res.status(StatusCodes.CONFLICT).json({"response":rta});
+             return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no existe',
+                errors:[
+                    {
+                        msg:"El pedido no existe",
+                        param:''
+                    }
+                ]});
          }
-         await pool.query(uSalesOrder,[salesOrderUpdate.cliente,salesOrderUpdate.direccionEntrega,salesOrderUpdate.ciudad,salesOrderUpdate.observaciones,salesOrderUpdate.idpedidos]);
+         await pool.query(uSalesOrder,[salesOrderUpdate.cliente,salesOrderUpdate.direccionEntrega,
+            salesOrderUpdate.ciudad,salesOrderUpdate.observaciones,salesOrderUpdate.dia,salesOrderUpdate.mes,salesOrderUpdate.anio,salesOrderUpdate.idpedidos]);
          rta=getResponseOk("Pedido actualizado correctamente",{salesOrderUpdate});
-         return res.status(StatusCodes.OK).json({"response":rta});
+         return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Pedido actualizado correctamente',
+            salesOrders:[salesOrderUpdate]
+         });
+
      } catch (error) {
          rta=getResponseError("Error al actualizar el pedido");
          return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
          .json({
-             "response":rta
+             OK:false,
+             statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+             statusDescription:'Error al actualizar pedido',
+             errors:[
+                 {
+                     msg:"Error al actualizar pedido",
+                     param:''
+                 }
+             ]      
          });
      }
  }
@@ -105,20 +164,78 @@ const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/s
          const salesOrderExisted= await pool.query(rSalesOrder,[idpedidos]);
          if (salesOrderExisted.length===0) {
              rta=getResponseConflict("El pedido no existe",{idpedidos});
-             return res.status(StatusCodes.CONFLICT).json({"response":rta});
+             return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no existe',
+                errors:[
+                    {
+                        msg:"El pedido no existe",
+                        param:''
+                    }
+                ]});
          }
          await pool.query(dSalesOrder,[idpedidos]);
          rta=getResponseOk("Pedido eliminado correctamente",{});
-         return res.status(StatusCodes.OK).json({"response":rta});
+         return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Pedido eliminado correctamente',
+            salesOrders:[salesOrderExisted]
+         });
      } catch (error) {
-         rta=getResponseError("Error al eliminar pedido");
-         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
          .json({
-             "response":rta
+             OK:false,
+             statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+             statusDescription:'Error al eliminar pedido',
+             errors:[
+                 {
+                     msg:"Error al eliminar pedido",
+                     param:''
+                 }
+             ]      
          });
      }
  }
 
+ const getPedidos=async(req,res=response)=>{
+     try {
+         const pedidosL=await pool.query(qSalesOrder);
+         if(pedidosL.length===0){
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay resultados de pedidos',
+                errors:[
+                    {
+                        msg:"No hay resultados de pedidos",
+                        param:''
+                    }
+                ]});
+         }
+         return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Pedidos encontrados',
+            salesOrders:[pedidosL]
+         });
+
+     } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al consultar pedidos',
+            errors:[
+                {
+                    msg:"Error al consultar pedidos",
+                    param:''
+                }
+            ]      
+        });
+     }
+ }
 
  //#endregion
 
@@ -137,17 +254,40 @@ const createDetailPedido=async(req,res=response)=>{
         if (salesOrderExisted.length===0) {
             let pedido=detailOrder.pedido
             rta=getResponseConflict("El pedido no existe",{pedido});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no existe',
+                errors:[
+                    {
+                        msg:"El pedido no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(cSalesDetail,[detailOrder.producto,detailOrder.cantidad,detailOrder.precio,detailOrder.impuesto
-        ,detailOrder.cliente,detailOrder.ciudad,detailOrder.pedido,detailOrder.tipoProducto,detailOrder.anio,detailOrder.mes,detailOrder.dia]);
+        ,detailOrder.cliente,detailOrder.ciudad,detailOrder.pedido,detailOrder.tipoProducto,
+        detailOrder.anio,detailOrder.mes,detailOrder.dia,detailOrder.unidades,detailOrder.descuento]);
         rta=getResponseOk("Detalle creado correctamente",{detailOrder});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalle creado correctamente',
+            OrderDetail:[detailOrder]
+         });
     } catch (error) {
-        rta=getResponseError("Error creación detalle pedido");
+        
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error creación detalle pedido',
+            errors:[
+                {
+                    msg:"Error creación detalle pedido",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -165,16 +305,38 @@ const readDetailPedido=async(req,res=response)=>{
         const salesDetailExisted=await pool.query(rSalesDetail,[iddetallePedido]);
         if(salesDetailExisted.length===0){
             rta=getResponseConflict("El detalle no existe",{iddetallePedido});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El detalle no existe',
+                errors:[
+                    {
+                        msg:"El detalle no existe",
+                        param:''
+                    }
+                ]});
         }
         const salesDetailQuery=getSalesDetailFromQuery(salesDetailExisted);
         rta=getResponseOk("Detalle encontrado",{salesDetailQuery});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalle encontrado',
+            OrderDetail:[salesDetailExisted]
+         });
     } catch (error) {
         rta=getResponseError("Error consulta detalle pedido");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error consulta detalle pedido',
+            errors:[
+                {
+                    msg:"Error consulta detalle pedido",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -193,17 +355,43 @@ const updateDetailPedido=async(req,res=response)=>{
         const salesDetailExisted=await pool.query(rSalesDetail,[iddetallePedido]);
         if(salesDetailExisted.length===0){
             rta=getResponseConflict("El detalle no existe",{iddetallePedido});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El detalle no existe',
+                errors:[
+                    {
+                        msg:"El detalle no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(uSalesDetail,[salesDetailUpdate.producto,salesDetailUpdate.cantidad,salesDetailUpdate.precio,salesDetailUpdate.impuesto,
-            salesDetailUpdate.cliente,salesDetailUpdate.ciudad,salesDetailUpdate.pedido,salesDetailUpdate.tipoProducto,salesDetailUpdate.anio,salesDetailUpdate.mes,salesDetailUpdate.dia,salesDetailUpdate.iddetallePedido]);
+            salesDetailUpdate.cliente,salesDetailUpdate.ciudad,salesDetailUpdate.pedido,salesDetailUpdate.tipoProducto,
+            salesDetailUpdate.anio,salesDetailUpdate.mes,salesDetailUpdate.dia,
+            salesDetailUpdate.unidades,
+            salesDetailUpdate.descuento,
+            salesDetailUpdate.iddetallePedido]);
         rta=getResponseOk("Detalle actualizado correctamente",{salesDetailUpdate});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalle actualizado correctamente',
+            OrderDetail:[salesDetailUpdate]
+         });
     } catch (error) {
         rta=getResponseError("Error actualización detalle pedido");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error actualización detalle pedido',
+            errors:[
+                {
+                    msg:"Error actualización detalle pedido",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -220,21 +408,99 @@ const deleteDetailPedido=async(req,res=response)=>{
         const {iddetallePedido}=req.body;
         const salesDetailExisted=await pool.query(rSalesDetail,[iddetallePedido]);
         if(salesDetailExisted.length===0){
-            rta=getResponseConflict("El detalle no existe",{iddetallePedido});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El detalle no existe',
+                errors:[
+                    {
+                        msg:"El detalle no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(dSalesDetail,[iddetallePedido]);
         rta=getResponseOk("Detalle eliminado correctamente",{iddetallePedido});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalle eliminado correctamente',
+            OrderDetail:[salesDetailExisted]
+         });
     } catch (error) {
         rta=getResponseError("Error eliminación detalle pedido");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error eliminación detalle pedido',
+            errors:[
+                {
+                    msg:"Error eliminación detalle pedido",
+                    param:''
+                }
+            ]      
         });
     }
 }
  
+/**
+ * Obtiene los detalles de un pedido
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const getDetailByOrder=async(req,res=response)=>{
+    try {
+        const pedido=req.params.pedido;
+        if(pedido===null || pedido===""){
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no es valido',
+                errors:[
+                    {
+                        msg:"El pedido no es valido",
+                        param:''
+                    }
+                ]});
+        }
+        let cmd= `${qSalesDetail} WHERE pedido=${pedido}`
+        const detallesPedido=await pool.query(cmd);
+        if(detallesPedido.length===0){
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No se encontraron detalles para el pedido',
+                errors:[
+                    {
+                        msg:"No se encontraron detalles para el pedido",
+                        param:''
+                    }
+                ]});
+        }
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalles encontrados',
+            OrderDetail:[detallesPedido]
+         });
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error consulta detalle pedido',
+            errors:[
+                {
+                    msg:"Error consulta detalle pedido",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
 //#endregion
 
 //#region  Devoluciones
@@ -254,17 +520,41 @@ const createDevolution=async(req,res=response)=>{
         const devolucionExisted=await pool.query(cmd);
         if (devolucionExisted.length>0) {
             rta=getResponseConflict("Ya existe una devolucion del mismo producto en el mismo pedido",{producto,precio});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'Ya existe una devolucion del mismo producto en el mismo pedido',
+                errors:[
+                    {
+                        msg:"Ya existe una devolucion del mismo producto en el mismo pedido",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
-            newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones]);
+            newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones,
+            newDevolucion.unidades,
+            newDevolucion.descuento
+        ]);
             rta=getResponseOk("Devolucion creada correctamente",{newDevolucion});
-            return res.status(StatusCodes.OK).json({"response":rta});
+            return res.status(StatusCodes.OK).json({
+                OK:true,
+                statusCode:StatusCodes.OK,
+                statusDescription:'Devolucion creada correctamente',
+                devoluciones:[newDevolucion]
+             });
     } catch (error) {
-        rta=getResponseError("Error al crear devolución");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al crear devolución',
+            errors:[
+                {
+                    msg:"Error al crear devolución",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -283,16 +573,37 @@ const readDevolution=async(req,res=response)=>{
         const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
         if (devolucionExisted.length===0) {
             rta=getResponseConflict("La devolucion no existe",{});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'La devolucion no existe',
+                errors:[
+                    {
+                        msg:"La devolucion no existe",
+                        param:''
+                    }
+                ]});
         }
         const DevolucionFind = getDevolucionesFromQuery(devolucionExisted);
         rta=getResponseOk("Devolucion encontrada",{DevolucionFind});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Devolucion encontrada',
+            devoluciones:[newDevolucion]
+         });
     } catch (error) {
-        rta=getResponseError("Error al consultar devolución");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al consultar devolución',
+            errors:[
+                {
+                    msg:"Error al consultar devolución",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -312,17 +623,41 @@ const updateDevolution=async(req,res=response)=>{
         const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
         if (devolucionExisted.length===0) {
             rta=getResponseConflict("La devolucion no existe",{});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'La devolucion no existe',
+                errors:[
+                    {
+                        msg:"La devolucion no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
-            DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,DevolucionUpdate.iddevoluciones]);
+            DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,
+            DevolucionUpdate.unidades,
+            DevolucionUpdate.descuento,
+            DevolucionUpdate.iddevoluciones]);
         rta=getResponseOk("Devolucion actualizada correctamente",{DevolucionUpdate});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Devolucion actualizada',
+            devoluciones:[DevolucionUpdate]
+         });
     } catch (error) {
-        rta=getResponseError("Error al actualizar devolución");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al actualizar devolución',
+            errors:[
+                {
+                    msg:"Error al actualizar devolución",
+                    param:''
+                }
+            ]      
         });
     }
 }
@@ -341,19 +676,145 @@ const deleteDevolution=async(req,res=response)=>{
         const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
         if (devolucionExisted.length===0) {
             rta=getResponseConflict("La devolucion no existe",{});
-            return res.status(StatusCodes.CONFLICT).json({"response":rta});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'La devolucion no existe',
+                errors:[
+                    {
+                        msg:"La devolucion no existe",
+                        param:''
+                    }
+                ]});
         }
         await pool.query(dDevoluciones,[iddevoluciones]);
         rta=getResponseOk("Devolucion eliminada correctamente",{iddevoluciones});
-        return res.status(StatusCodes.OK).json({"response":rta});
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Devolucion eliminada',
+            devoluciones:[devolucionExisted]
+         });
     } catch (error) {
-        rta=getResponseError("Error al eliminar devolución");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            "response":rta
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al eliminar devolución',
+            errors:[
+                {
+                    msg:"Error al eliminar devolución",
+                    param:''
+                }
+            ]      
         });
     }
 }
+
+/**
+ * Obtiene todas las devoluciones
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const getAllDevoluciones=async(req,res=response)=>{
+    try {
+        const devolucionesL=await pool.query(qDevoluciones);
+        if (devolucionesL.length===0) {
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay devoluciones',
+                errors:[
+                    {
+                        msg:"No hay devoluciones",
+                        param:''
+                    }
+                ]});
+        }
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Devoluciones encontradas',
+            devoluciones:[devolucionesL]
+         });
+        
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al consultar devoluciones',
+            errors:[
+                {
+                    msg:"Error al consultar devoluciones",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
+
+/**
+ * Obtiene todas las devoluciones
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+ const getAllDevolucionesByOrder=async(req,res=response)=>{
+    try {
+        const pedido=req.params.pedido;
+        if(pedido===null || pedido===""){
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no es valido',
+                errors:[
+                    {
+                        msg:"El pedido no es valido",
+                        param:''
+                    }
+                ]});
+        }
+        let cmd=`${qDevoluciones} WHERE PEDIDO=${pedido}`;
+        const devolucionesL=await pool.query(cmd);
+        if (devolucionesL.length===0) {
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay devoluciones',
+                errors:[
+                    {
+                        msg:"No hay devoluciones",
+                        param:''
+                    }
+                ]});
+        }
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Devoluciones encontradas',
+            devoluciones:[devolucionesL]
+         });
+        
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al consultar devoluciones',
+            errors:[
+                {
+                    msg:"Error al consultar devoluciones",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
+
 
 //#endregion
 
@@ -370,5 +831,9 @@ const deleteDevolution=async(req,res=response)=>{
      createDevolution,
      readDevolution,
      updateDevolution,
-     deleteDevolution
+     deleteDevolution,
+     getPedidos,
+     getDetailByOrder,
+     getAllDevoluciones,
+     getAllDevolucionesByOrder
  }

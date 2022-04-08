@@ -1,1 +1,91 @@
-<p>pedidos works!</p>
+<div class="container">
+    <h1>Creación de pedidos</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Criterio de búsqueda</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Criterio de búsqueda"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                    {{option.documento}} - {{option.nombre}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Seleccionar</button>      
+            
+        </form>
+    </div>
+
+    <div class="container form-control form-floating" *ngIf="forLoad">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <select class="form-select" id="cliente" formControlName="cliente"  >                                                      
+                    <option *ngFor="let item of FiltroC" value="{{item.documento}">{{item.documento}} - {{item.nombre}}</option>                                  
+                  </select>
+               <label for="cliente">Cliente</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Dirección de entrega"
+                formControlName="direccionEntrega"
+                >
+                <label for="floatingInput">Dirección de entrega</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('direccionEntrega')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>              
+            </div>  
+            <div class="form-floating m-3">
+                <select class="form-select" id="ciudad" formControlName="ciudad"  >                                                      
+                    <option *ngFor="let item of ciudadesL" value="{{item.codigo}" >{{item.Ciudad}}</option>                                  
+                  </select>
+               <label for="ciudad">Ciudad</label>
+            </div>
+
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Observaciones"
+                formControlName="observaciones"
+                >
+                <label for="floatingInput">Observaciones</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('observaciones')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>               
+            </div>
+            <div class="form-floating m-3">
+                <mat-form-field class="m-3">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker" placeholder="Fecha DD/MM/YYYY" formControlName="fecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>                      
+            </div>   
+            <div class="form-floating m-5 p-1" *ngIf="editar">
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-success "
+                    (click)="createPedido()"
+                    >Guardar</button>
+                </div> 
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-secondary "
+                    (click)="cancelar()"
+                    >Cancelar</button>
+                </div>   
+            </div>    
+          
+
+        </form>
+
+    </div>
+
+</div>

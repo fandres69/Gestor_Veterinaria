@@ -87,6 +87,15 @@ export class ClientServiceService {
     );
   }
 
+  getAllClients(){
+    const url=`${this.baseUrl}${ClientsEnum.getAllClients}`;
+    return this.http.get<ClientResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    );
+  }
+
+
   /**
    * Crea una mascota en la base de datos
    * @param body 
