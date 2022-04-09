@@ -47,8 +47,15 @@ const routes:Routes=[
         canActivate:[ValidarTokenGuard],
         canLoad:[ValidarTokenGuard]
       },
+      
       {
         path:'cDetalles',
+        component:DetallesComponent,
+        canActivate:[ValidarTokenGuard],
+        canLoad:[ValidarTokenGuard]
+      },
+      {
+        path:'cDetalles/:idPedido',
         component:DetallesComponent,
         canActivate:[ValidarTokenGuard],
         canLoad:[ValidarTokenGuard]

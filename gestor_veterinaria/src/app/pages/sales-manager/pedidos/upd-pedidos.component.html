@@ -1,1 +1,120 @@
-<p>upd-pedidos works!</p>
+<div class="container">
+    <h1>Actualización de pedidos</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Criterio de búsqueda</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Criterio de búsqueda"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                    {{option.documento}} - {{option.nombre}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>      
+            
+        </form>
+    </div>
+
+    <div class="container" *ngIf="forLoad">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>  
+                    <th>#</th>               
+                    <th>Cliente</th>
+                    <th>Dirección de entrega</th>
+                    <th>Ciudad</th>
+                    <th>Observaciones</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of salidaList">
+                    <td>{{item.idpedidos}}</td>
+                    <td>{{item.documento}} - {{item.nombre}}</td>
+                    <td>{{item.direccionEntrega}}</td>
+                    <td>{{item.ciudadN}}</td>
+                    <td>{{item.observaciones}}</td>
+                    <td>{{item.fecha|date}}</td>
+                    <td><a class="btn btn-warning btn-sm" type="button"                      
+                      (click)="loadForUpdate(item)"                    
+                      >Editar</a></td>                 
+                </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="container form-control form-floating" *ngIf="editar">     
+        
+        <form action="" [formGroup]="miForm">
+            <div class="form-floating m-3">
+                <select class="form-select" id="cliente" formControlName="cliente"  >                                                      
+                    <option *ngFor="let item of FiltroC" value="{{item.documento}">{{item.documento}} - {{item.nombre}}</option>                                  
+                  </select>
+               <label for="cliente">Cliente</label>
+            </div>
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Dirección de entrega"
+                formControlName="direccionEntrega"
+                >
+                <label for="floatingInput">Dirección de entrega</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('direccionEntrega')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>              
+            </div>  
+            <div class="form-floating m-3">
+                <select class="form-select" id="ciudad" formControlName="ciudad"  >                                                      
+                    <option *ngFor="let ciudades of ciudadesL" value="{{ciudades.codigo}" >{{ciudades.Ciudad}}</option>                                  
+                  </select>
+               <label for="ciudad">Ciudad</label>
+            </div>
+
+            <div class="form-floating m-3">
+                <input type="text" class="form-control" id="floatingInput" 
+                placeholder="Observaciones"
+                formControlName="observaciones"
+                >
+                <label for="floatingInput">Observaciones</label>
+                <span class="form-text text-danger"
+                *ngIf="ValidaCampo('observaciones')"           
+                >Este campo es obligatorio, mas de 3 caracteres</span>               
+            </div>
+            <div class="form-floating m-3">
+                <mat-form-field >
+                    <mat-label>Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker" placeholder="Fecha DD/MM/YYYY" formControlName="fecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>                      
+            </div>   
+            <div class="form-floating m-5 p-1" *ngIf="editar">
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-success "
+                    (click)="createPedido()"
+                    >Guardar</button>
+                </div> 
+                <div class="float-md-end m-3">
+                    <button class="btn btn-outline-secondary "
+                    (click)="cancelar()"
+                    >Cancelar</button>
+                </div>   
+            </div>    
+          
+
+        </form>
+
+    </div>
+
+</div>

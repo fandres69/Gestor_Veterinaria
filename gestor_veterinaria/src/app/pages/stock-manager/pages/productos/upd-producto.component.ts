@@ -150,7 +150,7 @@ export class UpdProductoComponent implements OnInit {
     this.smgService.updProduct(body).subscribe(resp=>{
       if(resp.error){
         const msg=resp.error.errors[0].msg;
-        const param=resp.error.errors[0].param;
+        const param=resp.error.errors[0].param||'';
         Swal.fire({
           icon: 'error',
           title: 'Oops...'+param,

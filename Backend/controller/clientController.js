@@ -289,6 +289,53 @@ const getClients=async(req,res=response)=>{
 }
 
 /**
+ * Retorna el listado de clientes
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+const getAllClient=async(req,res=response)=>{
+    try {
+        const clientesL= await pool.query(qClientes);
+        if(clientesL.length===0){
+            return res.status(StatusCodes.CONFLICT)
+            .json({
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No hay coincidencias',
+                errors:[
+                    {
+                        msg:"No hay coincidencias",
+                        param:''
+                    }
+                ]
+            });
+        }
+
+        return res.status(StatusCodes.OK)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Clientes encontrados',
+            clientes:[clientesL]
+        });
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error al realizar la búsqueda',
+            errors:[
+                {
+                    msg:"Error al realizar la búsqueda",
+                    param:''
+                }
+            ]
+        });
+    }
+}
+
+/**
  * Crea una mascota en la DB
  * @param {request} req 
  * @param {response} res 
@@ -521,5 +568,6 @@ module.exports={
     findPet,
     updatePet,
     deletePet,
-    getClients,getMascotas
+    getClients,getMascotas,
+    getAllClient,
 }

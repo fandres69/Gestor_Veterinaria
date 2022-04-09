@@ -9,9 +9,11 @@ const devoluciones={
     pedido:0,
     producto:0,
     cantidad:0,
-    precio:0.0,
-    impuesto:0.0,
-    observaciones:""
+    precio:0,
+    impuesto:0,
+    observaciones:"",
+    unidades:0,
+    descuento:0
 }
 /**
  * Crea un registro de devoluciones en la DB
@@ -21,8 +23,10 @@ const devoluciones={
  * @param precio
  * @param impuesto
  * @param observaciones
+ * @param unidades
+ * @param descuento
  */
-const cDevoluciones='INSERT INTO gveterinaria.devoluciones (pedido,producto,cantidad,precio,impuesto,observaciones) VALUES (?,?,?,?,?,?);';
+const cDevoluciones='INSERT INTO gveterinaria.devoluciones (pedido,producto,cantidad,precio,impuesto,observaciones,unidades,descuento) VALUES (?,?,?,?,?,?,?,?);';
 
 /**
  * Consulta un registro de devoluciones en la DB
@@ -37,10 +41,12 @@ const rDevoluciones='SELECT * FROM gveterinaria.devoluciones WHERE iddevolucione
  * @param cantidad
  * @param precio
  * @param impuesto
- * @param observaciones
+ * @param observaciones 
+ * @param unidades
+ * @param descuento
  * @param iddevoluciones
  */
-const uDevoluciones='UPDATE gveterinaria.devoluciones SET pedido=?,producto=?,cantidad=?,precio=?,impuesto=?,observaciones=? WHERE iddevoluciones=?;';
+const uDevoluciones='UPDATE gveterinaria.devoluciones SET pedido=?,producto=?,cantidad=?,precio=?,impuesto=?,observaciones=?,unidades=?,descuento=? WHERE iddevoluciones=?;';
 
 /**
  * Elimina un registro de devoluciones en la DB

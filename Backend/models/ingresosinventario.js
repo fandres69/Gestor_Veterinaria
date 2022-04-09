@@ -7,7 +7,7 @@ const ingresosinventario={
     idingresosInventario:0,
     producto:0,
     cantidad:0,
-    Precio:0.0,
+    Precio:0,
     dia:0,
     mes:0,
     anio:0

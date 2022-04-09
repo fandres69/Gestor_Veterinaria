@@ -31,6 +31,8 @@ Api.use('/api/gveterinaria/clientManager',require('./routes/clientManager'));
 
 Api.use('/api/gveterinaria/uploads',require('./routes/uploadsManager'));
 
+
+
 /**Api start */
 Api.listen(port,()=>{
     console.log(`Api is running in port: ${port}`);

@@ -20,6 +20,7 @@ import { UpdProductoComponent } from './pages/productos/upd-producto.component';
 import { DelProductoComponent } from './pages/productos/del-producto.component';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
@@ -49,6 +50,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule
+  ],
+  providers:[
+   
   ]
 })
 export class StockManagerModule { }

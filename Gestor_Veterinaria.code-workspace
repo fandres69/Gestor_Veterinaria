@@ -57,7 +57,11 @@
 			"originalname",
 			"pelanas",
 			"presentacion",
+			"sequelizer",
+			"sequilizer",
 			"Serv",
+			"Squelize",
+			"Squelizer",
 			"Swal",
 			"sweetalert",
 			"tipodoc",
@@ -66,7 +70,12 @@
 			"usermaper",
 			"userpass",
 			"vetspa"
-		]
+		],
+		"gitlab.repositories": {
+			"d:\\fandr\\Projects\\Gestor_Veterinaria": {
+				"preferredRemoteName": "lab"
+			}
+		}
 	}
 	
 	

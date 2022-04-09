@@ -10,9 +10,9 @@
     stock:0,
     stockMin:0,
     stockMax:0,
-    PrecioVenta:0.0,
-    impuesto:0.0,
-    descuento:0.0
+    PrecioVenta:0,
+    impuesto:0,
+    descuento:0
 }
 
 /**

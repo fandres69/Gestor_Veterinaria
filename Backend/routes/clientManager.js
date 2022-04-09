@@ -2,7 +2,7 @@ const {Router} =require('express');
 const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
-const {createClient,findCliente,updateCliente,deleteClient,createPets,findPet,deletePet,updatePet, getClients, getMascotas}=require('../controller/clientController');
+const {createClient,findCliente,updateCliente,deleteClient,createPets,findPet,deletePet,updatePet, getClients, getMascotas, getAllClient}=require('../controller/clientController');
 const router=Router();
 
 //#region Cliente
@@ -50,6 +50,8 @@ router.post('/deleteClient',[
 ],deleteClient);
 
 router.get('/Client/:criterio/:tipo',[ValidateJWT],getClients);
+
+router.get('/getAllClients',[ValidateJWT],getAllClient);
 
 
 //#endregion
