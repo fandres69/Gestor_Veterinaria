@@ -9,7 +9,7 @@
  const { ValidateJWT } = require('../middlewares/validation-jwt');
  const {createPedido,readPedido,updatePedido,deletePedido,createDetailPedido, readDetailPedido,
      updateDetailPedido,deleteDetailPedido, createDevolution,
-    updateDevolution,deleteDevolution,readDevolution, getPedidos, getDetailByOrder, getAllDevoluciones, getAllDevolucionesByOrder}=require('../controller/salesController');
+    updateDevolution,deleteDevolution,readDevolution, getPedidos, getDetailByOrder, getAllDevoluciones, getAllDevolucionesByOrder, cPedidoSquelize}=require('../controller/salesController');
  const router=Router();
 
  //#region salesOrder (Pedido)
@@ -25,6 +25,15 @@
     validationCamps,
     ValidateJWT
  ],createPedido);
+
+ router.post('/cOrder',[
+    check('cliente','Campo requerido').not().isEmpty().isNumeric(),
+    check('direccionEntrega','Campo requerido').not().isEmpty().isLength({min:10,max:450}),
+    check('ciudad','Campo requerido').not().isEmpty().isNumeric(),
+    check('observaciones','Campo requerido'),
+    validationCamps,
+    ValidateJWT
+ ],cPedidoSquelize);
 
 /**Ruta consulta pedidos */
  router.post('/findOrder',[

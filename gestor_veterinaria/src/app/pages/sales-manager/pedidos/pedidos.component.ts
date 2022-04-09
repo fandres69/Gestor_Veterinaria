@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable, map, debounceTime } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import { ciudadModel } from '../../data-master-manager/interfaces/data-master-in
 import { DataMasterService } from '../../control-panel/services/data-master.service';
 import { PedidoModel } from '../interfaces/sales-interfaces';
 import { SalesManagerServiceService } from '../services/sales-manager-service.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,9 +26,10 @@ export class PedidosComponent implements OnInit {
   public forLoad:boolean=false;
   public selectedItem!:ClientsGV;
   public ciudadesL:ciudadModel[]=[];
-
+  private nPedido!:PedidoModel;
   filteredOptions!: Observable<ClientsGV[]>;
   public editar:boolean=false;
+
 
   miForm=this.fb.group({
     cliente:[,[Validators.required]],
@@ -39,7 +41,8 @@ export class PedidosComponent implements OnInit {
   })
 
   constructor(private fb:FormBuilder,private salesMng: SalesManagerServiceService,
-    private dataM:DataMasterService,private clManager:ClientServiceService) { }
+    private dataM:DataMasterService,private clManager:ClientServiceService,
+    private router:Router) { }
 
 
   ngOnInit(): void {
@@ -170,7 +173,7 @@ export class PedidosComponent implements OnInit {
       anio:fecha.getFullYear()
     }
   
-    this.salesMng.CreateOrder(body).subscribe(resp=>{
+    this.salesMng.CreateOrderSquelizer(body).subscribe(resp=>{
       if(resp.error){
         const msg=resp.error.errors[0].msg;
         const param=resp.error.errors[0].param ||'';
@@ -181,6 +184,10 @@ export class PedidosComponent implements OnInit {
         });
         return;
       }
+      if(resp.salesOrders){
+        this.nPedido=resp.salesOrders[0];
+      }
+      
       Swal.fire({
         icon: 'success',
         title: 'Creación correcta',
@@ -188,8 +195,25 @@ export class PedidosComponent implements OnInit {
       }).then(r=>{        
        this.miForm.reset();
        this.limpiarInfo();
+       this.salesMng.Pedido(this.nPedido.idpedidos||0);
+       this.router.navigate(['./salesManager/cDetalles']);
+
       }
       )
     });
+  }
+
+  prueba(){
+    Swal.fire({
+      icon: 'success',
+      title: 'Creación correcta',
+      text:  'Prueba de creación',
+    }).then(r=>{        
+     this.miForm.reset();
+     this.limpiarInfo();
+     this.salesMng.Pedido(10);
+     this.router.navigate(['./salesManager/cDetalles']);
+    }
+    )
   }
 }

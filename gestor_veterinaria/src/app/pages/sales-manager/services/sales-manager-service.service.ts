@@ -10,6 +10,12 @@ import { map, catchError, of } from 'rxjs';
 })
 export class SalesManagerServiceService {
 
+  private idPedido:number=0;
+
+  get  IdPedido():number{ return this.idPedido;}  
+  Pedido(idPedido:number){ this.idPedido=idPedido;}
+
+
   private baseUrl=environment.ApiUrl;
   private header=new HttpHeaders()
   .set('content-type', 'application/json;charset=utf-8')
@@ -21,6 +27,15 @@ export class SalesManagerServiceService {
 
   CreateOrder(body:{}){
     const url=`${this.baseUrl}${SalesRoutes.cPedido}`;
+    return this.http.post<PedidoResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+  
+  CreateOrderSquelizer(body:{}){
+    const url=`${this.baseUrl}${SalesRoutes.cPedidoSquelize}`;
     return this.http.post<PedidoResponse>(url,body,{headers:this.header}).pipe(
       map(resp=>resp),
       catchError(err=>of(err))

@@ -11,6 +11,7 @@
         getSalesDetailForCreate,getSalesDetailForUpdate,getSalesDetailFromQuery}=require('../mapers/salesMaper');
 const {cDevoluciones,rDevoluciones,uDevoluciones,dDevoluciones,qDevoluciones}=require('../models/devoluciones');
 const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/salesMaper');
+const {pedidos}=require('../models/sequelizer/pedidos');
 
 //#region Pedidos
 
@@ -49,6 +50,49 @@ const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/s
         });
      }
  }
+
+ /**
+  * Crea un pedido en la DB
+  * @param {request} req 
+  * @param {response} res 
+  * @returns json
+  */
+  const cPedidoSquelize=async(req,res=response)=>{
+    try {
+        let rta;
+        const salesOrderCreate=getSalesOrdForCreate(req);
+       const newPedido= await pedidos.create({
+            cliente:salesOrderCreate.cliente,
+            direccionEntrega:salesOrderCreate.direccionEntrega,
+            ciudad:salesOrderCreate.ciudad,
+            observaciones:salesOrderCreate.observaciones,
+            dia:salesOrderCreate.dia,
+            mes:salesOrderCreate.mes,
+            anio:salesOrderCreate.anio,
+       })
+       return res.status(StatusCodes.OK).json({
+           OK:true,
+           statusCode:StatusCodes.OK,
+           statusDescription:'Pedido creado correctamente',
+           salesOrders:[newPedido]
+        });
+    } catch (error) {
+        rta=getResponseError("Error al crear pedido");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+       .json({
+           OK:false,
+           statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+           statusDescription:'Error al crear pedido',
+           errors:[
+               {
+                   msg:"Error al crear pedido",
+                   param:''
+               }
+           ]      
+       });
+    }
+}
+
 
  /**
   * Consulta un pedido en la DB
@@ -835,5 +879,6 @@ const getAllDevoluciones=async(req,res=response)=>{
      getPedidos,
      getDetailByOrder,
      getAllDevoluciones,
-     getAllDevolucionesByOrder
+     getAllDevolucionesByOrder,
+     cPedidoSquelize
  }

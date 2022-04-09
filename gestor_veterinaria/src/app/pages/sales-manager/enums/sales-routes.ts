@@ -7,6 +7,8 @@ export enum SalesRoutes {
     dPedido='/salesManager/deleteOrder',
     /**OPtiene listado de pedidos */
     getAllPedidos='/salesManager/getPedidos',
+    /**Crea un pedido con sequelize*/
+    cPedidoSquelize='/salesManager/cOrder',
 
 
 
