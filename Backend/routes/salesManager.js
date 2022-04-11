@@ -9,7 +9,7 @@
  const { ValidateJWT } = require('../middlewares/validation-jwt');
  const {createPedido,readPedido,updatePedido,deletePedido,createDetailPedido, readDetailPedido,
      updateDetailPedido,deleteDetailPedido, createDevolution,
-    updateDevolution,deleteDevolution,readDevolution, getPedidos, getDetailByOrder, getAllDevoluciones, getAllDevolucionesByOrder, cPedidoSquelize}=require('../controller/salesController');
+    updateDevolution,deleteDevolution,readDevolution, getPedidos, getDetailByOrder, getAllDevoluciones, getAllDevolucionesByOrder, cPedidoSquelize, getDetalleView, createBulkDetalle}=require('../controller/salesController');
  const router=Router();
 
  //#region salesOrder (Pedido)
@@ -117,8 +117,18 @@ router.post('/deleteOrderDetail',[
 ],deleteDetailPedido);
 
 /**Ruta para obtener los detalles de un pedido */
-router.get('/getDetailByOrder/:pedido',[ValidateJWT],getDetailByOrder)
+router.get('/getDetailByOrder/:pedido',[ValidateJWT],getDetailByOrder);
 
+/**Ruta que obtiene la consulta de la vista de inventarió */
+router.get('/vewDetailInv',[ValidateJWT],getDetalleView);
+
+/**Ruta d=que carga detalles de forma masiva en la DB */
+router.post('/bulkDetalles',[
+    check('detalles','Campo requerido').not().isEmpty(),
+    validationCamps,
+],
+createBulkDetalle
+);
 //#endregion
 
 //#region Devoluciones

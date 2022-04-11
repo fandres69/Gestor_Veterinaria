@@ -20,7 +20,8 @@ export enum SalesRoutes {
     dDetailOrder='/salesManager/deleteOrderDetail',
     /**Obtiene el detalle de un pedido */
     getDetailOrder='/salesManager/getDetailByOrder/',
-
+    /**Carga de forma masiva detalles de un pedidos */
+    bulkDetalles='/salesManager/bulkDetalles',
 
 
 
@@ -35,7 +36,7 @@ export enum SalesRoutes {
     /**Obtiene devoluciones de un pedido */
     getDevolucion='/salesManager/getAllDevolucionesByOrder/',
 
-
-
+    /**Consulta la vista de inventario */
+    getViewInv='/salesManager/vewDetailInv',
 }
  

@@ -1,1 +1,173 @@
-<p>del-detalle works!</p>
+<div class="container">
+    <h1>Eliminación detalle de pedidos</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Documento cliente</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Documento cliente"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                    {{option.documento}} - {{option.nombre}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>      
+            
+        </form>
+    </div>    
+    <div class="container" *ngIf="forLoad">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>                 
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Dirección de entrega</th>
+                    <th>Ciudad</th>
+                    <th>Observaciones</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of salidaList |paginatorPipe:p_Size:page">
+                    <td class="col-1">{{item.idpedidos}}</td>
+                    <td>{{item.documento}} - {{item.nombre}}</td>
+                    <td>{{item.direccionEntrega}}</td>
+                    <td>{{item.ciudadN}}</td>
+                    <td>{{item.observaciones}}</td>
+                    <td>{{item.fecha|date}}</td>
+                    <td><a class="btn btn-success btn-sm" type="button"                      
+                      (click)="loadForUpdate(item)"                    
+                      >Ver</a></td>                 
+                </tr>
+            </tbody>
+           
+          </table>
+            <mat-paginator [length]="salidaList.length"
+            [pageSize]="p_Size"
+            [pageSizeOptions]="optionsPage"
+            (page)="pageEvent($event)"
+            aria-label="Select page"
+            class="m-3 example-full-width"
+            ></mat-paginator>
+    </div>
+
+    <div class="container" *ngIf="editar">       
+        <table class="table table-striped table-hover w-50">
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{OrderForUpd.idpedidos}}</td>
+                    <td>{{OrderForUpd.documento}} - {{OrderForUpd.nombre}}</td>                   
+                </tr>
+            </tbody>
+        </table> 
+
+        <div class="w-100" *ngIf="detalleL.length>0">
+            <table class="table table-striped table-hover w-100 " >
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>% Impuesto</th>
+                        <th>% Descuento</th>
+                        <th>Tipo producto</th>
+                        <th>Sub Total</th>
+                        <th>Sub Total Impuesto</th>
+                        <th>Sub Total Descuento</th>
+                        <th>Total</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let detalle of detalleL |paginatorPipe:pSize:pageD">
+                        <td>{{detalle.productoName}}</td>
+                        <td>{{detalle.cantidad}}</td>
+                        <td>{{detalle.precio}}</td>
+                        <td>{{detalle.impuesto}}</td>
+                        <td>{{detalle.descuento}}</td>
+                        <td>{{detalle.tipoProducto}}</td>
+                        <td>{{detalle.subTotal|number}}</td>
+                        <td>{{detalle.subTotalImpuesto|number}}</td>
+                        <td>{{detalle.subTotalDescuento|number}}</td>
+                        <td>{{detalle.total|number}}</td>
+                        <td>
+                            <div *ngIf="detalle.tipoProducto=='P'">
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="selectUpdate(detalle)">
+                                    <span class="material-icons bi md-48 bg-danger rounded-circle float-end">delete</span>                            
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="6">Totales</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <th>{{totales.sub|number}}</th>
+                        <th>{{totales.subImpuesto|number}}</th>
+                        <th>{{totales.subDescuento|number}}</th>
+                        <th>{{totales.total|number}}</th>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table> 
+           <mat-paginator [length]="detalleL.length"
+            [pageSize]="pSize"
+            [pageSizeOptions]="optionsPageD"
+            (page)="pageEventD($event)"
+            aria-label="Select pageD"
+            class="m-3 example-full-width"
+            ></mat-paginator>
+        </div>
+       
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modificación detalle</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"  >              
+                <div class="form-control form-floating bg-info">
+                    <form action="" [formGroup]="miForm" class="bg-info">
+                        <div *ngIf="vistaDetalleUpdate">
+                            <h2>Precaución</h2>
+                            <pre>Recuerde que al eliminar el detalle en inventario del producto incrementara según la cantidad,
+                                para este caso en {{vistaDetalleUpdate.cantidad}} unidades</pre>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteDetalle()">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</div>
+

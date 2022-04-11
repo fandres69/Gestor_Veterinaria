@@ -8,6 +8,7 @@ import { ciudadModel } from '../../data-master-manager/interfaces/data-master-in
 import { DataMasterService } from '../../control-panel/services/data-master.service';
 import { PedidoModel, VistaPedidos } from '../interfaces/sales-interfaces';
 import { SalesManagerServiceService } from '../services/sales-manager-service.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-find-pedidos',
@@ -30,6 +31,11 @@ export class FindPedidosComponent implements OnInit {
   private OrderForUpd!:VistaPedidos;
   filteredOptions!: Observable<ClientsGV[]>;
   public editar:boolean=false;
+
+   //Paginador
+   public p_Size=5;
+   public page=1;
+   public optionsPage=[5,10,30,50];
 
   miForm=this.fb.group({
     cliente:[,[Validators.required]],
@@ -174,6 +180,13 @@ export class FindPedidosComponent implements OnInit {
     this.forLoad=false;   
     this.editar=true;
   }
+
+  /**Evento para el Paginador */
+  pageEvent(e:PageEvent){
+    this.p_Size=e.pageSize;
+    this.page=e.pageIndex+1;
+  }
+
 
   ValidaCampo(campo:string){
     return this.miForm.controls[campo].errors && this.miForm.controls[campo].touched

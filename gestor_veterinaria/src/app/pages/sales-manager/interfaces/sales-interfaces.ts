@@ -18,6 +18,24 @@ export interface PedidoModel {
 
 }
 
+export interface ViewInvResponse{
+    OK?:boolean;
+    error?:{};
+    statusCode?:number;
+    statusDescription?:string;
+    detalleInv?:DetalleInvModel[];
+}
+
+/**Modelo vista de inventario */
+export interface DetalleInvModel{
+    idProductos?:number;
+    producto?:string; 
+    PrecioVenta?:number;
+    impuesto?:number;
+    descuento?:number;
+    stock?:number;
+}
+
 
 export interface DetallePedidoResponse {
     OK?:boolean;
@@ -34,13 +52,12 @@ export interface DetallePedModel {
     precio?:number;
     impuesto?:number;
     cliente?:number;
-    ciudad?:number;
+    ciudad?:string;
     pedido?:number;
     tipoProducto?:string;
     dia?:number;
     mes?:number;
     anio?:number;
-    unidades?:number;
     descuento?:number;
 }
 
@@ -73,4 +90,27 @@ export interface VistaPedidos{
     ciudadN?:string;
     observaciones?:string;
     fecha:Date;
+}
+
+export interface VistaDetalle{
+    iddetallePedido?:number;
+    producto?:number;
+    productoName?:string;
+    cantidad?:number;
+    precio?:number;
+    impuesto?:number;
+    clienteDoc?:number;
+    clienteName?:string;
+    ciudad?:string;
+    ciudadName?:string;
+    pedido?:number;
+    tipoProducto?:string;
+    subTotal?:number;
+    subTotalImpuesto?:number;
+    subTotalDescuento?:number;
+    total?:number;
+    anio?:number;
+    mes?:number;
+    dia?:number;
+    descuento?:number;
 }

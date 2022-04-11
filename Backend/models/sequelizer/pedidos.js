@@ -5,11 +5,6 @@ const user=process.env.DBUSER;
 const password=process.env.DBPASSWORD;
 const database=process.env.DBDATABASE;
 
-console.log(host);
-console.log(user);
-console.log(password);
-console.log(database);
-
 const sequelize= new Sequelize(
     database,
     user,

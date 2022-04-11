@@ -1,10 +1,10 @@
-/**Modelo y consultas DB gveterinaria.detallepedidio*/
+/**Modelo y consultas DB gveterinaria.detallepedidos*/
 
 
 //#region detallepedidio
 
 /**
- * Modelo tabla gveterinaria.detallepedidio
+ * Modelo tabla gveterinaria.detallepedidos
  */
  const salesDetail={
     iddetallePedido:0,
@@ -39,13 +39,13 @@
  * @param unidades
  * @param descuento
  */
-const cSalesDetail='INSERT INTO gveterinaria.detallepedido (producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia,unidades,descuento) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);';
+const cSalesDetail='INSERT INTO gveterinaria.detallepedidos (producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia,unidades,descuento) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);';
 
 /**
  * Consulta un registro de detalle pedido (Vetas)
  * @param iddetallePedido
  */
-const rSalesDetail='SELECT * FROM gveterinaria.detallepedido WHERE iddetallePedido=?;';
+const rSalesDetail='SELECT * FROM gveterinaria.detallepedidos WHERE iddetallePedido=?;';
 
 /**
  * Actualiza un registro de detalla de pedido (Ventas)
@@ -64,18 +64,21 @@ const rSalesDetail='SELECT * FROM gveterinaria.detallepedido WHERE iddetallePedi
  * @param descuento
  * @param iddetallePedido
  */
-const uSalesDetail='UPDATE gveterinaria.detallepedido SET producto=?,cantidad=?,precio=?,impuesto=?,cliente=?,ciudad=?,pedido=?,tipoProducto=?,anio=?,mes=?,dia=?,unidades=?,descuento=? WHERE iddetallePedido=?;';
+const uSalesDetail='UPDATE gveterinaria.detallepedidos SET producto=?,cantidad=?,precio=?,impuesto=?,cliente=?,ciudad=?,pedido=?,tipoProducto=?,anio=?,mes=?,dia=?,descuento=? WHERE iddetallePedido=?;';
 
 /**
  * Consulta un registro de detalle pedido (Vetas)
  * @param iddetallePedido
  */
-const dSalesDetail='DELETE FROM gveterinaria.detallepedido WHERE iddetallePedido=?;';
+const dSalesDetail='DELETE FROM gveterinaria.detallepedidos WHERE iddetallePedido=?;';
 
 /**
  * Consulta genérica registro de detalle pedido (Vetas)
  */
-const qSalesDetail='SELECT * FROM gveterinaria.detallepedido';
+const qSalesDetail='SELECT * FROM gveterinaria.detallepedidos';
+
+/**COnsulta la vista v_detallesinv */
+const vewDetalleInv='SELECT * FROM gveterinaria.v_detallesinv';
 
 //#endregion
 
@@ -89,4 +92,5 @@ module.exports={
     uSalesDetail,
     dSalesDetail,
     qSalesDetail,
+    vewDetalleInv
 }

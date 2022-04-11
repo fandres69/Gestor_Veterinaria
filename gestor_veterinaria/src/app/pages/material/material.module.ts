@@ -13,8 +13,7 @@ import { MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
-
+import { MatPaginatorModule } from "@angular/material/paginator";
 @NgModule({
  exports:[
   MatSidenavModule,
@@ -31,6 +30,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   MatSelectModule,
   MatNativeDateModule,
   MatDatepickerModule,
+  MatPaginatorModule,
  ]
 })
 export class MaterialModule { }

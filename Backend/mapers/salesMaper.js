@@ -98,7 +98,7 @@ const getSalesDetailForCreate=(req)=>{
  * @returns Object
  */
 const getSalesDetailForUpdate=(req)=>{
-    const{producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia,iddetallePedido,unidades,descuento}=req.body;
+    const{producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia,iddetallePedido,descuento}=req.body;
     const nSalesDetail={...salesDetail};
     nSalesDetail.producto=producto;
     nSalesDetail.cantidad=cantidad;
@@ -111,7 +111,6 @@ const getSalesDetailForUpdate=(req)=>{
     nSalesDetail.anio=anio;
     nSalesDetail.mes=mes;
     nSalesDetail.dia=dia;
-    nSalesDetail.unidades=unidades;
     nSalesDetail.descuento=descuento;
     nSalesDetail.iddetallePedido=iddetallePedido;
     return nSalesDetail;
@@ -136,7 +135,6 @@ const getSalesDetailForUpdate=(req)=>{
     nSalesDetail.anio=result[0].anio;
     nSalesDetail.mes=result[0].mes;
     nSalesDetail.dia=result[0].dia;
-    nSalesDetail.unidades=result[0].unidades;
     nSalesDetail.descuento=result[0].descuento;
     nSalesDetail.iddetallePedido=result[0].iddetallePedido;
     return nSalesDetail;

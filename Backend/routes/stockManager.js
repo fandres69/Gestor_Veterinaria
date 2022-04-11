@@ -7,7 +7,7 @@ const {check} = require('express-validator');
 const { validationCamps } = require('../middlewares/validations-camps');
 const { ValidateJWT } = require('../middlewares/validation-jwt');
 const {createProduct,updateProduct,readProduct,deleteProduct,createStock,readStock,updateStock,deleteStock,
-    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn, getProducts, getStocks, getServicios, getStocksIn, getAllProducts, getStockId, getCompleteStock, getAllStockIn
+    createServiceV,readServiceV,updateServiceV,deleteServiceV,createStockIn,readStockIn,updateStockIn,deleteStockIn, getProducts, getStocks, getServicios, getStocksIn, getAllProducts, getStockId, getCompleteStock, getAllStockIn, getAllServicios
 }=require('../controller/stockManagerController');
 const { route } = require('./auth');
 const router=Router();
@@ -151,6 +151,9 @@ router.post('/deleteService',[
 
 /**Ruta que consulta servicios a partir de un criterio de búsqueda */
 router.get('/getServicios/:criterio',[ValidateJWT],getServicios);
+
+/**Ruta que consulta todos los servicios */
+router.get('/getAllServicios',[ValidateJWT],getAllServicios);
 
 //#endregion
 

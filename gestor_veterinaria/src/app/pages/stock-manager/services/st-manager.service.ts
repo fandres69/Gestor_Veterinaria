@@ -270,6 +270,21 @@ export class StManagerService {
     )
   }
 
+  /**
+   * Consulta el listado de servicios
+   * @returns array servicios
+   */
+  getAllServicios(){
+    const url=`${this.baseUrl}${SmEnum.getAllServicio}`;
+    return this.http.get<ServiciosResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err)
+      )
+    )
+  }
+
+  
+
 
   //#endregion
 
@@ -354,6 +369,7 @@ export class StManagerService {
       )
     )
   }
+
 
   //#endregion
 

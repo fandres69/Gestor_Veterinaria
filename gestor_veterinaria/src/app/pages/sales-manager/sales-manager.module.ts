@@ -16,6 +16,8 @@ import { DelDevolucionComponent } from './devoluciones/del-devolucion.component'
 import { SalesManagerRoutingModule } from './sales-manager-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PaginadorPipe } from '../pipes/paginador.pipe';
+
 
 
 
@@ -34,14 +36,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     FindDevolucionComponent,
     UpdDevolucionComponent,
     DelDevolucionComponent,
-   
+    PaginadorPipe
   ],
   imports: [
     CommonModule,
     SalesManagerRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+  
   ]
 })
 export class SalesManagerModule { }
