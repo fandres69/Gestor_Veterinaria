@@ -23,7 +23,6 @@ export class CiudadesComponent implements OnInit {
   }
 
   crearCiudad(){
-    console.log('create ciudad');
     const body={
       codigo:this.miForm.get('codigo')?.value,
       Ciudad:this.miForm.get('Ciudad')?.value,
@@ -31,7 +30,6 @@ export class CiudadesComponent implements OnInit {
       Departamento:this.miForm.get('Departamento')?.value
     }
     this.masterD.CreateCiudad(body).subscribe(resp=>{
-      console.log(resp);
       if(resp.error){
         
         const mdgErr=resp.error.errors[0].msg||'';

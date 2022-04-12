@@ -41,7 +41,6 @@ export class DelTipDocumentoComponent implements OnInit {
 
     const body={idtipoDocumento:this.selTipoDoc.idtipoDocumento,tipoDocumento:this.miForm.get('tipoDocumento')?.value};   
     this.masterD.delTypeDocument(body).subscribe(resp=>{
-      console.log(resp);
       if(resp.error){        
         const mdgErr=resp.error.errors[0].msg||'';
         const campo='Campo: '+resp.error.errors[0].param||'';
@@ -83,7 +82,6 @@ export class DelTipDocumentoComponent implements OnInit {
       return;
     }
     this.selTipoDoc=JSON.parse(localStorage.getItem('updTypeDoc')||'');    
-    console.log(this.selTipoDoc);
     this.miForm.get('idtipoDocumento')?.setValue(this.selTipoDoc.idtipoDocumento);
     this.miForm.get('tipoDocumento')?.setValue(this.selTipoDoc.tipoDocumento);
     this.forLoad=true;   

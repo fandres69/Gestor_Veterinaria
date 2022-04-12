@@ -44,7 +44,6 @@ export class UpdCiudadComponent implements OnInit {
     const body={codigo:this.selCiudad.codigo,codigoDto:this.miForm.get('codigoDto')?.value
       ,Departamento:this.miForm.get('Departamento')?.value,Ciudad:this.miForm.get('Ciudad')?.value};   
     this.masterD.updCiudad(body).subscribe(resp=>{
-      console.log(resp);
       if(resp.error){        
         const mdgErr=resp.error.errors[0].msg||'';
         const campo='Campo: '+resp.error.errors[0].param||'';
@@ -86,7 +85,6 @@ export class UpdCiudadComponent implements OnInit {
       return;
     }
     this.selCiudad=JSON.parse(localStorage.getItem('delCiudad')||'');    
-    console.log(this.selCiudad);
     this.miForm.get('codigo')?.setValue(this.selCiudad.codigo);
     this.miForm.get('Ciudad')?.setValue(this.selCiudad.Ciudad);
     this.miForm.get('codigoDto')?.setValue(this.selCiudad.codigoDto);

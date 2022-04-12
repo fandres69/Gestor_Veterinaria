@@ -4,10 +4,10 @@
     <div class="container">
         <form class="example-form form-floating p-2 m-2">
             <mat-form-field class="m-3 example-full-width" >
-              <mat-label>Criterio de búsqueda</mat-label>
+              <mat-label>Documento cliente</mat-label>
               <input type="text" class="example-full-width"
                      placeholder=""
-                     aria-label="Criterio de búsqueda"
+                     aria-label="Documento cliente"
                      matInput
                      [formControl]="myControl"
                      [matAutocomplete]="auto"
@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of salidaList">
+                <tr *ngFor="let item of salidaList|paginatorPipe:p_Size:page">
                     <td>{{item.idpedidos}}</td>
                     <td>{{item.documento}} - {{item.nombre}}</td>
                     <td>{{item.direccionEntrega}}</td>
@@ -53,6 +53,13 @@
                 </tr>
             </tbody>
           </table>
+          <mat-paginator [length]="salidaList.length"
+          [pageSize]="p_Size"
+          [pageSizeOptions]="optionsPage"
+          (page)="pageEvent($event)"
+          aria-label="Select page"
+          class="m-3 example-full-width"
+          ></mat-paginator>
     </div>
 
     <div class="container form-control form-floating" *ngIf="editar">     

@@ -8,7 +8,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  
   constructor() { 
    
   }

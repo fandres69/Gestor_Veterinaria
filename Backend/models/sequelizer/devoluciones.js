@@ -15,40 +15,45 @@ const sequelize= new Sequelize(
     }
 );
 
-const pedidos= sequelize.define('pedidos',{
-    idpedidos:{
+/**
+ * Modelo tabla devoluciones para sequelizer
+ */
+const devoluciones=sequelize.define('devoluciones',{
+
+    iddevoluciones:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true
     },
-    cliente:{
+    pedido:{
         type:DataTypes.INTEGER,
         allowNull:false
     },
-    direccionEntrega:{
-        type:DataTypes.STRING,
+    producto:{
+        type:DataTypes.INTEGER,
         allowNull:false
     },
-    ciudad:{
-        type:DataTypes.STRING,
+    cantidad:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    precio:{
+        type:DataTypes.DOUBLE,
+        allowNull:false
+    },
+    impuesto:{
+        type:DataTypes.DOUBLE,
         allowNull:false
     },
     observaciones:{
         type:DataTypes.STRING,
-        allowNull:true
-    },
-    dia:{
-        type:DataTypes.INTEGER,
         allowNull:false
     },
-    mes:{
-        type:DataTypes.INTEGER,
+    descuento:{
+        type:DataTypes.DOUBLE,
         allowNull:false
     },
-    anio:{
-        type:DataTypes.INTEGER,
-        allowNull:false
-    }
 });
 
-module.exports={pedidos};
+
+module.exports={devoluciones};

@@ -24,7 +24,7 @@ const generateJWT=(uid,name)=>{
             expiresIn:'14h'
         },(err,token)=>{
             if (err) {
-                console.log(err);
+         
                 //Se retorna con reject al usuario los errores
                 reject('No se pudo generar el token');
             }

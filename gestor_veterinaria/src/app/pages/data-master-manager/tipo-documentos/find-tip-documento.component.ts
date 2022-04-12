@@ -46,7 +46,6 @@ export class FindTipDocumentoComponent implements OnInit {
       return;
     }
     this.selTipoDocumento=JSON.parse(localStorage.getItem('qTipoDoc')||'');    
-    console.log(this.selTipoDocumento);
     this.forLoad=true;   
   }
 

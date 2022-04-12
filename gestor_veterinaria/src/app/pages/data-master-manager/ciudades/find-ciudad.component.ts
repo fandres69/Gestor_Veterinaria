@@ -46,7 +46,6 @@ export class FindCiudadComponent implements OnInit {
       return;
     }
     this.selCiudad=JSON.parse(localStorage.getItem('qCiudad')||'');    
-    console.log(this.selCiudad);
     this.forLoad=true;   
   }
 

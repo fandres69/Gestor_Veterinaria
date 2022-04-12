@@ -42,7 +42,6 @@ export class DelCiudadComponent implements OnInit {
   deleteCiudad(){
     const body ={codigo:this.selCiudad.codigo};
     this.masterD.delCiudad(body).subscribe(resp=>{
-      console.log(resp);
       if(resp.error){        
         const mdgErr=resp.error.errors[0].msg||'';
         const campo='Campo: '+resp.error.errors[0].param||'';
@@ -84,7 +83,6 @@ export class DelCiudadComponent implements OnInit {
       return;
     }
     this.selCiudad=JSON.parse(localStorage.getItem('delCiudad')||'');    
-    console.log(this.selCiudad);
     this.forLoad=true;   
   }
 

@@ -61,6 +61,10 @@ const qInventario='SELECT * FROM gveterinaria.inventario';
 /**Actualiza el stock de un producto */
 const updStockInventario='UPDATE gveterinaria.inventario SET stock=? WHERE idInventario=?';
 
+
+/**Busca el stock de un producto */
+const stockForProduct='SELECT * FROM gveterinaria.inventario WHERE producto=?';
+
 module.exports={
     stockInv,
     cInventario,
@@ -68,5 +72,6 @@ module.exports={
     uInventario,
     dInventario,
     qInventario,
-    updStockInventario
+    updStockInventario,
+    stockForProduct
 }

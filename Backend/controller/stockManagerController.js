@@ -976,6 +976,55 @@ const getServicios=async(req,res=response)=>{
     }
 }
 
+/**
+ * Retorna un listado de servicios
+ * @param {request} req 
+ * @param {response} res 
+ * @returns json
+ */
+ const getAllServicios=async(req,res=response)=>{
+    try {
+        
+        const servicios=await pool.query(qService);
+        if (servicios.length===0) {
+            return res.status(StatusCodes.CONFLICT).
+            json({
+             OK:false,
+             statusCode:StatusCodes.CONFLICT,
+             statusDescription:'No hay servicios encontrados',
+             errors:[
+                 {
+                     msg:'No hay servicios encontrados',
+                     params:''
+                 }
+             ]          
+            });   
+        }
+        return res.status(StatusCodes.OK).
+        json({
+         OK:true,
+         statusCode:StatusCodes.OK,
+         statusDescription:'Servicios encontrados',
+         servicios:[servicios]                 
+        });
+
+    } catch (error) {
+        return  res.status(StatusCodes.INTERNAL_SERVER_ERROR).
+        json({
+         OK:false,
+         statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+         statusDescription:'Error al consultar servicios',
+         errors:[
+             {
+                msg:'Error al consultar servicios',
+                params:''
+             }
+         ]          
+        });
+    }
+}
+
+
 //#endregion
 
 //#region Ingresos inventario
@@ -1403,4 +1452,5 @@ module.exports={
     getStockId,
     getCompleteStock,
     getAllStockIn,
+    getAllServicios
 }

@@ -38,6 +38,12 @@ export enum SmEnum {
     /**búsqueda servicio con criterio*/
     getServicio='/stockManager/getServicios/',
 
+    
+    /**Consulta la vista de inventario */
+    getAllServicio='/stockManager/getAllServicios',
+    
+   
+
     /**Creación entradas de inventario */
     cIngresosInv='/stockManager/createStockIn',
     /**Consulta entradas de inventario */

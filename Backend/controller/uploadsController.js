@@ -9,7 +9,6 @@ const {cImagesPerfil,rImagesPerfil,uImagesPerfil,dImagesPerfil,qImagesPerfil}=re
 const LoadUserFile=async(req,res=response)=>{
     try {
        const {documento}=req.params;
-       console.log(req);
        const name=req.file.filename;      
        const imgPerfil= await pool.query(rImagesPerfil,[documento]);
        if(imgPerfil.length==0){

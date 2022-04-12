@@ -1,1 +1,166 @@
-<p>upd-devolucion works!</p>
+<div class="container">
+    <h1>Actualización devoluciones</h1>
+    <hr>
+    <div class="container">
+        <form class="example-form form-floating p-2 m-2">
+            <mat-form-field class="m-3 example-full-width" >
+              <mat-label>Documento cliente</mat-label>
+              <input type="text" class="example-full-width"
+                     placeholder=""
+                     aria-label="Documento cliente"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="criterio" 
+                    (focus)="limpiarInfo()"
+                     >
+              <mat-autocomplete #auto="matAutocomplete" class="example-full-width">
+                <mat-option *ngFor="let option of filteredOptions  | async" [value]="option.documento" (click)="selectForQuery(option)">
+                    {{option.documento}} - {{option.nombre}}
+                </mat-option>
+                            
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" class="m-2" (click)="loadInfo()">Visualizar</button>      
+            
+        </form>
+    </div>    
+    <div class="container" *ngIf="forLoad">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>                 
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Dirección de entrega</th>
+                    <th>Ciudad</th>
+                    <th>Observaciones</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of salidaList |paginatorPipe:p_Size:page">
+                    <td class="col-1">{{item.idpedidos}}</td>
+                    <td>{{item.documento}} - {{item.nombre}}</td>
+                    <td>{{item.direccionEntrega}}</td>
+                    <td>{{item.ciudadN}}</td>
+                    <td>{{item.observaciones}}</td>
+                    <td>{{item.fecha|date}}</td>
+                    <td><a class="btn btn-success btn-sm" type="button"                      
+                      (click)="loadForUpdate(item)"                    
+                      >Ver</a></td>                 
+                </tr>
+            </tbody>
+           
+          </table>
+            <mat-paginator [length]="salidaList.length"
+            [pageSize]="p_Size"
+            [pageSizeOptions]="optionsPage"
+            (page)="pageEvent($event)"
+            aria-label="Select page"
+            class="m-3 example-full-width"
+            ></mat-paginator>
+    </div>
+
+    <div class="container" *ngIf="editar">       
+        <table class="table table-striped table-hover w-50">
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{OrderForUpd.idpedidos}}</td>
+                    <td>{{OrderForUpd.documento}} - {{OrderForUpd.nombre}}</td>                   
+                </tr>
+            </tbody>
+        </table> 
+
+        <div class="w-100" *ngIf="devolucionesPedido.length>0">
+            <table class="table table-striped table-hover w-100 " >
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Observaciones</th>
+                        <th>% Impuesto</th>
+                        <th>% Descuento</th>                    
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let detalle of devolucionesPedido |paginatorPipe:pSize:pageD">
+                        <td>{{detalle.iddevoluciones}}</td>
+                        <td>{{detalle.producto}}</td>
+                        <td>{{detalle.cantidad}}</td>
+                        <td>{{detalle.precio}}</td>
+                        <td>{{detalle.observaciones}}</td>
+                        <td>{{detalle.impuesto}}</td>
+                        <td>{{detalle.descuento|number}}</td>
+                        <td>
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="selectUpdate(detalle)">
+                                <span class="material-icons bi md-48 bg-warning rounded-circle float-end">edit</span>                            
+                            </a>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+           <mat-paginator [length]="detalleL.length"
+            [pageSize]="pSize"
+            [pageSizeOptions]="optionsPageD"
+            (page)="pageEventD($event)"
+            aria-label="Select pageD"
+            class="m-3 example-full-width"
+            ></mat-paginator>
+        </div>
+       
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar devolución</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">              
+                <div class="form-control form-floating">
+                    <form action="" [formGroup]="miForm">                                           
+                        <div class="form-floating m-3">
+                            <input type="number" class="form-control" id="floatingInput" 
+                            placeholder="Cantidad"
+                            formControlName="cantidad"
+                            >
+                            <label for="floatingInput">Cantidad</label>
+                            <span class="form-text text-danger"
+                             *ngIf="ValidaCampo('cantidad')"           
+                            >Este campo es obligatorio, mas de 1 unidad</span>                          
+                        </div>
+                        <div class="form-floating m-3">
+                            <input type="text" class="form-control" id="floatingInput" 
+                            placeholder="Observaciones"
+                            formControlName="observaciones"
+                            >
+                            <label for="floatingInput">Observaciones</label>
+                            <span class="form-text text-danger"
+                             *ngIf="ValidaCampo('observaciones')"           
+                            >Este campo es obligatorio, mas de 3 caracteres</span>                          
+                        </div>                                 
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateDevolucion()">Actualizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+

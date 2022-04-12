@@ -11,13 +11,15 @@ import { ImagenPipePipe } from './pipes/imagen-pipe.pipe';
 
 
 
+
 @NgModule({
   declarations: [
     HomeComponent,
     ChangePassComponent,
     ControlPanelComponent,
     HomePageComponent,
-    ImagenPipePipe
+    ImagenPipePipe,
+
   ],
   imports: [
     CommonModule,

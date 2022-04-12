@@ -97,7 +97,6 @@ export class DelPetComponent implements OnInit {
     }
     this.selectedItem=JSON.parse(localStorage.getItem('search')||''); 
     this.getPropietario(this.selectedItem.propietario?.toString()||'');
-    console.log(this.CliPropietario);
    
     this.miForm.get('nombre')?.setValue(this.selectedItem.nombre);    
     this.miForm.get('tipo')?.setValue(this.selectedItem.tipo);  

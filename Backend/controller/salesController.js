@@ -6,12 +6,15 @@
  const {StatusCodes}= require('http-status-codes')
  const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
  const {cSalesOrder,rSalesOrder,uSalesOrder,dSalesOrder, qSalesOrder}=require('../models/pedidos');
- const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail, qSalesDetail}=require('../models/detallePedido');
+ const { cSalesDetail,rSalesDetail,uSalesDetail,dSalesDetail, qSalesDetail, vewDetalleInv}=require('../models/detallePedido');
  const {getSalesOrdForCreate,getSalesOrdForUpdate,getSalesOrdFromQuery,
         getSalesDetailForCreate,getSalesDetailForUpdate,getSalesDetailFromQuery}=require('../mapers/salesMaper');
 const {cDevoluciones,rDevoluciones,uDevoluciones,dDevoluciones,qDevoluciones}=require('../models/devoluciones');
 const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/salesMaper');
 const {pedidos}=require('../models/sequelizer/pedidos');
+const {detallepedido}=require('../models/sequelizer/detallePedido');
+const { qInventario, cInventario, rInventario, stockForProduct, updStockInventario, stockInv, uInventario } = require('../models/inventario');
+const {devoluciones}=require('../models/sequelizer/devoluciones');
 
 //#region Pedidos
 
@@ -311,7 +314,7 @@ const createDetailPedido=async(req,res=response)=>{
         }
         await pool.query(cSalesDetail,[detailOrder.producto,detailOrder.cantidad,detailOrder.precio,detailOrder.impuesto
         ,detailOrder.cliente,detailOrder.ciudad,detailOrder.pedido,detailOrder.tipoProducto,
-        detailOrder.anio,detailOrder.mes,detailOrder.dia,detailOrder.unidades,detailOrder.descuento]);
+        detailOrder.anio,detailOrder.mes,detailOrder.dia,detailOrder.descuento]);
         rta=getResponseOk("Detalle creado correctamente",{detailOrder});
         return res.status(StatusCodes.OK).json({
             OK:true,
@@ -335,6 +338,89 @@ const createDetailPedido=async(req,res=response)=>{
         });
     }
 }
+
+/**
+ * Crea detalles de pedido de forma masiva en la DB
+ * @param {require} req 
+ * @param {response} res 
+ * @returns json
+ */
+const createBulkDetalle=async(req,res=response)=>{
+    try {
+        const detailOrderL=req.body.detalles;
+        const salesOrderExisted=await pool.query(rSalesOrder,[detailOrderL[0].pedido]);
+        if (salesOrderExisted.length===0) {
+            let pedido=detailOrder.pedido
+            rta=getResponseConflict("El pedido no existe",{pedido});
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'El pedido no existe',
+                errors:[
+                    {
+                        msg:"El pedido no existe",
+                        param:''
+                    }
+                ]});
+        }
+        const cargaDetails=await detallepedido.bulkCreate(detailOrderL);
+        const listaInvL=await pool.query(qInventario);
+        let invt=[];
+        listaInvL.forEach(element => {
+            const fill={...stockInv};
+            fill.idInventario=element.idInventario;
+            fill.producto=element.producto;
+            fill.stock=element.stock;
+            fill.stockMin=element.stockMin;
+            fill.stockMax=element.stockMax;
+            fill.PrecioVenta=element.PrecioVenta;
+            fill.impuesto=element.impuesto;
+            fill.descuento=element.descuento;
+            invt.push(fill);
+        });
+        
+        detailOrderL.forEach(element => {
+
+            if(element.tipoProducto==='P'){
+                let forUpd=invt.filter(x=>x.producto===parseInt(element.producto));
+                let nStock=parseInt(forUpd[0].stock)-parseInt(element.cantidad);
+                updSale(nStock,forUpd);
+            }
+           
+        });
+ 
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalle(s) creado(s) correctamente',
+            OrderDetail:[cargaDetails]
+         });
+    } catch (error) {
+        
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error creación detalle pedido',
+            errors:[
+                {
+                    msg:"Error creación detalle pedido",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
+const updSale=async(nStock,invt)=>{
+    try {
+        await pool.query(updStockInventario,[nStock,invt[0].idInventario]);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 
 /**
  * COnsulta un detalle de pedido en la DB
@@ -393,7 +479,7 @@ const readDetailPedido=async(req,res=response)=>{
  */
 const updateDetailPedido=async(req,res=response)=>{
     try {
-        let rta;
+        const detalle=req.body
         const salesDetailUpdate=getSalesDetailForUpdate(req);
         const {iddetallePedido}=req.body;
         const salesDetailExisted=await pool.query(rSalesDetail,[iddetallePedido]);
@@ -410,18 +496,32 @@ const updateDetailPedido=async(req,res=response)=>{
                     }
                 ]});
         }
-        await pool.query(uSalesDetail,[salesDetailUpdate.producto,salesDetailUpdate.cantidad,salesDetailUpdate.precio,salesDetailUpdate.impuesto,
-            salesDetailUpdate.cliente,salesDetailUpdate.ciudad,salesDetailUpdate.pedido,salesDetailUpdate.tipoProducto,
-            salesDetailUpdate.anio,salesDetailUpdate.mes,salesDetailUpdate.dia,
-            salesDetailUpdate.unidades,
-            salesDetailUpdate.descuento,
-            salesDetailUpdate.iddetallePedido]);
+        const upd=await detallepedido.update({cantidad:detalle.cantidad},{where:{iddetallePedido:detalle.iddetallePedido}});
+        const listaInvL=await pool.query(qInventario);
+        let invt=[];
+        listaInvL.forEach(element => {
+            const fill={...stockInv};
+            fill.idInventario=element.idInventario;
+            fill.producto=element.producto;
+            fill.stock=element.stock;
+            fill.stockMin=element.stockMin;
+            fill.stockMax=element.stockMax;
+            fill.PrecioVenta=element.PrecioVenta;
+            fill.impuesto=element.impuesto;
+            fill.descuento=element.descuento;
+            invt.push(fill);
+        });
+        let exist=getSalesDetailFromQuery(salesDetailExisted);
+        let forUpd=invt.filter(x=>x.producto===parseInt(detalle.producto));
+        let nStock=parseInt(forUpd[0].stock)+(parseInt(exist.cantidad))-parseInt(detalle.cantidad);
+
+        updSale(nStock,forUpd);
         rta=getResponseOk("Detalle actualizado correctamente",{salesDetailUpdate});
         return res.status(StatusCodes.OK).json({
             OK:true,
             statusCode:StatusCodes.OK,
             statusDescription:'Detalle actualizado correctamente',
-            OrderDetail:[salesDetailUpdate]
+            OrderDetail:[upd]
          });
     } catch (error) {
         rta=getResponseError("Error actualización detalle pedido");
@@ -464,6 +564,24 @@ const deleteDetailPedido=async(req,res=response)=>{
                 ]});
         }
         await pool.query(dSalesDetail,[iddetallePedido]);
+        const listaInvL=await pool.query(qInventario);
+        let invt=[];
+        listaInvL.forEach(element => {
+            const fill={...stockInv};
+            fill.idInventario=element.idInventario;
+            fill.producto=element.producto;
+            fill.stock=element.stock;
+            fill.stockMin=element.stockMin;
+            fill.stockMax=element.stockMax;
+            fill.PrecioVenta=element.PrecioVenta;
+            fill.impuesto=element.impuesto;
+            fill.descuento=element.descuento;
+            invt.push(fill);
+        });
+        let exist=getSalesDetailFromQuery(salesDetailExisted);
+        let forUpd=invt.filter(x=>x.producto===parseInt(exist.producto));
+        let nStock=parseInt(forUpd[0].stock)+(parseInt(exist.cantidad));
+        updSale(nStock,forUpd);
         rta=getResponseOk("Detalle eliminado correctamente",{iddetallePedido});
         return res.status(StatusCodes.OK).json({
             OK:true,
@@ -545,6 +663,44 @@ const getDetailByOrder=async(req,res=response)=>{
     }
 }
 
+
+const getDetalleView=async(req,res=response)=>{
+    try {
+        const detallesPedido=await pool.query(vewDetalleInv);
+        if(detallesPedido.length===0){
+            return res.status(StatusCodes.CONFLICT).json({ 
+                OK:false,
+                statusCode:StatusCodes.CONFLICT,
+                statusDescription:'No se encontraron resultados',
+                errors:[
+                    {
+                        msg:"No se encontraron resultados",
+                        param:''
+                    }
+                ]});
+        }
+        return res.status(StatusCodes.OK).json({
+            OK:true,
+            statusCode:StatusCodes.OK,
+            statusDescription:'Detalles encontrados',
+            detalleInv:[detallesPedido]
+         });
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+            OK:false,
+            statusCode:StatusCodes.INTERNAL_SERVER_ERROR,
+            statusDescription:'Error consulta detalle pedido',
+            errors:[
+                {
+                    msg:"Error consulta detalle pedido",
+                    param:''
+                }
+            ]      
+        });
+    }
+}
+
 //#endregion
 
 //#region  Devoluciones
@@ -559,8 +715,8 @@ const createDevolution=async(req,res=response)=>{
     try {
         let rta;
         const newDevolucion=getDevolucionesFromRequest(req);
-        const {producto,precio}=req.body;
-        let cmd=`${qDevoluciones} WHERE producto=${producto} AND precio=${precio};`;
+        const {producto,pedido}=req.body;
+        let cmd=`${qDevoluciones} WHERE producto=${producto} AND pedido=${pedido};`;
         const devolucionExisted=await pool.query(cmd);
         if (devolucionExisted.length>0) {
             rta=getResponseConflict("Ya existe una devolucion del mismo producto en el mismo pedido",{producto,precio});
@@ -575,17 +731,22 @@ const createDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
-        await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
-            newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones,
-            newDevolucion.unidades,
-            newDevolucion.descuento
-        ]);
+        const inventario=await pool.query(stockForProduct,[producto]);
+        const nStock=parseInt(inventario[0].stock)+newDevolucion.cantidad;
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
+
+        const DevolucionC= await devoluciones.create(newDevolucion);
+        // await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
+        //     newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones,
+        //     newDevolucion.descuento
+        // ]);
+
             rta=getResponseOk("Devolucion creada correctamente",{newDevolucion});
             return res.status(StatusCodes.OK).json({
                 OK:true,
                 statusCode:StatusCodes.OK,
                 statusDescription:'Devolucion creada correctamente',
-                devoluciones:[newDevolucion]
+                devoluciones:[DevolucionC]
              });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -663,7 +824,7 @@ const updateDevolution=async(req,res=response)=>{
     try {
         let rta;
         const DevolucionUpdate=getDevolucionesFromRequest(req);
-        const {iddevoluciones}=req.body;
+        const {iddevoluciones,producto}=req.body;
         const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
         if (devolucionExisted.length===0) {
             rta=getResponseConflict("La devolucion no existe",{});
@@ -678,17 +839,23 @@ const updateDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
-        await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
-            DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,
-            DevolucionUpdate.unidades,
-            DevolucionUpdate.descuento,
-            DevolucionUpdate.iddevoluciones]);
+
+        const inventario=await pool.query(stockForProduct,[producto]);
+        const nStock=parseInt(inventario[0].stock)-parseInt(devolucionExisted[0].cantidad)+DevolucionUpdate.cantidad;
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
+
+        const updDevolucion=await devoluciones.update({cantidad:DevolucionUpdate.cantidad,observaciones:DevolucionUpdate.observaciones},
+            {where:{iddevoluciones:DevolucionUpdate.iddevoluciones}});
+        // await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
+        //     DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,
+        //     DevolucionUpdate.descuento,
+        //     DevolucionUpdate.iddevoluciones]);
         rta=getResponseOk("Devolucion actualizada correctamente",{DevolucionUpdate});
         return res.status(StatusCodes.OK).json({
             OK:true,
             statusCode:StatusCodes.OK,
             statusDescription:'Devolucion actualizada',
-            devoluciones:[DevolucionUpdate]
+            devoluciones:[updDevolucion]
          });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -731,6 +898,10 @@ const deleteDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
+        
+        const inventario=await pool.query(stockForProduct,[devolucionExisted[0].producto]);
+        const nStock=parseInt(inventario[0].stock)-parseInt(devolucionExisted[0].cantidad);
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
         await pool.query(dDevoluciones,[iddevoluciones]);
         rta=getResponseOk("Devolucion eliminada correctamente",{iddevoluciones});
         return res.status(StatusCodes.OK).json({
@@ -880,5 +1051,7 @@ const getAllDevoluciones=async(req,res=response)=>{
      getDetailByOrder,
      getAllDevoluciones,
      getAllDevolucionesByOrder,
-     cPedidoSquelize
+     cPedidoSquelize,
+     getDetalleView,
+     createBulkDetalle
  }

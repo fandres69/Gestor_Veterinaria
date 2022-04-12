@@ -8,6 +8,7 @@ import { ciudadModel } from '../../data-master-manager/interfaces/data-master-in
 import { DataMasterService } from '../../control-panel/services/data-master.service';
 import { PedidoModel, VistaPedidos } from '../interfaces/sales-interfaces';
 import { SalesManagerServiceService } from '../services/sales-manager-service.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-del-pedidos',
@@ -164,8 +165,6 @@ export class DelPedidosComponent implements OnInit {
     this.OrderForUpd=stock;
     this.miForm.get('direccionEntrega')?.setValue(stock.direccionEntrega);
     this.miForm.get('ciudad')?.setValue(stock.ciudad);
-    console.log(stock);
-    console.log(this.miForm.get('ciudad')?.value);
     this.miForm.get('cliente')?.setValue(stock.documento);
     this.miForm.get('fecha')?.setValue(stock.fecha);
     this.miForm.get('observaciones')?.setValue(stock.observaciones);
@@ -189,6 +188,18 @@ export class DelPedidosComponent implements OnInit {
     this.miForm.reset();
     this.limpiarInfo();
   }
+
+  
+  //Paginador
+  public p_Size=5;
+  public page=1;
+  public optionsPage=[5,10,30,50];
+  /**Evento para el Paginador */
+  pageEvent(e:PageEvent){
+    this.p_Size=e.pageSize;
+    this.page=e.pageIndex+1;
+  }
+
 
   deletePedido(){
     if(this.miForm.invalid){

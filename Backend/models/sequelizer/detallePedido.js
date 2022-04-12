@@ -5,11 +5,6 @@ const user=process.env.DBUSER;
 const password=process.env.DBPASSWORD;
 const database=process.env.DBDATABASE;
 
-console.log(host);
-console.log(user);
-console.log(password);
-console.log(database);
-
 const sequelize= new Sequelize(
     database,
     user,
@@ -20,7 +15,7 @@ const sequelize= new Sequelize(
     }
 );
 
-const detallepedidio= sequelize.define('detallepedidio',{
+const detallepedido= sequelize.define('detallepedidos',{
     iddetallePedido:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
@@ -35,11 +30,11 @@ const detallepedidio= sequelize.define('detallepedidio',{
         allowNull:false
     },
     precio:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.DOUBLE,
         allowNull:false
     },
     impuesto:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.DOUBLE,
         allowNull:false
     },
     cliente:{
@@ -47,7 +42,7 @@ const detallepedidio= sequelize.define('detallepedidio',{
         allowNull:false
     },
     ciudad:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.STRING,
         allowNull:false
     },
     pedido:{
@@ -70,14 +65,10 @@ const detallepedidio= sequelize.define('detallepedidio',{
         type:DataTypes.INTEGER,
         allowNull:false
     },
-    unidades:{
-        type:DataTypes.INTEGER,
-        allowNull:false
-    },
     descuento:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.DOUBLE,
         allowNull:false
     },
 });
 
-module.exports={detallepedidio};
+module.exports={detallepedido};

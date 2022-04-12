@@ -20,12 +20,10 @@ export class TipoDocumentosComponent implements OnInit {
   }
 
   crearTipoDocumento(){
-    console.log('create ciudad');
     const body={
       tipoDocumento:this.miForm.get('tipoDocumento')?.value     
     }
     this.masterD.createTipoDocumento(body).subscribe(resp=>{
-      console.log(resp);
       if(resp.error){
         
         const mdgErr=resp.error.errors[0].msg||'';
