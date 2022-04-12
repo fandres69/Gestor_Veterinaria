@@ -398,7 +398,6 @@ agregarDetalle(){
 
 selectUpdate(objecto:VistaDetalle){
   this.vistaDetalleUpdate=objecto;
-  console.log(this.vistaDetalleUpdate);
 }
 
 /**Carga el litado de detalles en la DB */

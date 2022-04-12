@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.miForm.get('usuarioN')?.value,this.miForm.get('password')?.value).subscribe(resp=>{     
    
      if(resp.status){
-     console.log(resp);
       Swal.fire({
         icon: 'error',
         title: resp.error.errors[0].param,
@@ -44,7 +43,6 @@ export class LoginComponent implements OnInit {
       return;       
      }
      if(resp.error){
-      console.log(resp);
        Swal.fire({
          icon: 'error',
          title:'Ha ocurrido un erro',
@@ -69,7 +67,6 @@ export class LoginComponent implements OnInit {
   
   validaToken(){
     this.authService.validToken().subscribe(resp=>{
-     console.log(resp);
     })
   }
   

@@ -170,8 +170,6 @@ export class FindPedidosComponent implements OnInit {
     this.OrderForUpd=stock;
     this.miForm.get('direccionEntrega')?.setValue(stock.direccionEntrega);
     this.miForm.get('ciudad')?.setValue(stock.ciudad);
-    console.log(stock);
-    console.log(this.miForm.get('ciudad')?.value);
     this.miForm.get('cliente')?.setValue(stock.documento);
     this.miForm.get('fecha')?.setValue(stock.fecha);
     this.miForm.get('observaciones')?.setValue(stock.observaciones);

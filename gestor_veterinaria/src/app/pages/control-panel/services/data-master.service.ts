@@ -40,7 +40,6 @@ export class DataMasterService {
     return this.http.post<userSessionFind>(url,body,{headers:this.header}).
     pipe(
       tap(resp=>{
-        console.log(resp);
       }),
       map(resp=>resp),
       catchError(err=>of(err))
@@ -69,7 +68,6 @@ export class DataMasterService {
  
    return this.http.post<userImgResponse>(url,body,{headers:head}).pipe(
      tap(resp=>{
-       console.log(resp);
      })
    )
  }

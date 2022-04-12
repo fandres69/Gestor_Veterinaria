@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ImagenPipePipe implements PipeTransform {
 
   transform(img: string): string {
-console.log(img);
     if(img===''){
       let defaultRuta:string='assets/userIco.png';
       return defaultRuta;

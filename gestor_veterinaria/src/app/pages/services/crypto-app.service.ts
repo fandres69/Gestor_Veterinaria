@@ -12,7 +12,7 @@ export class CryptoAppService {
 
   encrypt(word:string){  
     // let result=CryptoJs.AES.encrypt(word,this.secretKey).toString();
-    // console.log(result);    
+   
     // return result;
 
   }
@@ -20,7 +20,6 @@ export class CryptoAppService {
   decrypt(word:string){
     // let bites=CryptoJs.AES.decrypt(word,this.secretKey);
     // let result=bites.toString(CryptoJs.enc.Utf8);
-    // console.log(result);
     // return result;
   }
 }

@@ -80,7 +80,6 @@ export class DelInventariosComponent implements OnInit {
     this.smgService.getCompleteStock().subscribe(resp=>{
       if(resp.stocks){
         this.stocksL=resp.stocks[0];
-        console.log(this.stocksL);
         return;
       }
     })

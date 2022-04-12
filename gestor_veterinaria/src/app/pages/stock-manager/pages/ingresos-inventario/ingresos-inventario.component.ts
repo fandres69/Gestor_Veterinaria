@@ -78,7 +78,6 @@ export class IngresosInventarioComponent implements OnInit {
       return;
     }
     this.selectedProduct=JSON.parse(localStorage.getItem('search')||''); 
-    console.log(this.selectedProduct);
     this.miForm.get('producto')?.setValue(this.selectedProduct.idProductos);
     this.miForm.enable();
     this.miForm.get('producto')?.disable();

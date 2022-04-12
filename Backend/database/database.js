@@ -8,7 +8,7 @@ pool.getConnection((err,connection)=>{
         throw err;
     }
     if(connection) connection.release();
-    console.log('Database connected successfully');
+
     return;
 });
 

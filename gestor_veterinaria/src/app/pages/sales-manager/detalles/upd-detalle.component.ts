@@ -400,7 +400,6 @@ agregarDetalle(){
 
 selectUpdate(objecto:VistaDetalle){
   this.vistaDetalleUpdate=objecto;
-  console.log(this.vistaDetalleUpdate);
 }
 
 editarDetallesOrd(){

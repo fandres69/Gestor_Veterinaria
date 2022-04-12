@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.prod';
 import { SalesRoutes } from '../enums/sales-routes';
-import { PedidoResponse, ViewInvResponse, VistaDetalle, DetallePedModel, DetallePedidoResponse } from '../interfaces/sales-interfaces';
+import { PedidoResponse, ViewInvResponse, VistaDetalle, DetallePedModel, DetallePedidoResponse, DevolucionesModel, DevolucionesResponse } from '../interfaces/sales-interfaces';
 import { map, catchError, of, Subject, Observable, retry } from 'rxjs';
 
 @Injectable({
@@ -127,5 +127,54 @@ export class SalesManagerServiceService {
       catchError(err=>of(err))
     )
   }
+
+
+  //#region  devoluciones
+
+  /**
+   * Crea una devolucion en la DB
+   * @param body modelo Devoluciones
+   * @returns DevolucionesResponse
+   */
+  createDevolucion(body:DevolucionesModel){
+    const url=`${this.baseUrl}${SalesRoutes.cDevolucion}`;   
+    return this.http.post<DevolucionesResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+  /**
+   * obtiene el listado de devoluciones
+   * @returns array devoluciones
+   */
+  getAllDevoluciones(){
+    const url=`${this.baseUrl}${SalesRoutes.getAllDevolucion}`;   
+    return this.http.get<DevolucionesResponse>(url,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+
+  /**Actualiza una devolucion en la DB */
+  updateDevolucion(body:DevolucionesModel){
+    const url=`${this.baseUrl}${SalesRoutes.uDevolucion}`;   
+    return this.http.post<DevolucionesResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+  /**Elimina una devolucion de la DB */
+  deleteDevolucion(body:DevolucionesModel){
+    const url=`${this.baseUrl}${SalesRoutes.dDevolucion}`;   
+    return this.http.post<DevolucionesResponse>(url,body,{headers:this.header}).pipe(
+      map(resp=>resp),
+      catchError(err=>of(err))
+    )
+  }
+
+  //#endregion
 
 }

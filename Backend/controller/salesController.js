@@ -13,8 +13,8 @@ const {cDevoluciones,rDevoluciones,uDevoluciones,dDevoluciones,qDevoluciones}=re
 const {getDevolucionesFromQuery,getDevolucionesFromRequest}=require('../mapers/salesMaper');
 const {pedidos}=require('../models/sequelizer/pedidos');
 const {detallepedido}=require('../models/sequelizer/detallePedido');
-const { qInventario, cInventario, rInventario, stockForProduct, updStockInventario, stockInv } = require('../models/inventario');
-
+const { qInventario, cInventario, rInventario, stockForProduct, updStockInventario, stockInv, uInventario } = require('../models/inventario');
+const {devoluciones}=require('../models/sequelizer/devoluciones');
 
 //#region Pedidos
 
@@ -314,7 +314,7 @@ const createDetailPedido=async(req,res=response)=>{
         }
         await pool.query(cSalesDetail,[detailOrder.producto,detailOrder.cantidad,detailOrder.precio,detailOrder.impuesto
         ,detailOrder.cliente,detailOrder.ciudad,detailOrder.pedido,detailOrder.tipoProducto,
-        detailOrder.anio,detailOrder.mes,detailOrder.dia,detailOrder.unidades,detailOrder.descuento]);
+        detailOrder.anio,detailOrder.mes,detailOrder.dia,detailOrder.descuento]);
         rta=getResponseOk("Detalle creado correctamente",{detailOrder});
         return res.status(StatusCodes.OK).json({
             OK:true,
@@ -715,8 +715,8 @@ const createDevolution=async(req,res=response)=>{
     try {
         let rta;
         const newDevolucion=getDevolucionesFromRequest(req);
-        const {producto,precio}=req.body;
-        let cmd=`${qDevoluciones} WHERE producto=${producto} AND precio=${precio};`;
+        const {producto,pedido}=req.body;
+        let cmd=`${qDevoluciones} WHERE producto=${producto} AND pedido=${pedido};`;
         const devolucionExisted=await pool.query(cmd);
         if (devolucionExisted.length>0) {
             rta=getResponseConflict("Ya existe una devolucion del mismo producto en el mismo pedido",{producto,precio});
@@ -731,17 +731,22 @@ const createDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
-        await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
-            newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones,
-            newDevolucion.unidades,
-            newDevolucion.descuento
-        ]);
+        const inventario=await pool.query(stockForProduct,[producto]);
+        const nStock=parseInt(inventario[0].stock)+newDevolucion.cantidad;
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
+
+        const DevolucionC= await devoluciones.create(newDevolucion);
+        // await pool.query(cDevoluciones,[newDevolucion.pedido,newDevolucion.producto,newDevolucion.cantidad,
+        //     newDevolucion.precio,newDevolucion.impuesto,newDevolucion.observaciones,
+        //     newDevolucion.descuento
+        // ]);
+
             rta=getResponseOk("Devolucion creada correctamente",{newDevolucion});
             return res.status(StatusCodes.OK).json({
                 OK:true,
                 statusCode:StatusCodes.OK,
                 statusDescription:'Devolucion creada correctamente',
-                devoluciones:[newDevolucion]
+                devoluciones:[DevolucionC]
              });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -819,7 +824,7 @@ const updateDevolution=async(req,res=response)=>{
     try {
         let rta;
         const DevolucionUpdate=getDevolucionesFromRequest(req);
-        const {iddevoluciones}=req.body;
+        const {iddevoluciones,producto}=req.body;
         const devolucionExisted=await pool.query(rDevoluciones,[iddevoluciones]);
         if (devolucionExisted.length===0) {
             rta=getResponseConflict("La devolucion no existe",{});
@@ -834,17 +839,23 @@ const updateDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
-        await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
-            DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,
-            DevolucionUpdate.unidades,
-            DevolucionUpdate.descuento,
-            DevolucionUpdate.iddevoluciones]);
+
+        const inventario=await pool.query(stockForProduct,[producto]);
+        const nStock=parseInt(inventario[0].stock)-parseInt(devolucionExisted[0].cantidad)+DevolucionUpdate.cantidad;
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
+
+        const updDevolucion=await devoluciones.update({cantidad:DevolucionUpdate.cantidad,observaciones:DevolucionUpdate.observaciones},
+            {where:{iddevoluciones:DevolucionUpdate.iddevoluciones}});
+        // await pool.query(uDevoluciones,[DevolucionUpdate.pedido,DevolucionUpdate.producto,DevolucionUpdate.cantidad,
+        //     DevolucionUpdate.precio,DevolucionUpdate.impuesto,DevolucionUpdate.observaciones,
+        //     DevolucionUpdate.descuento,
+        //     DevolucionUpdate.iddevoluciones]);
         rta=getResponseOk("Devolucion actualizada correctamente",{DevolucionUpdate});
         return res.status(StatusCodes.OK).json({
             OK:true,
             statusCode:StatusCodes.OK,
             statusDescription:'Devolucion actualizada',
-            devoluciones:[DevolucionUpdate]
+            devoluciones:[updDevolucion]
          });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -887,6 +898,10 @@ const deleteDevolution=async(req,res=response)=>{
                     }
                 ]});
         }
+        
+        const inventario=await pool.query(stockForProduct,[devolucionExisted[0].producto]);
+        const nStock=parseInt(inventario[0].stock)-parseInt(devolucionExisted[0].cantidad);
+        await pool.query(updStockInventario,[nStock,inventario[0].idInventario]);
         await pool.query(dDevoluciones,[iddevoluciones]);
         rta=getResponseOk("Devolucion eliminada correctamente",{iddevoluciones});
         return res.status(StatusCodes.OK).json({

@@ -29,7 +29,6 @@ export class ChangePassComponent implements OnInit {
 
     const pass=this.miForm.get('password')?.value;
     const nPass=this.miForm.get('nPassword')?.value;
-    console.log(pass);
     if(this.miForm.get('nPassword')?.value!=this.miForm.get('cPassword')?.value){
       Swal.fire({
         icon: 'error',
@@ -41,7 +40,6 @@ export class ChangePassComponent implements OnInit {
     const body={'documento':this.documento,'password':nPass,'passwordActual':pass}
    this.dataM.updatePassword(body).subscribe(resp=>{
 
-    console.log(resp);
     if(resp.OK){
       Swal.fire({
         icon: 'success',

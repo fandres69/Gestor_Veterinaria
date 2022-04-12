@@ -74,7 +74,7 @@ const getSalesOrdFromQuery=(result)=>{
  * @returns Object
  */
 const getSalesDetailForCreate=(req)=>{
-    const{producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia, unidades,descuento}=req.body;
+    const{producto,cantidad,precio,impuesto,cliente,ciudad,pedido,tipoProducto,anio,mes,dia, descuento}=req.body;
     const nSalesDetail={...salesDetail};
     nSalesDetail.producto=producto;
     nSalesDetail.cantidad=cantidad;
@@ -87,7 +87,6 @@ const getSalesDetailForCreate=(req)=>{
     nSalesDetail.anio=anio;
     nSalesDetail.mes=mes;
     nSalesDetail.dia=dia;
-    nSalesDetail.unidades=unidades;
     nSalesDetail.descuento=descuento;
     return nSalesDetail;
 }
@@ -151,7 +150,7 @@ const getSalesDetailForUpdate=(req)=>{
  */
 const getDevolucionesFromRequest=(req)=>{
     const nDev={...devoluciones};
-    const {iddevoluciones,pedido,producto,cantidad,precio,impuesto,observaciones,unidades,descuento}=req.body;
+    const {iddevoluciones,pedido,producto,cantidad,precio,impuesto,observaciones,descuento}=req.body;
     nDev.iddevoluciones=iddevoluciones;
     nDev.pedido=pedido;
     nDev.producto=producto;
@@ -159,7 +158,6 @@ const getDevolucionesFromRequest=(req)=>{
     nDev.precio=precio;
     nDev.impuesto=impuesto;
     nDev.observaciones=observaciones;
-    nDev.unidades=unidades;
     nDev.descuento=descuento;
     return nDev;
 }
@@ -178,7 +176,6 @@ const getDevolucionesFromRequest=(req)=>{
     nDev.precio=result[0].precio;
     nDev.impuesto=result[0].impuesto;
     nDev.observaciones=result[0].observaciones;
-    nDev.unidades=result[0].unidades;
     nDev.descuento=result[0].descuento;
     return nDev;
 }

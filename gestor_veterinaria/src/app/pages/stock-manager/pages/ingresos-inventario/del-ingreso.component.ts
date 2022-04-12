@@ -101,7 +101,6 @@ export class DelIngresoComponent implements OnInit {
       return;
     }
     this.selectedProduct=JSON.parse(localStorage.getItem('search')||''); 
-    console.log(this.selectedProduct);
     this.entradas=this.StockInL.filter(x=>x.producto===this.selectedProduct.idProductos);
     if(this.entradas.length===0){
       Swal.fire({

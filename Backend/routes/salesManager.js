@@ -173,10 +173,10 @@ router.post('/deleteDevolution',[
 ],deleteDevolution);
 
 /**Ruta para consultar todas las devoluciones */
-router.get('getAllDevoluciones',[ValidateJWT],getAllDevoluciones);
+router.get('/getAllDevoluciones',[ValidateJWT],getAllDevoluciones);
 
 /**Ruta que consulta las devoluciones de un pedido */
-router.get('getAllDevolucionesByOrder/:pedido',[ValidateJWT],getAllDevolucionesByOrder);
+router.get('/getAllDevolucionesByOrder/:pedido',[ValidateJWT],getAllDevolucionesByOrder);
 
 //#endregion
 

@@ -77,7 +77,6 @@ export interface DevolucionesModel {
     precio?:number;
     impuesto?:number;
     observaciones?:string;
-    unidades?:number;
     descuento?:number;    
 }
 
