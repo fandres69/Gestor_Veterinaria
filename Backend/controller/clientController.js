@@ -2,7 +2,7 @@
 
 const {response}=require('express');
 const {pool}=require('../database/database');
-const {StatusCodes}= require('http-status-codes')
+const {StatusCodes}= require('http-status-codes');
 const {getResponseError,getResponseConflict,getResponseOk}= require('../response/responseStatusCode');
 const {cClientes,rClientes,uClientes,dClientes, qClientes}=require('../models/clientes');
 const {cMascotas,rMascotas,uMascotas,dMascotas, qMascotas}=require('../models/mascotas');

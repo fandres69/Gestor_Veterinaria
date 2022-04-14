@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ValidarTokenGuard } from 'src/app/auth/guards/validar-token.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { VentasServiciosComponent } from './ventas-servicios/ventas-servicios.component';
+import { VentasComponent } from './ventas/ventas.component';
+import { GeneralComponent } from './general/general.component';
 
 
 const routes:Routes=[
@@ -9,7 +12,29 @@ const routes:Routes=[
     path:'',
     component:DashboardComponent,
     canActivate:[ValidarTokenGuard],
-    canLoad:[ValidarTokenGuard]   
+    canLoad:[ValidarTokenGuard],
+    children:[
+      {
+      path:'ventas',
+      component:VentasComponent,
+      canActivate:[ValidarTokenGuard],
+      canLoad:[ValidarTokenGuard]
+      }
+      ,
+      {
+        path:'ventasServicios',
+        component:VentasServiciosComponent,
+        canActivate:[ValidarTokenGuard],
+        canLoad:[ValidarTokenGuard]
+      }
+      ,
+      {
+        path:'general',
+        component:GeneralComponent,
+        canActivate:[ValidarTokenGuard],
+        canLoad:[ValidarTokenGuard]
+      }
+  ]   
   }
 ]
 

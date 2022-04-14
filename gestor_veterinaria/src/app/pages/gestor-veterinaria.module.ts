@@ -12,6 +12,7 @@ import { ImagenPipePipe } from './pipes/imagen-pipe.pipe';
 
 
 
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -19,6 +20,7 @@ import { ImagenPipePipe } from './pipes/imagen-pipe.pipe';
     ControlPanelComponent,
     HomePageComponent,
     ImagenPipePipe,
+    
 
   ],
   imports: [
@@ -26,6 +28,9 @@ import { ImagenPipePipe } from './pipes/imagen-pipe.pipe';
     GestorVeterinariaRoutingModule,
     ClientManagerModule,
     ReactiveFormsModule
+  ],
+  exports:[
+    
   ]
 })
 export class GestorVeterinariaModule { }

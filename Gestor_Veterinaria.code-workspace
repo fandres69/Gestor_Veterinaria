@@ -21,8 +21,12 @@
 		"cSpell.language": "en,es",
 		"cSpell.words": [
 			"anio",
+			"anios",
+			"Anios",
+			"Apexcharts",
 			"APIPORT",
 			"codigo",
+			"datalabels",
 			"datamaster",
 			"DBDATABASE",
 			"DBHOST",
@@ -72,7 +76,8 @@
 			"Upsss",
 			"usermaper",
 			"userpass",
-			"vetspa"
+			"vetspa",
+			"xaxis"
 		],
 		"gitlab.repositories": {
 			"d:\\fandr\\Projects\\Gestor_Veterinaria": {

@@ -1,0 +1,126 @@
+<div class="container">
+    <h1>Ventas Productos</h1>
+    <hr>
+    <form action="" [formGroup]="miForm">
+        <div class="row fixed-bottom">
+          
+            <div class="col-1">
+                <div class="form-floating m-3 mb-5 opacity-25 " style="width: 95px;align-items: flex-start;">
+                    <select class="form-select bg-info" id="anios" formControlName="anio" (change)="filtro()"> 
+                        <option value="0">Todos</option>                                                           
+                        <option *ngFor="let item of yearList.sort().reverse()" [value]="item"  >{{item}}</option>                                  
+                    </select>
+                <label for="anios">Año</label>
+                </div>
+            
+            </div>     
+            <div class="col-10"><br></div>       
+        </div>       
+    </form>   
+
+</div>
+<div class="row">
+    <div class="col form-control m-2">
+        <div *ngIf="ventasVList.length>0">
+            <app-lines 
+            [series]="lineSerie"
+            [xaxis]="lineAxixs"
+            [title]="titleGLOne"
+            ></app-lines>
+        </div>
+    </div>
+    <div class="col form-control m-2">
+        <div *ngIf="ventasVList.length>0">
+            <app-lines 
+            [series]="lineSerieT"
+            [xaxis]="lineAxixsT"
+            [title]="titleGLT"
+            ></app-lines>
+        </div>
+       
+    </div>
+   
+</div>
+
+<div class="row">
+    <div class="col form-control m-2">
+        <div *ngIf="ventasVList.length>0">
+            <app-barras 
+            [series]="cOPtios.series"
+            [chart]="cOPtios.chart"
+            [xaxis]="cOPtios.xaxis"
+            [title]="cOPtios.title"
+        
+            >
+            </app-barras>
+        </div>
+    </div>
+    <div class="col form-control m-2">
+        <div *ngIf="ventasVList.length>0">
+            <app-pastel
+            [series]="porcentual"
+            [labels]="labelsTag"
+           
+            ></app-pastel>
+        </div>
+        
+    </div>
+</div>
+
+<div *ngIf="ventasVList.length>0" class="container m-3">
+    <table class="table table-striped table-hover table-responsive small">
+        <thead >
+        <tr>
+            <th># Pedido</th>
+            <th># Detalle</th>
+            <th>Documento cliente</th>
+            <th>Cliente</th>
+            <th>Cod. Ciudad</th>
+            <th>Ciudad</th>
+            <th>Tipo Producto</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>% Descuento</th>
+            <th>% Impuesto</th>
+            <th>Sub Total</th>
+            <th>Sub Total Impuesto</th>
+            <th>Sub Total Descuento</th>
+            <th>Total</th>
+            <th>Dia</th>
+            <th>Mes</th>
+            <th>Año</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of ventasVList |informes:p_Size:page">
+                <td>{{item.pedido}}</td>
+                <td>{{item.detallePedido}}</td>
+                <td>{{item.cliente}}</td>
+                <td>{{item.nombreCliente}}</td>
+                <td>{{item.codCiudad}}</td>
+                <td>{{item.Ciudad}}</td>
+                <td>{{item.tipoProducto}}</td>
+                <td>{{item.producto}}</td>
+                <td>{{item.cantidad}}</td>
+                <td>{{item.precio}}</td>
+                <td>{{item.descuento}}</td>
+                <td>{{item.impuesto}}</td>
+                <td>{{item.subTotal}}</td>
+                <td>{{item.subTotalImpuesto}}</td>
+                <td>{{item.subTotalDescuento}}</td>
+                <td>{{item.Total}}</td>
+                <td>{{item.dia}}</td>
+                <td>{{item.mes}}</td>
+                <td>{{item.anio}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <mat-paginator [length]="ventasVList.length"
+    [pageSize]="p_Size"
+    [pageSizeOptions]="optionsPage"
+    (page)="pageEvent($event)"
+    aria-label="Select page"
+    class="m-3 example-full-width"
+    ></mat-paginator>
+</div>

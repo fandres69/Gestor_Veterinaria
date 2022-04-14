@@ -45,6 +45,7 @@ import { PaginadorPipe } from '../pipes/paginador.pipe';
     ReactiveFormsModule,
     FormsModule,
   
-  ]
+  ],
+  exports:[PaginadorPipe]
 })
 export class SalesManagerModule { }

@@ -31,6 +31,8 @@ Api.use('/api/gveterinaria/clientManager',require('./routes/clientManager'));
 
 Api.use('/api/gveterinaria/uploads',require('./routes/uploadsManager'));
 
+Api.use('/api/gveterinaria/dashBoard',require('./routes/dashBoard'));
+
 
 
 /**Api start */
