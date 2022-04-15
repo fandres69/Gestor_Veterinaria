@@ -210,7 +210,7 @@ export class VentasClientesComponent implements OnInit {
       let name=this.yearS.toString();
       this.lineSerie.push({name:name, data:dataTotal});           
     }
-
+    this.titleGLOne={text:`Ventas totales por mes año: ${(this.yearS>0)?this.yearS:'Todos'}`,align:'center'};
   }
 
   
@@ -290,6 +290,7 @@ export class VentasClientesComponent implements OnInit {
       this.lineAxixsT={categories:this.lineAxixs.categories};          
     }
     console.log(this.lineSerieT);
+    this.titleGLT={text:`Ventas totales por por producto año: ${(this.yearS>0)?this.yearS:'Todos'}`,align:'center'};
   }
 
 //#endregion
