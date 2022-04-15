@@ -12,6 +12,7 @@ import { InformesPipe } from './pipes/informes.pipe';
 import { MaterialModule } from '../material/material.module';
 import { VentasServiciosComponent } from './ventas-servicios/ventas-servicios.component';
 import { GeneralComponent } from './general/general.component';
+import { VentasClientesComponent } from './ventas-clientes/ventas-clientes.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { GeneralComponent } from './general/general.component';
     InformesPipe,
     VentasServiciosComponent,
     GeneralComponent,
+    VentasClientesComponent,
     
   ],
   imports: [

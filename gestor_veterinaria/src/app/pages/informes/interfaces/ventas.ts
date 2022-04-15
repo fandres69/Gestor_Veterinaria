@@ -61,6 +61,14 @@ export interface FiltroProduct{
     
 }
 
+
+export interface FiltroCliente{
+    cliente?: number;
+    nombreCliente?: string;
+    total?:number;
+    
+}
+
 export interface ChartOptions{
     series: ApexAxisChartSeries;
     chart: ApexChart;

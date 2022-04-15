@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { VentasServiciosComponent } from './ventas-servicios/ventas-servicios.component';
 import { VentasComponent } from './ventas/ventas.component';
 import { GeneralComponent } from './general/general.component';
+import { VentasClientesComponent } from './ventas-clientes/ventas-clientes.component';
 
 
 const routes:Routes=[
@@ -31,6 +32,12 @@ const routes:Routes=[
       {
         path:'general',
         component:GeneralComponent,
+        canActivate:[ValidarTokenGuard],
+        canLoad:[ValidarTokenGuard]
+      },
+      {
+        path:'porCliente',
+        component:VentasClientesComponent,
         canActivate:[ValidarTokenGuard],
         canLoad:[ValidarTokenGuard]
       }

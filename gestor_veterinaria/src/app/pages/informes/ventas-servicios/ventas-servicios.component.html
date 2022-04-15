@@ -2,11 +2,11 @@
     <h1>Ventas Servicios</h1>
     <hr>
     <form action="" [formGroup]="miForm">
-        <div class="row fixed-bottom">
+        <div class="row ">
           
             <div class="col-1">
-                <div class="form-floating m-3 mb-5 opacity-25 " style="width: 95px;align-items: flex-start;">
-                    <select class="form-select bg-info" id="anios" formControlName="anio" (change)="filtro()"> 
+                <div class="form-floating m-3 mb-5  " style="width: 95px;align-items: flex-start;">
+                    <select class="form-select " id="anios" formControlName="anio" (change)="filtro()"> 
                         <option value="0">Todos</option>                                                           
                         <option *ngFor="let item of yearList.sort().reverse()" [value]="item"  >{{item}}</option>                                  
                     </select>
